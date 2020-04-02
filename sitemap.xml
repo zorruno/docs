@@ -116,10 +116,6 @@
      <lastmod>2020-04-02</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/Buzzer/</loc>
-     <lastmod>2020-04-02</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
      <loc>https://tasmota.github.io/docs/Dynamic-Sleep/</loc>
      <lastmod>2020-04-02</lastmod>
      <changefreq>daily</changefreq>
@@ -204,11 +200,15 @@
      <lastmod>2020-04-02</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/Displays/</loc>
+     <loc>https://tasmota.github.io/docs/ADC/</loc>
      <lastmod>2020-04-02</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/ADC/</loc>
+     <loc>https://tasmota.github.io/docs/Buzzer/</loc>
+     <lastmod>2020-04-02</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/Displays/</loc>
      <lastmod>2020-04-02</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
