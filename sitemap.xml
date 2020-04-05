@@ -40,10 +40,6 @@
      <lastmod>2020-04-05</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/Compile-your-build/</loc>
-     <lastmod>2020-04-05</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
      <loc>https://tasmota.github.io/docs/Features/</loc>
      <lastmod>2020-04-05</lastmod>
      <changefreq>daily</changefreq>
@@ -96,6 +92,14 @@
      <lastmod>2020-04-05</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://tasmota.github.io/docs/Zigbee/</loc>
+     <lastmod>2020-04-05</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/Tasmota-IR/</loc>
+     <lastmod>2020-04-05</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://tasmota.github.io/docs/DeepSleep/</loc>
      <lastmod>2020-04-05</lastmod>
      <changefreq>daily</changefreq>
@@ -104,19 +108,7 @@
      <lastmod>2020-04-05</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/GPS-NTP-server/</loc>
-     <lastmod>2020-04-05</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
      <loc>https://tasmota.github.io/docs/I2CDevices/</loc>
-     <lastmod>2020-04-05</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/Tasmota-IR/</loc>
-     <lastmod>2020-04-05</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/Zigbee/</loc>
      <lastmod>2020-04-05</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -137,6 +129,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://tasmota.github.io/docs/TLS/</loc>
+     <lastmod>2020-04-05</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/Tutorials/</loc>
      <lastmod>2020-04-05</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -393,6 +389,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://tasmota.github.io/docs/Device-Recovery/</loc>
+     <lastmod>2020-04-05</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/Compile-your-build/</loc>
      <lastmod>2020-04-05</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
