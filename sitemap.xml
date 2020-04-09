@@ -40,6 +40,10 @@
      <lastmod>2020-04-09</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://tasmota.github.io/docs/WebUI/</loc>
+     <lastmod>2020-04-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://tasmota.github.io/docs/Features/</loc>
      <lastmod>2020-04-09</lastmod>
      <changefreq>daily</changefreq>
@@ -81,10 +85,6 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://tasmota.github.io/docs/TuyaMCU/</loc>
-     <lastmod>2020-04-09</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/WebUI/</loc>
      <lastmod>2020-04-09</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
