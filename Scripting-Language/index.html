@@ -4,7 +4,7 @@
 <span class=cp>#ifdef USE_RULES</span>
 <span class=cp>#undef USE_RULES</span>
 <span class=cp>#endif  </span>
-</code></pre></div> <p>Additional features are enabled by adding the following <code>#define</code> compiler directive parameters and then compiling the firmware. These parameters are explained further below in the article.</p> <table> <thead> <tr> <th>Feature</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td>USE_BUTTON_EVENT</td> <td>enable <code>b</code> section (detect button state changes)</td> </tr> <tr> <td>USE_SCRIPT_JSON_EXPORT</td> <td>enable <code>J</code> section (publish JSON payload on <a href=../Commands/#teleperiod>TelePeriod</a>)</td> </tr> <tr> <td>USE_SCRIPT_SUB_COMMAND</td> <td>enables invoking named script subroutines via the Console or MQTT</td> </tr> <tr> <td>USE_SCRIPT_HUE</td> <td>enable <code>H</code> section (Alexa Hue emulation)</td> </tr> <tr> <td>USE_SCRIPT_STATUS</td> <td>enable <code>U</code> section (receive JSON payloads)</td> </tr> <tr> <td>SCRIPT_POWER_SECTION</td> <td>enable <code>P</code> section (execute on power changes)</td> </tr> <tr> <td>SUPPORT_MQTT_EVENT</td> <td>enables support for subscribe unsubscribe</td> </tr> <tr> <td>USE_SENDMAIL</td> <td>enable <code>m</code> section and support for sending e-mail</td> </tr> <tr> <td>USE_SCRIPT_WEB_DISPLAY</td> <td>enable <code>W</code> section (modify web UI)</td> </tr> <tr> <td>USE_TOUCH_BUTTONS</td> <td>enable virtual touch button support with touch displays</td> </tr> <tr> <td>USE_WEBSEND_RESPONSE</td> <td>enable receiving the response of a <a href=../Commands/#websend><code>WebSend</code></a> command (received in section E)</td> </tr> <tr> <td>SCRIPT_STRIP_COMMENTS</td> <td>enables stripping comments when attempting to paste a script that is too large to fit</td> </tr> <tr> <td>USE_ANGLE_FUNC</td> <td>add sin(x),acos(x) and sqrt(x) e.g. to allow calculation of horizontal cylinder volume</td> </tr> <tr> <td>USE_24C256</td> <td>enables use of 24C256 I<sup>2</sup>C EEPROM to expand script buffer (defaults to 4k)</td> </tr> <tr> <td>USE_SCRIPT_FATFS</td> <td>enables SD card support (on SPI bus). Specify the CS pin number. Also enables 4k script buffer</td> </tr> <tr> <td>USE_SCRIPT_FATFS_EXT</td> <td>enables additional FS commands</td> </tr> <tr> <td>SDCARD_DIR</td> <td>enables support for web UI for SD card directory upload and download</td> </tr> </tbody> </table> <hr> <div class="admonition info"> <p class=admonition-title>Scripting Language for Tasmota is an alternative to Tasmota <a href=../Rules/ >Rules</a></p> </div> <p>To enter a script, go to <strong>Configuration - Edit script</strong> in the Tasmota web UI menu</p> <p>The maximum script size is 1535 bytes (uses rule set buffers). If the pasted script is larger than 1535 characters, comments will be stripped to attempt to make the script fit. </p> <p>To save code space almost no error messages are provided. However it is taken care of that at least it should not crash on syntax errors. </p> <h3 id=features>Features<a class=headerlink href=#features title="Permanent link">~</a></h3> <ul> <li>Up to 50 variables (45 numeric and 5 strings - this may be changed by setting a compilation <code>#define</code> directive) </li> <li>Freely definable variable names (all variable names are intentionally <em><strong>case sensitive</strong></em>) </li> <li>Nested if,then,else up to a level of 8 </li> <li>Math operators <code>+</code>,<code>-</code>,<code>*</code>,<code>/</code>,<code>%</code>,<code>&amp;</code>,<code>|</code>,<code>^</code> </li> <li>All operators may be used in the <code>op=</code> form, e.g., <code>+=</code> </li> <li>Comparison operators <code>==</code>,<code>!=</code>,<code>`,</code>=<code>,</code>&lt;<code>,</code>&lt;=` </li> <li><code>and</code> , <code>or</code> support </li> <li>Hexadecimal numbers with prefix <code>0x</code> are supported</li> <li>Strings support <code>+</code> and <code>+=</code> operators </li> <li>Support for \n \r regular expressions on strings</li> <li>String comparison <code>==</code>, <code>!=</code> </li> <li>String size is 19 characters (default). This can be increased or decreased by the optional parameter on the <code>D</code> section definition</li> </ul> <p><strong>Script Interpreter</strong> </p> <ul> <li>Execution is <em><strong>strictly sequential</strong></em>, <em><strong>line by line</strong></em></li> <li>Evaluation is <em><strong>left to right</strong></em> with optional brackets </li> <li>All <em><strong>numbers are float</strong></em>, e.g., temp=hum*(100/37.5)+temp-(timer*hum%10) </li> <li><em><strong>No spaces are allowed between math operators</strong></em></li> <li>Comments start with <code>;</code> </li> </ul> <p><strong>Console Commands</strong> </p> <p><code>script &lt;n</code> \&lt;n: <code>0</code> = switch script off; <code>1</code> = switch script on<br> <code>script &lt;cmdline</code> execute \&lt;cmdline<br> - Can be used to set variables, e.g., <code>script mintmp=15</code><br> - Multiple statements can be specified by separating each with a semicolon, e.g. <code>script mintmp=15;maxtemp=40</code><br> - The script itself can't be specified because the size would not fit the MQTT buffers</p> <h2 id=script-sections>Script Sections<a class=headerlink href=#script-sections title="Permanent link">~</a></h2> <p><em>Section descriptors (e.g., <code>E</code>) are <strong>case sensitive</strong></em><br> <code>D ssize</code> <br> <code>ssize</code> = optional max string size (default=19)<br> define and init variables here, must be the first section, no other code allowed<br> <code>p:vname</code> <br> specifies permanent variables. The number of permanent variables is limited by Tasmota rules space (50 bytes) - numeric variables are 4 bytes; string variables are one byte longer than the length of string<br> <code>t:vname</code> <br> specifies countdown timers, if 0 they are decremented in seconds until zero is reached. see example below<br> <code>i:vname</code> <br> specifies auto increment counters if =0 (in seconds)<br> <code>m:vname</code> <br> specifies a median filter variable with 5 entries (for elimination of outliers)<br> <code>M:vname</code> <br> specifies a moving average filter variable with 8 entries (for smoothing data)<br> (max 5 filters in total m+M) optional another filter length (1..127) can be given after the definition.<br> Filter vars can be accessed also in indexed mode <code>vname[x]</code> (x = <code>1..N</code>, x = <code>0</code> returns current array index pointer)<br> Using this filter, vars can be used as arrays </p> <div class="admonition tip"> <p class=admonition-title>Tip</p> <p>Keep variable names as short as possible. The length of all variable names taken together may not exceed 256 characters.<br> Memory is dynamically allocated as a result of the D section.<br> Copying a string to a number or reverse is supported </p> </div> <p><code>B</code><br> executed on BOOT time and on save script </p> <p><code>E</code><br> Executed when a Tasmota MQTT <code>RESULT</code> message is received, e.g., on <code>POWER</code> change. Also Zigbee reports to this section.</p> <p><code>F</code><br> Executed every 100 ms </p> <p><code>S</code><br> Executed every second </p> <p><code>R</code><br> Executed on restart. p vars are saved automatically after this call </p> <p><code>T</code><br> Executed on <a href=../Commands/#teleperiod><code>TelePeriod</code></a> time (<code>SENSOR</code> and <code>STATE</code>), only put <code>tele-</code> vars in this section<br> Remark: json variable names (like all others) may not contain math operators like - , you should set <a href=../Commands/#setoption64><code>SetOption64 1</code></a> to replace <code>-</code> (<em>dash</em>) with <code>_</code> (<em>underscore</em>). Zigbee sensors will not report to this section, use E instead.</p> <p><code>H</code><br> Alexa Hue interface (up to 32 virtual hue devices) <em>(<a href=#hue-emulation>example</a>)</em><br> <code>device</code>,<code>type</code>,<code>onVars</code><br> Remark: hue values have a range from 0-65535. Divide by 182 to assign HSBcolors hue values.</p> <p><code>device</code> device name<br> <code>type</code> device type - <code>E</code> = extended color; <code>S</code> = switch<br> <code>onVars</code> assign Hue "on" extended color parameters for hue, saturation, brightness, and color temperature (hue,sat,bri,ct) to scripter variables </p> <div class="admonition example"> <p class=admonition-title>Example</p> <p><code>lamp1,E,on=pwr1,hue=hue1,sat=sat1,bri=bri1,ct=ct1</code></p> </div> <p><code>U</code><br> status JSON Messages arrive here</p> <p><code>b</code> <em>(note lower case)</em><br> executed on button state change </p> <p><code>bt[x]</code> <br> read button state (x = <code>1.. MAX_KEYS</code>) </p> <div class="admonition example"> <p class=admonition-title>Example</p> </div> <div class=codehilite><pre><span></span><code><span class=err>if bt[1]==0  </span>
+</code></pre></div> <p>Additional features are enabled by adding the following <code>#define</code> compiler directive parameters and then compiling the firmware. These parameters are explained further below in the article.</p> <table> <thead> <tr> <th>Feature</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td>USE_BUTTON_EVENT</td> <td>enable <code>&gt;b</code> section (detect button state changes)</td> </tr> <tr> <td>USE_SCRIPT_JSON_EXPORT</td> <td>enable <code>&gt;J</code> section (publish JSON payload on <a href=../Commands/#teleperiod>TelePeriod</a>)</td> </tr> <tr> <td>USE_SCRIPT_SUB_COMMAND</td> <td>enables invoking named script subroutines via the Console or MQTT</td> </tr> <tr> <td>USE_SCRIPT_HUE</td> <td>enable <code>&gt;H</code> section (Alexa Hue emulation)</td> </tr> <tr> <td>USE_SCRIPT_STATUS</td> <td>enable <code>&gt;U</code> section (receive JSON payloads)</td> </tr> <tr> <td>SCRIPT_POWER_SECTION</td> <td>enable <code>&gt;P</code> section (execute on power changes)</td> </tr> <tr> <td>SUPPORT_MQTT_EVENT</td> <td>enables support for subscribe unsubscribe</td> </tr> <tr> <td>USE_SENDMAIL</td> <td>enable <code>&gt;m</code> section and support for sending e-mail</td> </tr> <tr> <td>USE_SCRIPT_WEB_DISPLAY</td> <td>enable <code>&gt;W</code> section (modify web UI)</td> </tr> <tr> <td>USE_TOUCH_BUTTONS</td> <td>enable virtual touch button support with touch displays</td> </tr> <tr> <td>USE_WEBSEND_RESPONSE</td> <td>enable receiving the response of a <a href=../Commands/#websend><code>WebSend</code></a> command (received in section &gt;E)</td> </tr> <tr> <td>SCRIPT_STRIP_COMMENTS</td> <td>enables stripping comments when attempting to paste a script that is too large to fit</td> </tr> <tr> <td>USE_ANGLE_FUNC</td> <td>add sin(x),acos(x) and sqrt(x) e.g. to allow calculation of horizontal cylinder volume</td> </tr> <tr> <td>USE_24C256</td> <td>enables use of 24C256 I<sup>2</sup>C EEPROM to expand script buffer (defaults to 4k)</td> </tr> <tr> <td>USE_SCRIPT_FATFS</td> <td>enables SD card support (on SPI bus). Specify the CS pin number. Also enables 4k script buffer</td> </tr> <tr> <td>USE_SCRIPT_FATFS_EXT</td> <td>enables additional FS commands</td> </tr> <tr> <td>SDCARD_DIR</td> <td>enables support for web UI for SD card directory upload and download</td> </tr> </tbody> </table> <hr> <div class="admonition info"> <p class=admonition-title>Scripting Language for Tasmota is an alternative to Tasmota <a href=../Rules/ >Rules</a></p> </div> <p>To enter a script, go to <strong>Configuration - Edit script</strong> in the Tasmota web UI menu</p> <p>The maximum script size is 1535 bytes (uses rule set buffers). If the pasted script is larger than 1535 characters, comments will be stripped to attempt to make the script fit. </p> <p>To save code space almost no error messages are provided. However it is taken care of that at least it should not crash on syntax errors. </p> <h3 id=features>Features<a class=headerlink href=#features title="Permanent link">~</a></h3> <ul> <li>Up to 50 variables (45 numeric and 5 strings - this may be changed by setting a compilation <code>#define</code> directive) </li> <li>Freely definable variable names (all variable names are intentionally <em><strong>case sensitive</strong></em>) </li> <li>Nested if,then,else up to a level of 8 </li> <li>Math operators <code>+</code>,<code>-</code>,<code>*</code>,<code>/</code>,<code>%</code>,<code>&amp;</code>,<code>|</code>,<code>^</code> </li> <li>All operators may be used in the <code>op=</code> form, e.g., <code>+=</code> </li> <li>Comparison operators <code>==</code>,<code>!=</code>,<code>`,</code>=<code>,</code>&lt;<code>,</code>&lt;=` </li> <li><code>and</code> , <code>or</code> support </li> <li>Hexadecimal numbers with prefix <code>0x</code> are supported</li> <li>Strings support <code>+</code> and <code>+=</code> operators </li> <li>Support for \n \r regular expressions on strings</li> <li>String comparison <code>==</code>, <code>!=</code> </li> <li>String size is 19 characters (default). This can be increased or decreased by the optional parameter on the <code>D</code> section definition</li> </ul> <p><strong>Script Interpreter</strong> </p> <ul> <li>Execution is <em><strong>strictly sequential</strong></em>, <em><strong>line by line</strong></em></li> <li>Evaluation is <em><strong>left to right</strong></em> with optional brackets </li> <li>All <em><strong>numbers are float</strong></em>, e.g., temp=hum*(100/37.5)+temp-(timer*hum%10) </li> <li><em><strong>No spaces are allowed between math operators</strong></em></li> <li>Comments start with <code>;</code> </li> </ul> <p><strong>Console Commands</strong> </p> <p><code>script &lt;n</code> \&lt;n: <code>0</code> = switch script off; <code>1</code> = switch script on<br> <code>script &lt;cmdline</code> execute \&lt;cmdline<br> - Can be used to set variables, e.g., <code>script mintmp=15</code><br> - Multiple statements can be specified by separating each with a semicolon, e.g. <code>script mintmp=15;maxtemp=40</code><br> - The script itself can't be specified because the size would not fit the MQTT buffers</p> <h2 id=script-sections>Script Sections<a class=headerlink href=#script-sections title="Permanent link">~</a></h2> <p><em>Section descriptors (e.g., <code>&gt;E</code>) are <strong>case sensitive</strong></em><br> <code>&gt;D ssize</code> <br> <code>ssize</code> = optional max string size (default=19)<br> define and init variables here, must be the first section, no other code allowed<br> <code>p:vname</code> <br> specifies permanent variables. The number of permanent variables is limited by Tasmota rules space (50 bytes) - numeric variables are 4 bytes; string variables are one byte longer than the length of string<br> <code>t:vname</code> <br> specifies countdown timers, if 0 they are decremented in seconds until zero is reached. see example below<br> <code>i:vname</code> <br> specifies auto increment counters if =0 (in seconds)<br> <code>m:vname</code> <br> specifies a median filter variable with 5 entries (for elimination of outliers)<br> <code>M:vname</code> <br> specifies a moving average filter variable with 8 entries (for smoothing data)<br> (max 5 filters in total m+M) optional another filter length (1..127) can be given after the definition.<br> Filter vars can be accessed also in indexed mode <code>vname[x]</code> (x = <code>1..N</code>, x = <code>0</code> returns current array index pointer)<br> Using this filter, vars can be used as arrays </p> <div class="admonition tip"> <p class=admonition-title>Tip</p> <p>Keep variable names as short as possible. The length of all variable names taken together may not exceed 256 characters.<br> Memory is dynamically allocated as a result of the D section.<br> Copying a string to a number or reverse is supported </p> </div> <p><code>&gt;B</code><br> executed on BOOT time and on save script </p> <p><code>&gt;E</code><br> Executed when a Tasmota MQTT <code>RESULT</code> message is received, e.g., on <code>POWER</code> change. Also Zigbee reports to this section.</p> <p><code>&gt;F</code><br> Executed every 100 ms </p> <p><code>&gt;S</code><br> Executed every second </p> <p><code>&gt;R</code><br> Executed on restart. p vars are saved automatically after this call </p> <p><code>&gt;T</code><br> Executed on <a href=../Commands/#teleperiod><code>TelePeriod</code></a> time (<code>SENSOR</code> and <code>STATE</code>), only put <code>tele-</code> vars in this section<br> Remark: json variable names (like all others) may not contain math operators like - , you should set <a href=../Commands/#setoption64><code>SetOption64 1</code></a> to replace <code>-</code> (<em>dash</em>) with <code>_</code> (<em>underscore</em>). Zigbee sensors will not report to this section, use E instead.</p> <p><code>&gt;H</code><br> Alexa Hue interface (up to 32 virtual hue devices) <em>(<a href=#hue-emulation>example</a>)</em><br> <code>device</code>,<code>type</code>,<code>onVars</code><br> Remark: hue values have a range from 0-65535. Divide by 182 to assign HSBcolors hue values.</p> <p><code>device</code> device name<br> <code>type</code> device type - <code>E</code> = extended color; <code>S</code> = switch<br> <code>onVars</code> assign Hue "on" extended color parameters for hue, saturation, brightness, and color temperature (hue,sat,bri,ct) to scripter variables </p> <div class="admonition example"> <p class=admonition-title>Example</p> <p><code>lamp1,E,on=pwr1,hue=hue1,sat=sat1,bri=bri1,ct=ct1</code></p> </div> <p><code>&gt;U</code><br> status JSON Messages arrive here</p> <p><code>&gt;b</code> <em>(note lower case)</em><br> executed on button state change </p> <p><code>bt[x]</code> <br> read button state (x = <code>1.. MAX_KEYS</code>) </p> <div class="admonition example"> <p class=admonition-title>Example</p> </div> <div class=codehilite><pre><span></span><code><span class=err>if bt[1]==0  </span>
 <span class=err>then  </span>
 <span class=err>print falling edge of button1  </span>
 <span class=err>endif  </span>
@@ -12,7 +12,7 @@
 <span class=err>then  </span>
 <span class=err>print rising edge of button1  </span>
 <span class=err>endif</span>
-</code></pre></div> <p><code>J</code><br> The lines in this section are published via MQTT in a JSON payload on <a href=../Commands/#teleperiod>TelePeriod</a>. <mark>Requires compiling with <code>#define USE_SCRIPT_JSON_EXPORT</code>.</mark> </p> <p><code>W</code><br> The lines in this section are displayed in the web UI main page. <mark>Requires compiling with <code>#define USE_SCRIPT_WEB_DISPLAY</code>.</mark> </p> <p>You may put any html code here. </p> <ul> <li>Variables may be substituted using %var% </li> <li>HTML statements are displayed in the sensor section of the main page </li> <li>HTML statements preceded with a <code>@</code> are displayed at the top of the page </li> <li>USER IO elements are displayed at the top of the page </li> </ul> <p>A web user interface may be generated containing any of the following elements:<br> <strong>Button:</strong> <br> <code>bu(&lt;vn &lt;txt1 &lt;txt2)</code> (up to 4 buttons may be defined in one row)<br> <code>&lt;vn</code> = name of variable to hold button state<br> <code>&lt;txt1</code> = text of ON state of button<br> <code>&lt;txt2</code> = text of OFF state of button <strong>Checkbox:</strong> <br> <code>ck(&lt;vn &lt;txt)</code><br> <code>&lt;vn</code> = name of variable to hold checkbox state<br> <code>&lt;txt</code> = label text <br> <strong>Slider:</strong> <br> <code>sl(&lt;min &lt;max &lt;vn &lt;ltxt &lt;mtxt &lt;rtxt)</code><br> <code>&lt;min</code> = slider minimum value<br> <code>&lt;max</code> = slider maximum value<br> <code>&lt;vn</code> = name of variable to hold slider value<br> <code>&lt;ltxt</code> = label left of slider<br> <code>&lt;mtxt</code> = label middle of slider<br> <code>&lt;rtxt</code> = label right of slider<br> <strong>Text Input:</strong> <br> <code>tx(&lt;vn &lt;txt)</code><br> <code>&lt;vn</code> = name of string variable to hold text state<br> <code>&lt;txt</code> = label text <br> <strong>Number Input:</strong> <br> <code>nm(&lt;min &lt;max &lt;step &lt;vn &lt;txt)</code><br> <code>&lt;min</code> = number minimum value<br> <code>&lt;max</code> = number maximum value<br> <code>&lt;step</code> = number step value for up/down arrows<br> <code>&lt;vn</code> = name of number variable to hold number<br> <code>&lt;txt</code> = label text </p> <p><code>M</code><br> <a href=../Smart-Meter-Interface/ >Smart Meter Interface</a> </p> <p>If a variable does not exist, <code>???</code> is displayed for commands </p> <p>If a Tasmota <code>SENSOR</code> or <code>STATUS</code> or <code>RESULT</code> message is not generated or a <code>Var</code> does not exist the destination variable is <mark>NOT</mark> updated. </p> <h2 id=special-variables>Special Variables<a class=headerlink href=#special-variables title="Permanent link">~</a></h2> <p>(read only)<br> <code>upsecs</code> = seconds since start<br> <code>uptime</code> = minutes since start<br> <code>time</code> = minutes since midnight<br> <code>sunrise</code> = sunrise minutes since midnight<br> <code>sunset</code> = sunset minutes since midnight<br> <code>tper</code> = <a href=../Commands/#teleperiod>TelePeriod</a> (<em><strong>may be set also</strong></em>)<br> <code>tstamp</code> = timestamp (local date and time)<br> <code>topic</code> = mqtt topic<br> <code>gtopic</code> = mqtt group topic<br> <code>prefixn</code> = prefix n = 1-3<br> <code>pwr[x]</code> = power state (x = 1..N)<br> <code>pc[x]</code> = pulse counter value (x = 1..4)<br> <code>tbut[x]</code> = touch screen button state (x = 1..N)<br> <code>sw[x]</code> = switch state (x = 0..N) (Switch1 = <code>sw[0]</code>)<br> <code>bt[x]</code> = button state (x = 1..N) only valid in section b (if defined USE_BUTTON_EVENT)<br> <code>pin[x]</code> = GPIO pin level (x = 0..16)<br> <code>pn[x]</code> = GPIO for sensor code x. 99 if none<br> <code>pd[x]</code> = defined sensor for GPIO x. 999 if none<br> <code>sht[x]</code> = shutter position (x = 1..N) (if defined USE_SHUTTER)<br> <code>gtmp</code> = global temperature<br> <code>ghum</code> = global humidity<br> <code>gprs</code> = global pressure<br> <code>pow(x y)</code> = calculates exponential powers x^y<br> <code>med(n x)</code> = calculates a 5 value median filter of x (2 filters possible n=0,1)<br> <code>int(x)</code> = gets the integer part of x (like floor)<br> <code>hn(x)</code> = converts x (0..255) to a hex nibble string<br> <code>hx(x)</code> = converts x (0..65535) to a hex string<br> <code>st(svar c n)</code> = string token - retrieve the n<sup>th</sup> element of svar delimited by c<br> <code>sl(svar)</code> = gets the length of a string<br> <code>sb(svar p n)</code> = gets a substring from svar at position p (if p&lt;0 counts from end) and length n<br> <code>sin(x)</code> = calculates the sinus(x) (if defined USE_ANGLE_FUNC)<br> <code>acos(x)</code> = calculates the acos(x) (if defined USE_ANGLE_FUNC)<br> <code>sqrt(x)</code> = calculates the sqrt(x) (if defined USE_ANGLE_FUNC)<br> <code>s(x)</code> = explicit conversion from number x to string<br> <code>mqtts</code> = MQTT connection status: <code>0</code> = disconnected, <code>0</code> = connected<br> <code>wifis</code> = Wi-Fi connection status: <code>0</code> = disconnected, <code>0</code> = connected </p> <p><code>hours</code> = hours<br> <code>mins</code> = mins<br> <code>secs</code> = seconds<br> <code>day</code> = day of month<br> <code>wday</code> = day of week<br> <code>month</code> = month<br> <code>year</code> = year<br> <code>epoch</code> = epoch time (from 2019-1-1 00:00) </p> <p>The following variables are cleared after reading true:<br> <code>chg[var]</code> = true if a variables value was changed (numeric vars only)<br> <code>upd[var]</code> = true if a variable was updated<br> <code>boot</code> = true on BOOT<br> <code>tinit</code> = true on time init<br> <code>tset</code> = true on time set<br> <code>mqttc</code> = true on mqtt connect<br> <code>mqttd</code> = true on mqtt disconnect<br> <code>wific</code> = true on wifi connect<br> <code>wifid</code> = true on wifi disconnect </p> <p><strong>System variables</strong> (for debugging)<br> <code>stack</code> = stack size<br> <code>heap</code> = heap size<br> <code>ram</code> = used ram size<br> <code>slen</code> = script length<br> <code>micros</code> = running microseconds<br> <code>millis</code> = running milliseconds<br> <code>loglvl</code> = loglevel of script cmds (<em><strong>may be set also</strong></em>) </p> <p>Remarks:<br> If you define a variable with the same name as a special variable that special variable is discarded </p> <h2 id=commands>Commands<a class=headerlink href=#commands title="Permanent link">~</a></h2> <p><code>= &lt;command</code> Execute \&lt;command recursion disabled<br> <code>+ &lt;command</code> Execute \&lt;command recursion enabled<br> <code>- &lt;command</code> Execute \&lt;command - do not send MQTT or log messages (i.e., silent execute - useful to reduce traffic) </p> <p><strong>Variable Substitution</strong><br> - A single percent sign must be given as <code>%%</code><br> - Variable replacement within commands is allowed using <code>%varname%</code>. Optionally, the decimal places precision for numeric values may be specified by placing a digit (<code>%Nvarname%</code>, N = <code>0..9</code>) in front of the substitution variable (e.g., <code>Humidity: %3hum%%%</code> will output <code>Humidity: 43.271%</code>) <br> - Linefeed and carriage return may be defined by \n and \r </p> <p><strong>Special</strong> commands:<br> <code>print</code> or <code>= print</code> prints to the log for debugging<br> &nbsp;&nbsp;&nbsp;&nbsp;A Tasmota MQTT RESULT message invokes the script's <code>E</code> section. Add <code>= print</code> statements to debug a script. </p> <div class="admonition example"> <p class=admonition-title>Example</p> <p>``` slider=Dimmer power=POWER</p> <p>if upd[slider]0 then =print slider updated %slider% endif</p> <p>if upd[power]0 then =print power updated %power% endif ```</p> </div> <p><code>break</code> exits a section or terminates a <code>for next</code> loop<br> <code>dpx</code> sets decimal precision to x (0-9)<br> <code>svars</code> save permanent vars<br> <code>delay(x)</code> pauses x milliseconds (should be as short as possible)<br> <code>spin(x b)</code> set GPIO <code>x</code> (0..16) to value <code>b</code> (0,1). Only bit 0 of <code>b</code> is used - even values set the GPIO to <code>0</code> and uneven values set the GPIO to <code>1</code><br> <code>spinm(x m)</code> set GPIO <code>x</code> (0..16) to mode <code>m</code> (input=0, output=1, input with pullup=2)<br> <code>ws2812(array)</code> copies an array (defined with <code>m:vname</code>) to the WS2812 LED chain. The array length should be defined as long as the number of pixels. Color is coded as 24 bit RGB.<br> <code>hsvrgb(h s v)</code> converts hue (0..360), saturation (0..100) and value (0..100) to RGB color </p> <p><code>#name</code> names a subroutine. Subroutine is called with <code>=#name</code><br> <code>#name(param)</code> names a subroutine with a parameter. Subroutine is called with <code>=#name(param)</code><br> Subroutines end with the next <code>#</code> or `` line or break. Subroutines may be nested<br> Parameters can be numbers or strings and on type mismatch are converted </p> <p>If <code>#define USE_SCRIPT_SUB_COMMAND</code> is included in your <code>user_config_override.h</code>, a subroutine may be invoked via the Console or MQTT using the subroutine's name. For example, a declared subroutine <code>#SETLED(num)</code> may be invoked by typing <code>SETLED 1</code> in the Console. The parameter <code>1</code> is passed into the <code>num</code> argument. This also works with string parameters. </p> <p>It is possible to "replace" internal Tasmota commands. For example, if a <code>#POWER1(num)</code> subroutine is declared, the command <code>POWER1</code> is processed in the scripter instead of in the main Tasmota code. </p> <p><code>=(svar)</code> executes a routine whose name is passed as a string in a variable (dynamic or self modifying code). The string has to start with <code>=</code> or <code>=#</code> for the routine to be executed.</p> <div class=codehilite><pre><span></span><code><span class=n>D</span>
+</code></pre></div> <p><code>&gt;J</code><br> The lines in this section are published via MQTT in a JSON payload on <a href=../Commands/#teleperiod>TelePeriod</a>. <mark>Requires compiling with <code>#define USE_SCRIPT_JSON_EXPORT</code>.</mark> </p> <p><code>&gt;W</code><br> The lines in this section are displayed in the web UI main page. <mark>Requires compiling with <code>#define USE_SCRIPT_WEB_DISPLAY</code>.</mark> </p> <p>You may put any html code here. </p> <ul> <li>Variables may be substituted using %var% </li> <li>HTML statements are displayed in the sensor section of the main page </li> <li>HTML statements preceded with a <code>@</code> are displayed at the top of the page </li> <li>USER IO elements are displayed at the top of the page </li> </ul> <p>A web user interface may be generated containing any of the following elements:<br> <strong>Button:</strong> <br> <code>bu(&lt;vn &lt;txt1 &lt;txt2)</code> (up to 4 buttons may be defined in one row)<br> <code>&lt;vn</code> = name of variable to hold button state<br> <code>&lt;txt1</code> = text of ON state of button<br> <code>&lt;txt2</code> = text of OFF state of button <strong>Checkbox:</strong> <br> <code>ck(&lt;vn &lt;txt)</code><br> <code>&lt;vn</code> = name of variable to hold checkbox state<br> <code>&lt;txt</code> = label text <br> <strong>Slider:</strong> <br> <code>sl(&lt;min &lt;max &lt;vn &lt;ltxt &lt;mtxt &lt;rtxt)</code><br> <code>&lt;min</code> = slider minimum value<br> <code>&lt;max</code> = slider maximum value<br> <code>&lt;vn</code> = name of variable to hold slider value<br> <code>&lt;ltxt</code> = label left of slider<br> <code>&lt;mtxt</code> = label middle of slider<br> <code>&lt;rtxt</code> = label right of slider<br> <strong>Text Input:</strong> <br> <code>tx(&lt;vn &lt;txt)</code><br> <code>&lt;vn</code> = name of string variable to hold text state<br> <code>&lt;txt</code> = label text <br> <strong>Number Input:</strong> <br> <code>nm(&lt;min &lt;max &lt;step &lt;vn &lt;txt)</code><br> <code>&lt;min</code> = number minimum value<br> <code>&lt;max</code> = number maximum value<br> <code>&lt;step</code> = number step value for up/down arrows<br> <code>&lt;vn</code> = name of number variable to hold number<br> <code>&lt;txt</code> = label text </p> <p><code>&gt;M</code><br> <a href=../Smart-Meter-Interface/ >Smart Meter Interface</a> </p> <p>If a variable does not exist, <code>???</code> is displayed for commands </p> <p>If a Tasmota <code>SENSOR</code> or <code>STATUS</code> or <code>RESULT</code> message is not generated or a <code>Var</code> does not exist the destination variable is <mark>NOT</mark> updated. </p> <h2 id=special-variables>Special Variables<a class=headerlink href=#special-variables title="Permanent link">~</a></h2> <p>(read only)<br> <code>upsecs</code> = seconds since start<br> <code>uptime</code> = minutes since start<br> <code>time</code> = minutes since midnight<br> <code>sunrise</code> = sunrise minutes since midnight<br> <code>sunset</code> = sunset minutes since midnight<br> <code>tper</code> = <a href=../Commands/#teleperiod>TelePeriod</a> (<em><strong>may be set also</strong></em>)<br> <code>tstamp</code> = timestamp (local date and time)<br> <code>topic</code> = mqtt topic<br> <code>gtopic</code> = mqtt group topic<br> <code>prefixn</code> = prefix n = 1-3<br> <code>pwr[x]</code> = power state (x = 1..N)<br> <code>pc[x]</code> = pulse counter value (x = 1..4)<br> <code>tbut[x]</code> = touch screen button state (x = 1..N)<br> <code>sw[x]</code> = switch state (x = 0..N) (Switch1 = <code>sw[0]</code>)<br> <code>bt[x]</code> = button state (x = 1..N) only valid in section b (if defined USE_BUTTON_EVENT)<br> <code>pin[x]</code> = GPIO pin level (x = 0..16)<br> <code>pn[x]</code> = GPIO for sensor code x. 99 if none<br> <code>pd[x]</code> = defined sensor for GPIO x. 999 if none<br> <code>sht[x]</code> = shutter position (x = 1..N) (if defined USE_SHUTTER)<br> <code>gtmp</code> = global temperature<br> <code>ghum</code> = global humidity<br> <code>gprs</code> = global pressure<br> <code>pow(x y)</code> = calculates exponential powers x^y<br> <code>med(n x)</code> = calculates a 5 value median filter of x (2 filters possible n=0,1)<br> <code>int(x)</code> = gets the integer part of x (like floor)<br> <code>hn(x)</code> = converts x (0..255) to a hex nibble string<br> <code>hx(x)</code> = converts x (0..65535) to a hex string<br> <code>st(svar c n)</code> = string token - retrieve the n<sup>th</sup> element of svar delimited by c<br> <code>sl(svar)</code> = gets the length of a string<br> <code>sb(svar p n)</code> = gets a substring from svar at position p (if p&lt;0 counts from end) and length n<br> <code>sin(x)</code> = calculates the sinus(x) (if defined USE_ANGLE_FUNC)<br> <code>acos(x)</code> = calculates the acos(x) (if defined USE_ANGLE_FUNC)<br> <code>sqrt(x)</code> = calculates the sqrt(x) (if defined USE_ANGLE_FUNC)<br> <code>s(x)</code> = explicit conversion from number x to string<br> <code>mqtts</code> = MQTT connection status: <code>0</code> = disconnected, <code>0</code> = connected<br> <code>wifis</code> = Wi-Fi connection status: <code>0</code> = disconnected, <code>0</code> = connected </p> <p><code>hours</code> = hours<br> <code>mins</code> = mins<br> <code>secs</code> = seconds<br> <code>day</code> = day of month<br> <code>wday</code> = day of week<br> <code>month</code> = month<br> <code>year</code> = year<br> <code>epoch</code> = epoch time (from 2019-1-1 00:00) </p> <p>The following variables are cleared after reading true:<br> <code>chg[var]</code> = true if a variables value was changed (numeric vars only)<br> <code>upd[var]</code> = true if a variable was updated<br> <code>boot</code> = true on BOOT<br> <code>tinit</code> = true on time init<br> <code>tset</code> = true on time set<br> <code>mqttc</code> = true on mqtt connect<br> <code>mqttd</code> = true on mqtt disconnect<br> <code>wific</code> = true on wifi connect<br> <code>wifid</code> = true on wifi disconnect </p> <p><strong>System variables</strong> (for debugging)<br> <code>stack</code> = stack size<br> <code>heap</code> = heap size<br> <code>ram</code> = used ram size<br> <code>slen</code> = script length<br> <code>micros</code> = running microseconds<br> <code>millis</code> = running milliseconds<br> <code>loglvl</code> = loglevel of script cmds (<em><strong>may be set also</strong></em>) </p> <p>Remarks:<br> If you define a variable with the same name as a special variable that special variable is discarded </p> <h2 id=commands>Commands<a class=headerlink href=#commands title="Permanent link">~</a></h2> <p><code>=&gt; &lt;command</code> Execute \&lt;command recursion disabled<br> <code>+&gt; &lt;command</code> Execute \&lt;command recursion enabled<br> <code>-&gt; &lt;command</code> Execute \&lt;command - do not send MQTT or log messages (i.e., silent execute - useful to reduce traffic) </p> <p><strong>Variable Substitution</strong><br> - A single percent sign must be given as <code>%%</code><br> - Variable replacement within commands is allowed using <code>%varname%</code>. Optionally, the decimal places precision for numeric values may be specified by placing a digit (<code>%Nvarname%</code>, N = <code>0..9</code>) in front of the substitution variable (e.g., <code>Humidity: %3hum%%%</code> will output <code>Humidity: 43.271%</code>) <br> - Linefeed and carriage return may be defined by \n and \r </p> <p><strong>Special</strong> commands:<br> <code>print</code> or <code>= print</code> prints to the log for debugging<br> &nbsp;&nbsp;&nbsp;&nbsp;A Tasmota MQTT RESULT message invokes the script's <code>E</code> section. Add <code>= print</code> statements to debug a script. </p> <div class="admonition example"> <p class=admonition-title>Example</p> <p>``` slider=Dimmer power=POWER</p> <p>if upd[slider]0 then =&gt;print slider updated %slider% endif</p> <p>if upd[power]0 then =&gt;print power updated %power% endif ```</p> </div> <p><code>break</code> exits a section or terminates a <code>for next</code> loop<br> <code>dpx</code> sets decimal precision to x (0-9)<br> <code>svars</code> save permanent vars<br> <code>delay(x)</code> pauses x milliseconds (should be as short as possible)<br> <code>spin(x b)</code> set GPIO <code>x</code> (0..16) to value <code>b</code> (0,1). Only bit 0 of <code>b</code> is used - even values set the GPIO to <code>0</code> and uneven values set the GPIO to <code>1</code><br> <code>spinm(x m)</code> set GPIO <code>x</code> (0..16) to mode <code>m</code> (input=0, output=1, input with pullup=2)<br> <code>ws2812(array)</code> copies an array (defined with <code>m:vname</code>) to the WS2812 LED chain. The array length should be defined as long as the number of pixels. Color is coded as 24 bit RGB.<br> <code>hsvrgb(h s v)</code> converts hue (0..360), saturation (0..100) and value (0..100) to RGB color </p> <p><code>#name</code> names a subroutine. Subroutine is called with <code>=#name</code><br> <code>#name(param)</code> names a subroutine with a parameter. Subroutine is called with <code>=#name(param)</code><br> Subroutines end with the next <code>#</code> or `` line or break. Subroutines may be nested<br> Parameters can be numbers or strings and on type mismatch are converted </p> <p>If <code>#define USE_SCRIPT_SUB_COMMAND</code> is included in your <code>user_config_override.h</code>, a subroutine may be invoked via the Console or MQTT using the subroutine's name. For example, a declared subroutine <code>#SETLED(num)</code> may be invoked by typing <code>SETLED 1</code> in the Console. The parameter <code>1</code> is passed into the <code>num</code> argument. This also works with string parameters. </p> <p>It is possible to "replace" internal Tasmota commands. For example, if a <code>#POWER1(num)</code> subroutine is declared, the command <code>POWER1</code> is processed in the scripter instead of in the main Tasmota code. </p> <p><code>=(svar)</code> executes a routine whose name is passed as a string in a variable (dynamic or self modifying code). The string has to start with <code>=</code> or <code>=#</code> for the routine to be executed.</p> <div class=codehilite><pre><span></span><code><span class=n>D</span>
 <span class=n>svar</span><span class=o>=</span><span class=ss>&quot;=#subroutine&quot;</span>
 
 <span class=n>S</span>
@@ -43,7 +43,7 @@
 </code></pre></div> <p>Conditional expressions may be enclosed in parentheses. The statement must be on a single line. e.g., </p> <div class=codehilite><pre><span></span><code><span class=err>if ((a==b) and ((c==d) or (c==e)) and (s!=&quot;x&quot;))</span>
 </code></pre></div> <p><strong>E-mail</strong><br> <code>#define USE_SENDMAIL</code><br> Enabling this feature also enables <a href=../TLS/ >Tasmota TLS</a> as <code>sendmail</code> uses SSL. </p> <p><code>sendmail [server:port:user:passwd:from:to:subject] msg</code> </p> <div class="admonition example"> <p class=admonition-title>Example</p> <p><code>sendmail [smtp.gmail.com:465:user:passwd:sender@gmail.com:&lt;rec@gmail.com:alarm] %string%</code> </p> <p>Remark:<br> A number of e-mail servers (such as Gmail) require the receiver's e-mail address to be enclosed by <code>&lt; ...</code> as in example above. Most other e-mail servers also accept this format. </p> </div> <p>The following parameters can be specified during compilation via <code>#define</code> directives in <code>user_config_override.h</code>:<br> * <code>EMAIL_SERVER</code><br> * <code>EMAIL_PORT</code><br> * <code>EMAIL_USER</code><br> * <code>EMAIL_PASSWORD</code><br> * <code>EMAIL_FROM</code> </p> <p>To use any of these values, pass an <code>*</code> as its corresponding argument placeholder. </p> <div class="admonition example"> <p class=admonition-title><code>sendmail [*:*:*:*:*:&lt;rec@gmail.com:theSubject] theMessage</code> </p> </div> <p>Instead of passing the <code>msg</code> as a string constant, the body of the e-mail message may also be composed using the script <code>m</code> <em>(note lower case)</em> section. The specified text in this script section must end with an <code>#</code> character. <code>sendmail</code> will use the <code>m</code> section if <code>*</code> is passed as the <code>msg</code> parameter. See [Scripting Cookbook Example].(#send-e-mail) </p> <p><strong>Subscribe, Unsubscribe</strong><br> <code>#define SUPPORT_MQTT_EVENT</code><br> <code>subscribe</code> and <code>unsubscribe</code> commands are supported. In contrast to rules, no event is generated but the event name specifies a variable defined in <code>D</code> section and this variable is automatically set on transmission of the subscribed item </p> <p><strong>SD Card Support</strong> (+ 10k flash)<br> <code>#define USE_SCRIPT_FATFS</code> <code>CARD_CS</code><br> <code>CARD_CS</code> = GPIO of card chip select <br> SD card uses standard hardware SPI GPIO: mosi,miso,sclk<br> A maximum of four files may be open at a time<br> e.g., allows for logging sensors to a tab delimited file and then downloading the file (<a href=#sensor-logging>see Sensor Logging example</a>)<br> The downloading of files may be executed in a kind of "multitasking" when bit 7 of loglvl is set (128+loglevel)<br> Without multitasking 150kb/s (all processes are stopped during downloading), with multitasking 50kb/s (other Tasmota processes are running)<br> The script itself is also stored on the SD card with a default size of 4096 characters </p> <p>Enable SD card directory support (+ 1,2k flash)<br> <code>#define SDCARD_DIR</code><br> Shows a web SD card directory (submenu of scripter) where you can upload and download files to/from sd card </p> <p><code>fr=fo("fname" m)</code> open file fname, mode 0=read, 1=write (returns file reference (0-3) or -1 for error)<br> <code>res=fw("text" fr)</code> writes text to (the end of) file fr, returns number of bytes written<br> <code>res=fr(svar fr)</code> reads a string into svar, returns bytes read. String is read until delimiter (\t \n \r) or eof<br> <code>fc(fr)</code> close file<br> <code>ff(fr)</code> flush file, writes cached data and updates directory<br> <code>fd("fname")</code> delete file fname<br> <code>flx(fname)</code> create download link for file (x=1 or 2) fname = file name of file to download<br> <code>fsm</code> return 1 if filesystem is mounted, (valid SD card found) </p> <p><strong>Extended commands</strong> (+0,9k flash)<br> <code>#define USE_SCRIPT_FATFS_EXT</code><br> <code>fmd("fname")</code> make directory fname<br> <code>frd("fname")</code> remove directory fname<br> <code>fx("fname")</code> check if file fname exists<br> <code>fe("fname")</code> execute script fname (max 2048 bytes, script must start with the '' character on the first line) </p> <h2 id=scripting-cookbook>Scripting Cookbook<a class=headerlink href=#scripting-cookbook title="Permanent link">~</a></h2> <h3 id=scripting-language-example>Scripting Language Example<a class=headerlink href=#scripting-language-example title="Permanent link">~</a></h3> <div class=codehilite><pre><span></span><code><span class=o>**</span><span class=n>Actually</span><span class=w> </span><span class=n>this</span><span class=w> </span><span class=n>code</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=n>too</span><span class=w> </span><span class=k>large</span><span class=o>**</span><span class=p>.</span><span class=w> </span><span class=n>This</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>only</span><span class=w> </span><span class=n>meant</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=n>show</span><span class=w> </span><span class=ow>some</span><span class=w> </span><span class=k>of</span><span class=w> </span><span class=n>the</span><span class=w> </span><span class=n>possibilities</span><span class=w></span>
 
-<span class=n>D</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>D</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=n>define</span><span class=w> </span><span class=ow>all</span><span class=w> </span><span class=n>vars</span><span class=w> </span><span class=n>here</span><span class=w>  </span>
 <span class=nl>p</span><span class=p>:</span><span class=n>mintmp</span><span class=o>=</span><span class=mi>10</span><span class=w>  </span><span class=p>(</span><span class=nl>p</span><span class=p>:</span><span class=n>means</span><span class=w> </span><span class=n>permanent</span><span class=p>)</span><span class=w>  </span>
 <span class=nl>p</span><span class=p>:</span><span class=n>maxtmp</span><span class=o>=</span><span class=mi>30</span><span class=w>  </span>
@@ -78,21 +78,21 @@
 <span class=p>;</span><span class=w> </span><span class=n>define</span><span class=w> </span><span class=k>array</span><span class=w> </span><span class=k>with</span><span class=w> </span><span class=mi>10</span><span class=w> </span><span class=n>entries</span><span class=w>  </span>
 <span class=nl>m</span><span class=p>:</span><span class=k>array</span><span class=o>=</span><span class=mi>0</span><span class=w> </span><span class=mi>10</span><span class=w></span>
 
-<span class=n>B</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>B</span><span class=w>  </span>
 <span class=n>string</span><span class=o>=</span><span class=n>hello</span><span class=o>+</span><span class=ss>&quot;how are you?&quot;</span><span class=w>  </span>
-<span class=o>=</span><span class=err>\</span><span class=k>print</span><span class=w> </span><span class=n>BOOT</span><span class=w> </span><span class=n>executed</span><span class=w>  </span>
-<span class=o>=</span><span class=err>\</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>hello</span><span class=o>%</span><span class=w>  </span>
-<span class=o>=</span><span class=err>\</span><span class=n>mp3track</span><span class=w> </span><span class=mi>1</span><span class=w></span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>BOOT</span><span class=w> </span><span class=n>executed</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>hello</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>mp3track</span><span class=w> </span><span class=mi>1</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>list</span><span class=w> </span><span class=n>gpio</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=n>definitions</span><span class=w>  </span>
 <span class=k>for</span><span class=w> </span><span class=n>cnt</span><span class=w> </span><span class=mi>0</span><span class=w> </span><span class=mi>16</span><span class=w> </span><span class=mi>1</span><span class=w>  </span>
 <span class=n>tmp</span><span class=o>=</span><span class=n>pd</span><span class=o>[</span><span class=n>cnt</span><span class=o>]</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>cnt</span><span class=o>%</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>cnt</span><span class=o>%</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w>  </span>
 <span class=k>next</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=k>get</span><span class=w> </span><span class=n>gpio</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=k>for</span><span class=w> </span><span class=n>relais</span><span class=w> </span><span class=mi>1</span><span class=w>  </span>
 <span class=n>tmp</span><span class=o>=</span><span class=n>pn</span><span class=o>[</span><span class=n>21</span><span class=o>]</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=n>relais</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>on</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w></span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>relais</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>on</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>pulse</span><span class=w> </span><span class=n>relais</span><span class=w> </span><span class=k>over</span><span class=w> </span><span class=n>raw</span><span class=w> </span><span class=n>gpio</span><span class=w>  </span>
 <span class=n>spin</span><span class=p>(</span><span class=n>tmp</span><span class=w> </span><span class=mi>1</span><span class=p>)</span><span class=w>  </span>
@@ -100,14 +100,14 @@
 <span class=n>spin</span><span class=p>(</span><span class=n>tmp</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>raw</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=k>level</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=k>level</span><span class=w> </span><span class=k>of</span><span class=w> </span><span class=n>gpio1</span><span class=w> </span><span class=o>%</span><span class=n>pin</span><span class=o>[</span><span class=n>1</span><span class=o>]%</span><span class=w></span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>level</span><span class=w> </span><span class=k>of</span><span class=w> </span><span class=n>gpio1</span><span class=w> </span><span class=o>%</span><span class=n>pin</span><span class=o>[</span><span class=n>1</span><span class=o>]%</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>pulse</span><span class=w> </span><span class=k>over</span><span class=w> </span><span class=n>tasmota</span><span class=w> </span><span class=n>cmd</span><span class=w>  </span>
-<span class=o>=</span><span class=nf>power</span><span class=w> </span><span class=mi>1</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=nf>power</span><span class=w> </span><span class=mi>1</span><span class=w>  </span>
 <span class=n>delay</span><span class=p>(</span><span class=mi>100</span><span class=p>)</span><span class=w>  </span>
 <span class=o>=</span><span class=nf>power</span><span class=w> </span><span class=mi>0</span><span class=w></span>
 
-<span class=n>T</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>T</span><span class=w>  </span>
 <span class=n>hum</span><span class=o>=</span><span class=n>BME280#Humidity</span><span class=w>  </span>
 <span class=n>temp</span><span class=o>=</span><span class=n>BME280#Temperature</span><span class=w>  </span>
 <span class=n>rssi</span><span class=o>=</span><span class=n>Wifi#RSSI</span><span class=w>  </span>
@@ -119,18 +119,18 @@
 <span class=n>movav</span><span class=o>=</span><span class=n>hum</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>show</span><span class=w> </span><span class=n>filtered</span><span class=w> </span><span class=n>results</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>median</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>movav</span><span class=o>%</span><span class=w></span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>median</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>movav</span><span class=o>%</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>chg</span><span class=o>[</span><span class=n>rssi</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
-<span class=k>then</span><span class=w> </span><span class=o>=</span><span class=k>print</span><span class=w> </span><span class=n>rssi</span><span class=w> </span><span class=n>changed</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=o>%</span><span class=n>rssi</span><span class=o>%</span><span class=w>  </span>
+<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>rssi</span><span class=w> </span><span class=n>changed</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=o>%</span><span class=n>rssi</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>temp</span><span class=err>\</span><span class=mi>30</span><span class=w>  </span>
 <span class=ow>and</span><span class=w> </span><span class=n>hum</span><span class=err>\</span><span class=mi>70</span><span class=w>  </span>
-<span class=k>then</span><span class=w> </span><span class=o>=</span><span class=err>\</span><span class=k>print</span><span class=w> </span><span class=n>damn</span><span class=w> </span><span class=n>hot</span><span class=err>!</span><span class=w>  </span>
+<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>damn</span><span class=w> </span><span class=n>hot</span><span class=err>!</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
-<span class=n>S</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>S</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=k>every</span><span class=w> </span><span class=k>second</span><span class=w> </span><span class=n>but</span><span class=w> </span><span class=ow>not</span><span class=w> </span><span class=n>completely</span><span class=w> </span><span class=n>reliable</span><span class=w> </span><span class=nc>time</span><span class=w> </span><span class=n>here</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=k>use</span><span class=w> </span><span class=n>upsecs</span><span class=w> </span><span class=ow>and</span><span class=w> </span><span class=n>uptime</span><span class=w> </span><span class=ow>or</span><span class=w> </span><span class=n>best</span><span class=w> </span><span class=nl>t</span><span class=p>:</span><span class=w> </span><span class=k>for</span><span class=w> </span><span class=n>reliable</span><span class=w> </span><span class=n>timers</span><span class=w></span>
 
@@ -146,12 +146,12 @@
 <span class=p>;</span><span class=w> </span><span class=n>stop</span><span class=w> </span><span class=n>timer</span><span class=w> </span><span class=k>after</span><span class=w> </span><span class=n>expired</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>timer1</span><span class=o>==</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w> </span><span class=n>timer1</span><span class=o>=-</span><span class=mi>1</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=n>timer1</span><span class=w> </span><span class=n>expired</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>timer1</span><span class=w> </span><span class=n>expired</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>auto</span><span class=w> </span><span class=n>counter</span><span class=w> </span><span class=k>with</span><span class=w> </span><span class=n>restart</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=nf>count</span><span class=o>=</span><span class=mi>10</span><span class=w>  </span>
-<span class=k>then</span><span class=w> </span><span class=o>=</span><span class=k>print</span><span class=w> </span><span class=mi>10</span><span class=w> </span><span class=n>seconds</span><span class=w> </span><span class=k>over</span><span class=w>  </span>
+<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=mi>10</span><span class=w> </span><span class=n>seconds</span><span class=w> </span><span class=k>over</span><span class=w>  </span>
 <span class=nf>count</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
@@ -162,7 +162,7 @@
 <span class=p>;</span><span class=w> </span><span class=ow>not</span><span class=w> </span><span class=n>recommended</span><span class=w> </span><span class=k>for</span><span class=w> </span><span class=n>reliable</span><span class=w> </span><span class=n>timers</span><span class=w>  </span>
 <span class=n>timer</span><span class=o>+=</span><span class=mi>1</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>timer</span><span class=err>\</span><span class=o>=</span><span class=mi>5</span><span class=w>  </span>
-<span class=k>then</span><span class=w> </span><span class=o>=</span><span class=err>\</span><span class=k>print</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>seconds</span><span class=w> </span><span class=k>over</span><span class=w> </span><span class=p>(</span><span class=n>may</span><span class=w> </span><span class=n>be</span><span class=p>)</span><span class=w>  </span>
+<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>seconds</span><span class=w> </span><span class=k>over</span><span class=w> </span><span class=p>(</span><span class=n>may</span><span class=w> </span><span class=n>be</span><span class=p>)</span><span class=w>  </span>
 <span class=n>timer</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
@@ -178,7 +178,7 @@
 <span class=n>dp0</span><span class=w>  </span>
 <span class=o>=</span><span class=err>\</span><span class=n>displaytext</span><span class=w> </span><span class=o>[</span><span class=n>c1l1f1s2p20</span><span class=o>]</span><span class=w> </span><span class=n>dimmer</span><span class=o>=%</span><span class=n>dimmer</span><span class=o>%</span><span class=w></span>
 
-<span class=o>=</span><span class=err>\</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>upsecs</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>uptime</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=nc>time</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunrise</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunset</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>tstamp</span><span class=o>%</span><span class=w></span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>upsecs</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>uptime</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=nc>time</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunrise</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunset</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>tstamp</span><span class=o>%</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=nc>time</span><span class=err>\</span><span class=n>sunset</span><span class=w>  </span>
 <span class=ow>and</span><span class=w> </span><span class=nc>time</span><span class=o>&lt;</span><span class=w> </span><span class=n>sunrise</span><span class=w>  </span>
@@ -209,7 +209,7 @@
 
 <span class=p>;</span><span class=w> </span><span class=nf>var</span><span class=w> </span><span class=n>has</span><span class=w> </span><span class=n>been</span><span class=w> </span><span class=n>updated</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>hello</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
-<span class=k>then</span><span class=w> </span><span class=o>=</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>hello</span><span class=o>%</span><span class=w>  </span>
+<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>hello</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>send</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=n>Thingspeak</span><span class=w> </span><span class=k>every</span><span class=w> </span><span class=mi>60</span><span class=w> </span><span class=n>seconds</span><span class=w>  </span>
@@ -232,11 +232,11 @@
 <span class=k>if</span><span class=w> </span><span class=n>chg</span><span class=o>[</span><span class=n>hour</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=n>exactly</span><span class=w> </span><span class=k>every</span><span class=w> </span><span class=k>hour</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=k>full</span><span class=w> </span><span class=k>hour</span><span class=w> </span><span class=n>reached</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>full</span><span class=w> </span><span class=k>hour</span><span class=w> </span><span class=n>reached</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>time5</span><span class=w> </span><span class=err>{</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=n>more</span><span class=w> </span><span class=k>then</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>minutes</span><span class=w> </span><span class=k>after</span><span class=w> </span><span class=n>midnight</span><span class=w>   </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>more</span><span class=w> </span><span class=k>then</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>minutes</span><span class=w> </span><span class=k>after</span><span class=w> </span><span class=n>midnight</span><span class=w>   </span>
 <span class=err>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=err>{</span><span class=w>  </span>
 <span class=o>=</span><span class=k>print</span><span class=w> </span><span class=k>less</span><span class=w> </span><span class=k>then</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>minutes</span><span class=w> </span><span class=k>after</span><span class=w> </span><span class=n>midnight</span><span class=w>  </span>
 <span class=err>}</span><span class=w></span>
@@ -255,10 +255,10 @@
 <span class=p>;</span><span class=n>switch</span><span class=w> </span><span class=k>case</span><span class=w> </span><span class=k>state</span><span class=w> </span><span class=n>machine</span><span class=w>   </span>
 <span class=n>switch</span><span class=w> </span><span class=k>state</span><span class=w>  </span>
 <span class=k>case</span><span class=w> </span><span class=mi>1</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w> </span><span class=p>,</span><span class=w> </span><span class=k>start</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w> </span><span class=p>,</span><span class=w> </span><span class=k>start</span><span class=w>  </span>
 <span class=k>state</span><span class=o>+=</span><span class=mi>1</span><span class=w>  </span>
 <span class=k>case</span><span class=w> </span><span class=mi>2</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w>  </span>
 <span class=k>state</span><span class=o>+=</span><span class=mi>1</span><span class=w>  </span>
 <span class=k>case</span><span class=w> </span><span class=mi>3</span><span class=w>  </span>
 <span class=o>=</span><span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w>  </span><span class=p>,</span><span class=w> </span><span class=n>reset</span><span class=w>  </span>
@@ -267,15 +267,15 @@
 
 <span class=p>;</span><span class=w> </span><span class=n>subroutines</span><span class=w>  </span>
 <span class=err>\</span><span class=n>#sub1</span><span class=p>(</span><span class=n>string</span><span class=p>)</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=nl>sub1</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>string</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=nl>sub1</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>string</span><span class=o>%</span><span class=w>  </span>
 <span class=err>\</span><span class=n>#sub2</span><span class=p>(</span><span class=n>param</span><span class=p>)</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=nl>sub2</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>param</span><span class=o>%</span><span class=w></span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=nl>sub2</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>param</span><span class=o>%</span><span class=w></span>
 
 <span class=err>\</span><span class=n>#sendmail</span><span class=p>(</span><span class=n>string</span><span class=p>)</span><span class=w>  </span>
 <span class=o>=</span><span class=n>sendmail</span><span class=w> </span><span class=o>[</span><span class=n>smtp.gmail.com:465:user:passwd:&lt;sender@gmail.de:&lt;rec@gmail.de:alarm</span><span class=o>]</span><span class=w> </span><span class=o>%</span><span class=n>string</span><span class=o>%</span><span class=w></span>
 
-<span class=n>E</span><span class=w>  </span>
-<span class=o>=</span><span class=err>\</span><span class=k>print</span><span class=w> </span><span class=n>event</span><span class=w> </span><span class=n>executed</span><span class=err>!</span><span class=w></span>
+<span class=o>&gt;</span><span class=n>E</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>event</span><span class=w> </span><span class=n>executed</span><span class=err>!</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>Assign</span><span class=w> </span><span class=n>temperature</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=n>a</span><span class=w> </span><span class=n>Zigbee</span><span class=w> </span><span class=n>sensor</span><span class=w></span>
 <span class=n>zigbeetemp</span><span class=o>=</span><span class=n>ZbReceived#0x2342#Temperature</span><span class=w></span>
@@ -295,7 +295,7 @@
 <span class=p>;</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=n>change</span><span class=w> </span><span class=n>needs</span><span class=w> </span><span class=mi>2</span><span class=w> </span><span class=n>string</span><span class=w> </span><span class=n>vars</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>col</span><span class=o>!=</span><span class=n>ocol</span><span class=w>  </span>
 <span class=k>then</span><span class=w> </span><span class=n>ocol</span><span class=o>=</span><span class=n>col</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=n>changed</span><span class=w>  </span><span class=o>%</span><span class=n>col</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=n>changed</span><span class=w>  </span><span class=o>%</span><span class=n>col</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=ow>or</span><span class=w> </span><span class=k>check</span><span class=w> </span><span class=n>change</span><span class=w> </span><span class=k>of</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=n>channels</span><span class=w>  </span>
@@ -313,11 +313,11 @@
 <span class=n>col</span><span class=o>=</span><span class=n>hn</span><span class=p>(</span><span class=mi>255</span><span class=p>)</span><span class=o>+</span><span class=n>hn</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>+</span><span class=n>hn</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=w>  </span>
 <span class=o>=</span><span class=n>color</span><span class=w> </span><span class=o>%</span><span class=n>col</span><span class=o>%</span><span class=w></span>
 
-<span class=n>R</span><span class=w>  </span>
-<span class=o>=</span><span class=err>\</span><span class=k>print</span><span class=w> </span><span class=n>restarting</span><span class=w> </span><span class=n>now</span><span class=w></span>
+<span class=o>&gt;</span><span class=n>R</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>restarting</span><span class=w> </span><span class=n>now</span><span class=w></span>
 </code></pre></div> <h3 id=sensor-logging>Sensor Logging<a class=headerlink href=#sensor-logging title="Permanent link">~</a></h3> <div class=codehilite><pre><span></span><code><span class=p>;</span> <span class=n>define</span> <span class=k>all</span> <span class=n>vars</span> <span class=n>here</span>  
 <span class=p>;</span> <span class=n>reserve</span> <span class=k>large</span> <span class=n>strings</span>  
-<span class=o>**</span><span class=n>D</span> <span class=mi>48</span><span class=o>**</span>  
+<span class=o>**&gt;</span><span class=n>D</span> <span class=mi>48</span><span class=o>**</span>  
 <span class=n>hum</span><span class=o>=</span><span class=mi>0</span>  
 <span class=n>temp</span><span class=o>=</span><span class=mi>0</span>  
 <span class=n>fr</span><span class=o>=</span><span class=mi>0</span>  
@@ -327,7 +327,7 @@
 <span class=n>M</span><span class=p>:</span><span class=n>mtemp</span><span class=o>=</span><span class=mi>0</span> <span class=mi>60</span>  
 <span class=n>str</span><span class=o>=</span><span class=ss>&quot;&quot;</span>
 
-<span class=n>B</span>  
+<span class=o>&gt;</span><span class=n>B</span>  
 <span class=p>;</span> <span class=k>set</span> <span class=n>sensor</span> <span class=n>file</span> <span class=n>download</span> <span class=n>link</span>   
 <span class=n>fl1</span><span class=p>(</span><span class=ss>&quot;slog.txt&quot;</span><span class=p>)</span>  
 <span class=p>;</span> <span class=k>delete</span> <span class=n>file</span> <span class=k>in</span> <span class=k>case</span> <span class=n>we</span> <span class=n>want</span> <span class=k>to</span> <span class=k>start</span> <span class=n>fresh</span>  
@@ -339,19 +339,19 @@
 <span class=n>res</span><span class=o>=</span><span class=n>fr</span><span class=p>(</span><span class=n>str</span> <span class=n>fr</span><span class=p>)</span>  
 <span class=k>if</span> <span class=n>res0</span>  
 <span class=k>then</span>  
-<span class=o>=</span><span class=n>print</span> <span class=o>%</span><span class=n>cnt</span><span class=o>%</span> <span class=p>:</span> <span class=o>%</span><span class=n>str</span><span class=o>%</span>  
+<span class=o>=&gt;</span><span class=n>print</span> <span class=o>%</span><span class=n>cnt</span><span class=o>%</span> <span class=p>:</span> <span class=o>%</span><span class=n>str</span><span class=o>%</span>  
 <span class=k>else</span>  
 <span class=n>break</span>  
 <span class=n>endif</span>  
 <span class=k>next</span>  
 <span class=n>fc</span><span class=p>(</span><span class=n>fr</span><span class=p>)</span>
 
-<span class=n>T</span>  
+<span class=o>&gt;</span><span class=n>T</span>  
 <span class=p>;</span> <span class=k>get</span> <span class=n>sensor</span> <span class=k>values</span>  
 <span class=n>temp</span><span class=o>=</span><span class=n>BME280</span><span class=o>#</span><span class=n>Temperature</span>  
 <span class=n>hum</span><span class=o>=</span><span class=n>BME280</span><span class=o>#</span><span class=n>Humidity</span>
 
-<span class=n>S</span>  
+<span class=o>&gt;</span><span class=n>S</span>  
 <span class=p>;</span> <span class=n>average</span> <span class=n>sensor</span> <span class=k>values</span> <span class=k>every</span> <span class=k>second</span>  
 <span class=n>mhum</span><span class=o>=</span><span class=n>hum</span>  
 <span class=n>mtemp</span><span class=o>=</span><span class=n>temp</span>
@@ -369,8 +369,8 @@
 <span class=n>fc</span><span class=p>(</span><span class=n>fr</span><span class=p>)</span>  
 <span class=n>endif</span>
 
-<span class=n>R</span>
-</code></pre></div> <h3 id=e-paper-29-display-with-sgp30-and-bme280>e-Paper 29 Display with SGP30 and BME280<a class=headerlink href=#e-paper-29-display-with-sgp30-and-bme280 title="Permanent link">~</a></h3> <p>Some variables are set from ioBroker </p> <div class=codehilite><pre><span></span><code><span class=n>D</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>R</span>
+</code></pre></div> <h3 id=e-paper-29-display-with-sgp30-and-bme280>e-Paper 29 Display with SGP30 and BME280<a class=headerlink href=#e-paper-29-display-with-sgp30-and-bme280 title="Permanent link">~</a></h3> <p>Some variables are set from ioBroker </p> <div class=codehilite><pre><span></span><code><span class=o>&gt;</span><span class=n>D</span><span class=w>  </span>
 <span class=n>hum</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>temp</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>press</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
@@ -390,11 +390,11 @@
 <span class=n>punit</span><span class=o>=</span><span class=ss>&quot;hPa&quot;</span><span class=w>  </span>
 <span class=n>tunit</span><span class=o>=</span><span class=ss>&quot;C&quot;</span><span class=w></span>
 
-<span class=n>B</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>B</span><span class=w>  </span>
 <span class=p>;</span><span class=n>reset</span><span class=w> </span><span class=n>auto</span><span class=w> </span><span class=n>draw</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>zD0</span><span class=o>]</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>zD0</span><span class=o>]</span><span class=w>  </span>
 <span class=p>;</span><span class=n>clr</span><span class=w> </span><span class=n>display</span><span class=w> </span><span class=ow>and</span><span class=w> </span><span class=n>draw</span><span class=w> </span><span class=n>a</span><span class=w> </span><span class=n>frame</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>x0y20h296x0y40h296</span><span class=o>]</span><span class=w></span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>x0y20h296x0y40h296</span><span class=o>]</span><span class=w></span>
 
 <span class=n>T</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=k>get</span><span class=w> </span><span class=n>telemetry</span><span class=w> </span><span class=n>sensor</span><span class=w> </span><span class=k>values</span><span class=w>  </span>
@@ -407,32 +407,32 @@
 <span class=n>tunit</span><span class=o>=</span><span class=n>TempUnit</span><span class=w>  </span>
 <span class=n>punit</span><span class=o>=</span><span class=n>PressureUnit</span><span class=w></span>
 
-<span class=n>S</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>S</span><span class=w>  </span>
 <span class=o>//</span><span class=w> </span><span class=k>update</span><span class=w> </span><span class=n>display</span><span class=w> </span><span class=k>every</span><span class=w> </span><span class=o>[</span><span class=n>`TelePeriod`</span><span class=o>]</span><span class=p>(</span><span class=n>Commands</span><span class=p>.</span><span class=n>md#teleperiod</span><span class=p>)</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>upsecs</span><span class=o>%</span><span class=n>tper</span><span class=o>==</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
 <span class=n>dp2</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>f1p7x0y5</span><span class=o>]%</span><span class=n>temp</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>tunit</span><span class=o>%</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p5x70y5</span><span class=o>]%</span><span class=n>hum</span><span class=o>%</span><span class=w> </span><span class=o>%%[</span><span class=n>x250y5t</span><span class=o>]</span><span class=w>   </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p11x140y5</span><span class=o>]%</span><span class=n>press</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>punit</span><span class=o>%</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p10x30y25</span><span class=o>]</span><span class=nl>TVOC</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>tvoc</span><span class=o>%</span><span class=w> </span><span class=n>ppb</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p10x160y25</span><span class=o>]</span><span class=nl>eCO2</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>eco2</span><span class=o>%</span><span class=w> </span><span class=n>ppm</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p10c26l5</span><span class=o>]</span><span class=nl>ahum</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>ahum</span><span class=o>%</span><span class=w> </span><span class=n>g</span><span class=o>^</span><span class=n>m3</span><span class=w></span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>f1p7x0y5</span><span class=o>]%</span><span class=n>temp</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>tunit</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p5x70y5</span><span class=o>]%</span><span class=n>hum</span><span class=o>%</span><span class=w> </span><span class=o>%%[</span><span class=n>x250y5t</span><span class=o>]</span><span class=w>   </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p11x140y5</span><span class=o>]%</span><span class=n>press</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>punit</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p10x30y25</span><span class=o>]</span><span class=nl>TVOC</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>tvoc</span><span class=o>%</span><span class=w> </span><span class=n>ppb</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p10x160y25</span><span class=o>]</span><span class=nl>eCO2</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>eco2</span><span class=o>%</span><span class=w> </span><span class=n>ppm</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p10c26l5</span><span class=o>]</span><span class=nl>ahum</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>ahum</span><span class=o>%</span><span class=w> </span><span class=n>g</span><span class=o>^</span><span class=n>m3</span><span class=w></span>
 
 <span class=n>dp0</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l5</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=p>(</span><span class=n>Dach</span><span class=p>)</span><span class=w>  </span><span class=err>:</span><span class=w> </span><span class=o>%</span><span class=n>wr1</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l6</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>2</span><span class=w> </span><span class=p>(</span><span class=n>Garage</span><span class=p>)</span><span class=err>:</span><span class=w> </span><span class=o>%-</span><span class=n>wr3</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l7</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>3</span><span class=w> </span><span class=p>(</span><span class=n>Garten</span><span class=p>)</span><span class=err>:</span><span class=w> </span><span class=o>%-</span><span class=n>wr2</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l8</span><span class=o>]</span><span class=nl>Aussentemperatur</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>otmp</span><span class=o>%</span><span class=w> </span><span class=n>C</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>x170y95r120:30f2p6x185y100</span><span class=o>]</span><span class=w> </span><span class=o>%</span><span class=n>pwl</span><span class=o>%</span><span class=w> </span><span class=o>%%</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l5</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=p>(</span><span class=n>Dach</span><span class=p>)</span><span class=w>  </span><span class=err>:</span><span class=w> </span><span class=o>%</span><span class=n>wr1</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l6</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>2</span><span class=w> </span><span class=p>(</span><span class=n>Garage</span><span class=p>)</span><span class=err>:</span><span class=w> </span><span class=o>%-</span><span class=n>wr3</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l7</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>3</span><span class=w> </span><span class=p>(</span><span class=n>Garten</span><span class=p>)</span><span class=err>:</span><span class=w> </span><span class=o>%-</span><span class=n>wr2</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l8</span><span class=o>]</span><span class=nl>Aussentemperatur</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>otmp</span><span class=o>%</span><span class=w> </span><span class=n>C</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>x170y95r120:30f2p6x185y100</span><span class=o>]</span><span class=w> </span><span class=o>%</span><span class=n>pwl</span><span class=o>%</span><span class=w> </span><span class=o>%%</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=n>now</span><span class=w> </span><span class=k>update</span><span class=w> </span><span class=n>screen</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>d</span><span class=o>]</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>d</span><span class=o>]</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
-<span class=n>E</span><span class=w></span>
+<span class=o>&gt;</span><span class=n>E</span><span class=w></span>
 
-<span class=n>R</span><span class=w></span>
-</code></pre></div> <h3 id=e-paper-42-display-with-sht31-and-bme280>e-Paper 42 Display with SHT31 and BME280<a class=headerlink href=#e-paper-42-display-with-sht31-and-bme280 title="Permanent link">~</a></h3> <p>This script shows 2 graphs on an 4.2 inch e-Paper display: 1. some local sensors, and 2. power statistics </p> <ul> <li>The first graph is the battery level of a solar battery (Tesla PowerWall 2) </li> <li>The second graph shows the solar yield of the roof panels in Watts </li> <li>Another special feature is that this script displays daily and weekly averages (via moving average) of all power IO of the house. </li> <li>Since the display is a full update panel it is updated only once a minute </li> <li> <p>Some values (like power meters) are set remotely from ioBroker </p> <p>D<br> hum=0<br> temp=0<br> press=0<br> zwz=0<br> wr1=0<br> wr2=0<br> wr3=0<br> otmp=0<br> pwl=0<br> ez1=0<br> sez1=0<br> M:mez1=0 7<br> ezh=0<br> sezh=0<br> M:mezh=0 7<br> vzh=0<br> svzh=0<br> M:mvzh=0 7 </p> <p>hr=0<br> t1=0<br> ; DisplayText substituted to save script space DT="DisplayText" </p> <p>B<br> =%DT% [IzD0]<br> =%DT% [zG10352:5:40:-350:80:10080:0:100f3x360y40]100 %%[x360y115]0 %%<br> =%DT% [f1x100y25]Powerwall - 7 Tage[f1x360y75] 0 %%<br> =%DT% [G10353:5:140:-350:80:10080:0:5000f3x360y140]+5000 W[x360y215]0 W<br> =%DT% [f1x70y125]Volleinspeisung - 7 Tage[f1x360y180] 0 W<br> =%DT% [p13x10y230]WR 1,2,3:<br> =%DT% [p13x10y245]H-Einsp.:<br> =%DT% [p13x10y260]H-Verbr.:<br> =%DT% [p13x10y275]D-Einsp.:<br> =%DT% [d] </p> <p>T<br> press=BMP280#Pressure<br> temp=SHT3X_0x44#Temperature<br> hum=SHT3X_0x44#Humidity </p> <p>S<br> if upsecs%60==0<br> then<br> dp2<br> =%DT% [f1p7x0y5]%temp% C<br> =%DT% [x0y20h400x250y5T][x350t][f1p10x70y5]%hum% %%<br> =%DT% [p10x140y5]%press% hPa<br> dp0<br> =%DT% [p5x360y75]%pwl% %%<br> =%DT% [p6x360y180]%wr1%W<br> =%DT% [g0:%pwl%g1:%wr1%] </p> <p>=%DT% [p24x75y230] %wr1% W : %-wr2% W : %-wr3% W<br> =%DT% [p-10x75y245]%ezh% kWh<br> =%DT% [p-10x75y260]%vzh% kWh<br> =%DT% [p-10x75y275]%ez1% kWh </p> <p>t1=mezh<em>7<br> =%DT% [p-10x150y245]: %t1% kWh<br> t1=mvzh</em>7<br> =%DT% [p-10x150y260]: %t1% kWh<br> t1=mez1*7<br> =%DT% [p-10x150y275]: %t1% kWh </p> <p>dp1 t1=ezh-sezh<br> =%DT% [p12x250y245]: %t1% kWh<br> t1=vzh-svzh<br> =%DT% [p12x250y260]: %t1% kWh<br> t1=ez1-sez1<br> =%DT% [p12x250y275]: %t1% kWh </p> <p>dp0<br> =%DT% [f2p5x320y250] %otmp%C </p> <p>=%DT% [d]<br> endif </p> <p>hr=hours<br> if chg[hr]0<br> and hr==0<br> then<br> mez1=ez1-sez1<br> sez1=ez1<br> mezh=ezh-sezh<br> sezh=ezh<br> mvzh=vzh-svzh<br> svzh=vzh<br> endif </p> <p>if sezh==0<br> then<br> sez1=ez1<br> sezh=ezh<br> svzh=vzh<br> endif </p> </li> </ul> <h3 id=ili-9488-color-lcd-display-with-bmp280-and-vl5310x>ILI 9488 Color LCD Display with BMP280 and VL5310X<a class=headerlink href=#ili-9488-color-lcd-display-with-bmp280-and-vl5310x title="Permanent link">~</a></h3> <p>Shows various BMP280 energy graphs<br> Turn display on and off using VL5310X proximity sensor to prevent burn-in</p> <p>Some variables are set from ioBroker</p> <div class=codehilite><pre><span></span><code><span class=nv>D</span>  
+<span class=o>&gt;</span><span class=n>R</span><span class=w></span>
+</code></pre></div> <h3 id=e-paper-42-display-with-sht31-and-bme280>e-Paper 42 Display with SHT31 and BME280<a class=headerlink href=#e-paper-42-display-with-sht31-and-bme280 title="Permanent link">~</a></h3> <p>This script shows 2 graphs on an 4.2 inch e-Paper display: 1. some local sensors, and 2. power statistics </p> <ul> <li>The first graph is the battery level of a solar battery (Tesla PowerWall 2) </li> <li>The second graph shows the solar yield of the roof panels in Watts </li> <li>Another special feature is that this script displays daily and weekly averages (via moving average) of all power IO of the house. </li> <li>Since the display is a full update panel it is updated only once a minute </li> <li> <p>Some values (like power meters) are set remotely from ioBroker </p> <blockquote> <p>D<br> hum=0<br> temp=0<br> press=0<br> zwz=0<br> wr1=0<br> wr2=0<br> wr3=0<br> otmp=0<br> pwl=0<br> ez1=0<br> sez1=0<br> M:mez1=0 7<br> ezh=0<br> sezh=0<br> M:mezh=0 7<br> vzh=0<br> svzh=0<br> M:mvzh=0 7 </p> </blockquote> <p>hr=0<br> t1=0<br> ; DisplayText substituted to save script space DT="DisplayText" </p> <blockquote> <p>B<br> =&gt;%DT% [IzD0]<br> =&gt;%DT% [zG10352:5:40:-350:80:10080:0:100f3x360y40]100 %%[x360y115]0 %%<br> =&gt;%DT% [f1x100y25]Powerwall - 7 Tage[f1x360y75] 0 %%<br> =&gt;%DT% [G10353:5:140:-350:80:10080:0:5000f3x360y140]+5000 W[x360y215]0 W<br> =&gt;%DT% [f1x70y125]Volleinspeisung - 7 Tage[f1x360y180] 0 W<br> =&gt;%DT% [p13x10y230]WR 1,2,3:<br> =&gt;%DT% [p13x10y245]H-Einsp.:<br> =&gt;%DT% [p13x10y260]H-Verbr.:<br> =&gt;%DT% [p13x10y275]D-Einsp.:<br> =&gt;%DT% [d] </p> <p>T<br> press=BMP280#Pressure<br> temp=SHT3X_0x44#Temperature<br> hum=SHT3X_0x44#Humidity </p> <p>S<br> if upsecs%60==0<br> then<br> dp2<br> =&gt;%DT% [f1p7x0y5]%temp% C<br> =&gt;%DT% [x0y20h400x250y5T][x350t][f1p10x70y5]%hum% %%<br> =&gt;%DT% [p10x140y5]%press% hPa<br> dp0<br> =&gt;%DT% [p5x360y75]%pwl% %%<br> =&gt;%DT% [p6x360y180]%wr1%W<br> =&gt;%DT% [g0:%pwl%g1:%wr1%] </p> </blockquote> <p>=&gt;%DT% [p24x75y230] %wr1% W : %-wr2% W : %-wr3% W<br> =&gt;%DT% [p-10x75y245]%ezh% kWh<br> =&gt;%DT% [p-10x75y260]%vzh% kWh<br> =&gt;%DT% [p-10x75y275]%ez1% kWh </p> <p>t1=mezh<em>7<br> =&gt;%DT% [p-10x150y245]: %t1% kWh<br> t1=mvzh</em>7<br> =&gt;%DT% [p-10x150y260]: %t1% kWh<br> t1=mez1*7<br> =&gt;%DT% [p-10x150y275]: %t1% kWh </p> <p>dp1 t1=ezh-sezh<br> =&gt;%DT% [p12x250y245]: %t1% kWh<br> t1=vzh-svzh<br> =&gt;%DT% [p12x250y260]: %t1% kWh<br> t1=ez1-sez1<br> =&gt;%DT% [p12x250y275]: %t1% kWh </p> <p>dp0<br> =&gt;%DT% [f2p5x320y250] %otmp%C </p> <p>=&gt;%DT% [d]<br> endif </p> <p>hr=hours<br> if chg[hr]0<br> and hr==0<br> then<br> mez1=ez1-sez1<br> sez1=ez1<br> mezh=ezh-sezh<br> sezh=ezh<br> mvzh=vzh-svzh<br> svzh=vzh<br> endif </p> <p>if sezh==0<br> then<br> sez1=ez1<br> sezh=ezh<br> svzh=vzh<br> endif </p> </li> </ul> <h3 id=ili-9488-color-lcd-display-with-bmp280-and-vl5310x>ILI 9488 Color LCD Display with BMP280 and VL5310X<a class=headerlink href=#ili-9488-color-lcd-display-with-bmp280-and-vl5310x title="Permanent link">~</a></h3> <p>Shows various BMP280 energy graphs<br> Turn display on and off using VL5310X proximity sensor to prevent burn-in</p> <p>Some variables are set from ioBroker</p> <div class=codehilite><pre><span></span><code><span class=o>&gt;</span><span class=nv>D</span>  
 <span class="s s-Atom">temp</span><span class=o>=</span><span class=mi>0</span>  
 <span class="s s-Atom">press</span><span class=o>=</span><span class=mi>0</span>  
 <span class="s s-Atom">zwz</span><span class=o>=</span><span class=mi>0</span>  
@@ -449,18 +449,18 @@
 <span class="s s-Atom">tunit=</span><span class=s2>&quot;C&quot;</span>  
 <span class="s s-Atom">hour</span><span class=o>=</span><span class=mi>0</span>
 
-<span class=nv>B</span>  
-<span class="s s-Atom">=</span><span class=c1>%DT% [z]</span>
+<span class=o>&gt;</span><span class=nv>B</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [z]</span>
 
 <span class=o>//</span> <span class="s s-Atom">define</span> <span class=mi>2</span> <span class="s s-Atom">graphs</span><span class=p>,</span> <span class=mf>2.</span> <span class="s s-Atom">has</span> <span class=mi>3</span> <span class="s s-Atom">tracks</span>  
-<span class="s s-Atom">=</span><span class=c1>%DT% [zCi1G2656:5:20:400:80:1440:-5000:5000:3Ci7f3x410y20]+5000 W[x410y95]-5000 W [Ci7f1x70y3] Zweirichtungsz~80hler - 24 Stunden  </span>
-<span class="s s-Atom">=</span><span class=c1>%DT%  [Ci1G2657:5:120:400:80:1440:0:5000:3Ci7f3x410y120]+5000 W[x410y195]0 W [Ci7f1x70y103] Wechselrichter 1-3 - 24 Stunden  </span>
-<span class="s s-Atom">=</span><span class=c1>%DT% [Ci1G2658:5:120:400:80:1440:0:5000:16][Ci1G2659:5:120:400:80:1440:0:5000:5]  </span>
-<span class="s s-Atom">=</span><span class=c1>%DT% [f1s1b0:260:260:100&amp;#8203;:50:2:11:4:2:Rel 1:b1:370:260:100&amp;#8203;:50:2:11:4:2:Dsp off:]  </span>
-<span class=o>=</span><span class="s s-Atom">mp3volume</span> <span class=mi>100</span>  
-<span class=o>=</span><span class="s s-Atom">mp3track</span> <span class=mi>4</span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [zCi1G2656:5:20:400:80:1440:-5000:5000:3Ci7f3x410y20]+5000 W[x410y95]-5000 W [Ci7f1x70y3] Zweirichtungsz~80hler - 24 Stunden  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT%  [Ci1G2657:5:120:400:80:1440:0:5000:3Ci7f3x410y120]+5000 W[x410y195]0 W [Ci7f1x70y103] Wechselrichter 1-3 - 24 Stunden  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [Ci1G2658:5:120:400:80:1440:0:5000:16][Ci1G2659:5:120:400:80:1440:0:5000:5]  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [f1s1b0:260:260:100&amp;#8203;:50:2:11:4:2:Rel 1:b1:370:260:100&amp;#8203;:50:2:11:4:2:Dsp off:]  </span>
+<span class="s s-Atom">=&gt;mp3volume</span> <span class=mi>100</span>  
+<span class="s s-Atom">=&gt;mp3track</span> <span class=mi>4</span>
 
-<span class=nv>T</span>  
+<span class=o>&gt;</span><span class=nv>T</span>  
 <span class=p>;</span> <span class="s s-Atom">get</span> <span class="s s-Atom">some</span> <span class="s s-Atom">telemetry</span> <span class="s s-Atom">values</span>  
 <span class="s s-Atom">temp</span><span class=o>=</span><span class=nv>BMP280</span><span class="s s-Atom">#</span><span class=nv>Temperature</span>  
 <span class="s s-Atom">press</span><span class=o>=</span><span class=nv>BMP280</span><span class="s s-Atom">#</span><span class=nv>Pressure</span>  
@@ -473,37 +473,37 @@
 <span class="s s-Atom">then</span>  
 <span class="s s-Atom">if</span> <span class="s s-Atom">pwr</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=mi>0</span>  
 <span class="s s-Atom">then</span>  
-<span class=o>=</span><span class="s s-Atom">power2</span> <span class=mi>0</span>  
+<span class="s s-Atom">=&gt;power2</span> <span class=mi>0</span>  
 <span class="s s-Atom">endif</span>  
 <span class="s s-Atom">else</span>  
 <span class="s s-Atom">if</span> <span class="s s-Atom">pwr</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span><span class=o>==</span><span class=mi>0</span>  
 <span class="s s-Atom">then</span>  
-<span class=o>=</span><span class="s s-Atom">power2</span> <span class=mi>1</span>  
+<span class="s s-Atom">=&gt;power2</span> <span class=mi>1</span>  
 <span class="s s-Atom">endif</span>  
 <span class="s s-Atom">endif</span>
 
-<span class=nv>S</span>  
+<span class=o>&gt;</span><span class=nv>S</span>  
 <span class=p>;</span> <span class="s s-Atom">update</span> <span class="s s-Atom">graph</span> <span class="s s-Atom">every</span> <span class="s s-Atom">teleperiod</span>  
 <span class="s s-Atom">if</span> <span class="s s-Atom">upsecs</span><span class=c1>%tper==0  </span>
 <span class="s s-Atom">then</span>  
 <span class="s s-Atom">dp2</span>  
-<span class="s s-Atom">=</span><span class=c1>%DT% [f1Ci3x40y260w30Ci1]  </span>
-<span class="s s-Atom">=</span><span class=c1>%DT% [Ci7x120y220t]  </span>
-<span class="s s-Atom">=</span><span class=c1>%DT% [Ci7x180y220T]  </span>
-<span class="s s-Atom">=</span><span class=c1>%DT% [Ci7p8x120y240]%temp% %tunit%   </span>
-<span class="s s-Atom">=</span><span class=c1>%DT% [Ci7x120y260]%press% %punit%  </span>
-<span class="s s-Atom">=</span><span class=c1>%DT% [Ci7x120y280]%dist% mm  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [f1Ci3x40y260w30Ci1]  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [Ci7x120y220t]  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [Ci7x180y220T]  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [Ci7p8x120y240]%temp% %tunit%   </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [Ci7x120y260]%press% %punit%  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [Ci7x120y280]%dist% mm  </span>
 <span class="s s-Atom">dp0</span>  
-<span class="s s-Atom">=</span><span class=c1>%DT% [g0:%zwz%g1:%wr1%g2:%-wr2%g3:%-wr3%]  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [g0:%zwz%g1:%wr1%g2:%-wr2%g3:%-wr3%]  </span>
 <span class="s s-Atom">if</span> <span class="s s-Atom">zwz0</span>  
 <span class="s s-Atom">then</span>  
-<span class="s s-Atom">=</span><span class=c1>%DT% [p-8x410y55Ci2Bi0]%zwz% W  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-8x410y55Ci2Bi0]%zwz% W  </span>
 <span class="s s-Atom">else</span>  
-<span class="s s-Atom">=</span><span class=c1>%DT% [p-8x410y55Ci3Bi0]%zwz% W  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-8x410y55Ci3Bi0]%zwz% W  </span>
 <span class="s s-Atom">endif</span>  
-<span class="s s-Atom">=</span><span class=c1>%DT% [p-8x410y140Ci3Bi0]%wr1% W  </span>
-<span class="s s-Atom">=</span><span class=c1>%DT% [p-8x410y155Ci16Bi0]%-wr2% W  </span>
-<span class="s s-Atom">=</span><span class=c1>%DT% [p-8x410y170Ci5Bi0]%-wr3% W  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-8x410y140Ci3Bi0]%wr1% W  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-8x410y155Ci16Bi0]%-wr2% W  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-8x410y170Ci5Bi0]%-wr3% W  </span>
 <span class="s s-Atom">endif</span>
 
 <span class=p>;</span> <span class="s s-Atom">chime</span> <span class="s s-Atom">every</span> <span class="s s-Atom">full</span> <span class="s s-Atom">hour</span>  
@@ -512,10 +512,10 @@
 <span class="s s-Atom">then</span> <span class=o>=</span><span class="s s-Atom">mp3track</span> <span class=mi>4</span>  
 <span class="s s-Atom">endif</span>
 
-<span class=nv>E</span>
+<span class=o>&gt;</span><span class=nv>E</span>
 
-<span class=nv>R</span>
-</code></pre></div> <h3 id=led-bar-display-with-ws2812-led-chain>LED Bar Display with WS2812 LED Chain<a class=headerlink href=#led-bar-display-with-ws2812-led-chain title="Permanent link">~</a></h3> <p>Used to display home's solar power input/output (+-5000 Watts)</p> <div class=codehilite><pre><span></span><code><span class=n>D</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=nv>R</span>
+</code></pre></div> <h3 id=led-bar-display-with-ws2812-led-chain>LED Bar Display with WS2812 LED Chain<a class=headerlink href=#led-bar-display-with-ws2812-led-chain title="Permanent link">~</a></h3> <p>Used to display home's solar power input/output (+-5000 Watts)</p> <div class=codehilite><pre><span></span><code><span class=o>&gt;</span><span class=n>D</span><span class=w>  </span>
 <span class=nl>m</span><span class=p>:</span><span class=k>array</span><span class=o>=</span><span class=mi>0</span><span class=w> </span><span class=mi>60</span><span class=w> </span><span class=p>;</span><span class=n>defines</span><span class=w> </span><span class=k>array</span><span class=w> </span><span class=k>for</span><span class=w> </span><span class=mi>60</span><span class=w> </span><span class=n>led</span><span class=w> </span><span class=n>pixels</span><span class=w>  </span>
 <span class=n>cnt</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>val</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
@@ -535,14 +535,14 @@
 <span class=nf>min</span><span class=o>=-</span><span class=mi>5000</span><span class=w>  </span>
 <span class=n>pos</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
 
-<span class=n>B</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>B</span><span class=w>  </span>
 <span class=n>div</span><span class=o>=</span><span class=n>pixels</span><span class=o>/</span><span class=n>steps</span><span class=w>  </span>
 <span class=o>=</span><span class=n>#prep</span><span class=w>  </span>
 <span class=n>ws2812</span><span class=p>(</span><span class=k>array</span><span class=p>)</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>ledbar</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>set</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=n>broker</span><span class=w></span>
 
-<span class=n>S</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>S</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>ledbar</span><span class=o>&lt;</span><span class=nf>min</span><span class=w>  </span>
 <span class=k>then</span><span class=w> </span><span class=n>ledbar</span><span class=o>=</span><span class=nf>min</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
@@ -611,131 +611,131 @@
 <span class=k>array</span><span class=o>[</span><span class=n>cnt</span><span class=o>]=</span><span class=n>val</span><span class=w>  </span>
 <span class=k>next</span><span class=w></span>
 
-<span class=n>R</span><span class=w></span>
-</code></pre></div> <h3 id=multiple-ir-receiver-synchronization>Multiple IR Receiver Synchronization<a class=headerlink href=#multiple-ir-receiver-synchronization title="Permanent link">~</a></h3> <p>Shows how a Magic Home with IR receiver works<br> Synchronizes 2 Magic Home devices by also sending the commands to a second Magic Home via <a href=../Commands/#websend><code>WebSend</code></a></p> <p><strong>Script example using <code>if then else</code></strong><br> ; expand default string length to be able to hold <code>WebSend [xxx.xxx.xxx.xxx]</code><br> <strong>D 25</strong><br> istr=""<br> ws="WebSend [<em>IP</em>]"</p> <div class=codehilite><pre><span></span><code><span class=p>;</span> <span class=n>event</span> <span class=n>section</span>  
-<span class=n>E</span>  
+<span class=o>&gt;</span><span class=n>R</span><span class=w></span>
+</code></pre></div> <h3 id=multiple-ir-receiver-synchronization>Multiple IR Receiver Synchronization<a class=headerlink href=#multiple-ir-receiver-synchronization title="Permanent link">~</a></h3> <p>Shows how a Magic Home with IR receiver works<br> Synchronizes 2 Magic Home devices by also sending the commands to a second Magic Home via <a href=../Commands/#websend><code>WebSend</code></a></p> <p><strong>Script example using <code>if then else</code></strong><br> ; expand default string length to be able to hold <code>WebSend [xxx.xxx.xxx.xxx]</code><br> <strong>&gt;D 25</strong><br> istr=""<br> ws="WebSend [<em>IP</em>]"</p> <div class=codehilite><pre><span></span><code><span class=p>;</span> <span class=n>event</span> <span class=n>section</span>  
+<span class=o>&gt;</span><span class=n>E</span>  
 <span class=p>;</span> <span class=k>get</span> <span class=n>ir</span> <span class=k>data</span>  
 <span class=n>istr</span><span class=o>=</span><span class=n>IrReceived</span><span class=o>#</span><span class=k>Data</span>
 
 <span class=p>;</span> <span class=k>on</span>  
 <span class=k>if</span> <span class=n>istr</span><span class=o>==</span><span class=ss>&quot;0x00F7C03F&quot;</span>  
 <span class=k>then</span>  
-<span class=o>=</span><span class=n>wakeup</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>wakeup</span>  
+<span class=o>=&gt;</span><span class=n>wakeup</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>wakeup</span>  
 <span class=n>endif</span>
 
 <span class=p>;</span> <span class=k>off</span>  
 <span class=k>if</span> <span class=n>istr</span><span class=o>==</span><span class=ss>&quot;0x00F740BF&quot;</span>  
 <span class=k>then</span>  
 <span class=o>=</span><span class=n>power1</span> <span class=mi>0</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>power1</span> <span class=mi>0</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>power1</span> <span class=mi>0</span>  
 <span class=n>endif</span>
 
 <span class=p>;</span><span class=n>white</span>  
 <span class=k>if</span> <span class=n>istr</span><span class=o>==</span><span class=ss>&quot;0x00F7E01F&quot;</span>  
 <span class=k>then</span>  
 <span class=o>=</span><span class=n>color</span> <span class=mi>000000</span><span class=n>ff</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>000000</span><span class=n>ff</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>000000</span><span class=n>ff</span>  
 <span class=n>endif</span>
 
 <span class=p>;</span><span class=n>red</span>  
 <span class=k>if</span> <span class=n>istr</span><span class=o>==</span><span class=ss>&quot;0x00F720DF&quot;</span>  
 <span class=k>then</span>  
 <span class=o>=</span><span class=n>color</span> <span class=n>ff000000</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=n>ff000000</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=n>ff000000</span>  
 <span class=n>endif</span>
 
 <span class=p>;</span><span class=n>green</span>  
 <span class=k>if</span> <span class=n>istr</span><span class=o>==</span><span class=ss>&quot;0x00F7A05F&quot;</span>  
 <span class=k>then</span>  
 <span class=o>=</span><span class=n>color</span> <span class=mi>00</span><span class=n>ff0000</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>00</span><span class=n>ff0000</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>00</span><span class=n>ff0000</span>  
 <span class=n>endif</span>
 
 <span class=p>;</span><span class=n>blue</span>  
 <span class=k>if</span> <span class=n>istr</span><span class=o>==</span><span class=ss>&quot;0x00F7609F&quot;</span>  
 <span class=k>then</span>  
 <span class=o>=</span><span class=n>color</span> <span class=mi>0000</span><span class=n>ff00</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>0000</span><span class=n>ff00</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>0000</span><span class=n>ff00</span>  
 <span class=n>endif</span>
 
 <span class=p>;</span> <span class=n>dimmer</span> <span class=n>up</span>  
 <span class=k>if</span> <span class=n>istr</span><span class=o>==</span><span class=ss>&quot;0x00F700FF&quot;</span>  
 <span class=k>then</span>  
 <span class=o>=</span><span class=n>dimmer</span> <span class=o>+</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>dimmer</span> <span class=o>+</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>dimmer</span> <span class=o>+</span>  
 <span class=n>endif</span>
 
 <span class=p>;</span><span class=n>dimmer</span> <span class=n>down</span>  
 <span class=k>if</span> <span class=n>istr</span><span class=o>==</span><span class=ss>&quot;0x00F7807F&quot;</span>  
 <span class=k>then</span>  
 <span class=o>=</span><span class=n>dimmer</span> <span class=o>-</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>dimmer</span> <span class=o>-</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>dimmer</span> <span class=o>-</span>  
 <span class=n>endif</span>
 
 <span class=n>istr</span><span class=o>=</span><span class=ss>&quot;&quot;</span>
-</code></pre></div> <p><strong>Script example using <code>switch case ends</code></strong><br> ; expand default string length to be able to hold <code>WebSend [xxx.xxx.xxx.xxx]</code><br> D 25<br> istr=""<br> ws="WebSend [<em>IP</em>]" </p> <div class=codehilite><pre><span></span><code><span class=p>;</span> <span class=n>event</span> <span class=n>section</span>  
-<span class=n>E</span>  
+</code></pre></div> <p><strong>Script example using <code>switch case ends</code></strong><br> ; expand default string length to be able to hold <code>WebSend [xxx.xxx.xxx.xxx]</code><br> &gt;D 25<br> istr=""<br> ws="WebSend [<em>IP</em>]" </p> <div class=codehilite><pre><span></span><code><span class=p>;</span> <span class=n>event</span> <span class=n>section</span>  
+<span class=o>&gt;</span><span class=n>E</span>  
 <span class=p>;</span> <span class=k>get</span> <span class=n>ir</span> <span class=k>data</span>  
 <span class=n>istr</span><span class=o>=</span><span class=n>IrReceived</span><span class=o>#</span><span class=k>Data</span>
 
 <span class=n>switch</span> <span class=n>istr</span>  
 <span class=p>;</span> <span class=k>on</span>  
 <span class=k>case</span> <span class=ss>&quot;0x00F7C03F&quot;</span>  
-<span class=o>=</span><span class=n>wakeup</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>wakeup</span>
+<span class=o>=&gt;</span><span class=n>wakeup</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>wakeup</span>
 
 <span class=p>;</span><span class=k>off</span>  
 <span class=k>case</span> <span class=ss>&quot;0x00F740BF&quot;</span>  
-<span class=o>=</span><span class=n>power1</span> <span class=mi>0</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>power1</span> <span class=mi>0</span>
+<span class=o>=&gt;</span><span class=n>power1</span> <span class=mi>0</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>power1</span> <span class=mi>0</span>
 
 <span class=p>;</span><span class=n>white</span>  
 <span class=k>case</span> <span class=ss>&quot;0x00F7E01F&quot;</span>  
-<span class=o>=</span><span class=n>color</span> <span class=mi>000000</span><span class=n>ff</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>000000</span><span class=n>ff</span>
+<span class=o>=&gt;</span><span class=n>color</span> <span class=mi>000000</span><span class=n>ff</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>000000</span><span class=n>ff</span>
 
 <span class=p>;</span><span class=n>red</span>  
 <span class=k>case</span> <span class=ss>&quot;0x00F720DF&quot;</span>  
-<span class=o>=</span><span class=n>color</span> <span class=n>ff000000</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=n>ff000000</span>
+<span class=o>=&gt;</span><span class=n>color</span> <span class=n>ff000000</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=n>ff000000</span>
 
 <span class=p>;</span><span class=n>green</span>  
 <span class=k>case</span> <span class=ss>&quot;0x00F7A05F&quot;</span>  
-<span class=o>=</span><span class=n>color</span> <span class=mi>00</span><span class=n>ff0000</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>00</span><span class=n>ff0000</span>
+<span class=o>=&gt;</span><span class=n>color</span> <span class=mi>00</span><span class=n>ff0000</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>00</span><span class=n>ff0000</span>
 
 <span class=p>;</span><span class=n>blue</span>  
 <span class=k>case</span> <span class=ss>&quot;0x00F7609F&quot;</span>  
-<span class=o>=</span><span class=n>color</span> <span class=mi>0000</span><span class=n>ff00</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>0000</span><span class=n>ff00</span>
+<span class=o>=&gt;</span><span class=n>color</span> <span class=mi>0000</span><span class=n>ff00</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>color</span> <span class=mi>0000</span><span class=n>ff00</span>
 
 <span class=p>;</span> <span class=n>dimmer</span> <span class=n>up</span>  
 <span class=k>case</span> <span class=ss>&quot;0x00F700FF&quot;</span>  
-<span class=o>=</span><span class=n>dimmer</span> <span class=o>+</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>dimmer</span> <span class=o>+</span>
+<span class=o>=&gt;</span><span class=n>dimmer</span> <span class=o>+</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>dimmer</span> <span class=o>+</span>
 
 <span class=p>;</span> <span class=n>dimmer</span> <span class=n>down</span>  
 <span class=k>case</span> <span class=ss>&quot;0x00F7807F&quot;</span>  
-<span class=o>=</span><span class=n>dimmer</span> <span class=o>-</span>  
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span> <span class=n>dimmer</span> <span class=o>-</span>  
+<span class=o>=&gt;</span><span class=n>dimmer</span> <span class=o>-</span>  
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span> <span class=n>dimmer</span> <span class=o>-</span>  
 <span class=n>ends</span>
 
 <span class=n>istr</span><span class=o>=</span><span class=ss>&quot;&quot;</span>
 </code></pre></div> <h3 id=fast-polling>Fast Polling<a class=headerlink href=#fast-polling title="Permanent link">~</a></h3> <div class=codehilite><pre><span></span><code><span class=p>;</span><span class=w> </span><span class=n>expand</span><span class=w> </span><span class=k>default</span><span class=w> </span><span class=n>string</span><span class=w> </span><span class=n>length</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=n>be</span><span class=w> </span><span class=n>able</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=k>hold</span><span class=w> </span><span class=err>`</span><span class=n>WebSend</span><span class=w> </span><span class=o>[</span><span class=n>xxx.xxx.xxx.xxx</span><span class=o>]</span><span class=err>`</span><span class=w>  </span>
-<span class=o>**</span><span class=n>D</span><span class=w> </span><span class=mi>25</span><span class=o>**</span><span class=w>  </span>
+<span class=o>**&gt;</span><span class=n>D</span><span class=w> </span><span class=mi>25</span><span class=o>**</span><span class=w>  </span>
 <span class=n>sw</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>ws</span><span class=o>=</span><span class=ss>&quot;WebSend [_IP_]&quot;</span><span class=w>  </span>
 <span class=n>timer</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>hold</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>toggle</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
 
-<span class=n>B</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>B</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=n>gpio</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>button</span><span class=w> </span><span class=k>input</span><span class=w>  </span>
 <span class=n>spinm</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>fast</span><span class=w> </span><span class=k>section</span><span class=w> </span><span class=mi>100</span><span class=n>ms</span><span class=w>  </span>
-<span class=n>F</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>F</span><span class=w>  </span>
 <span class=n>sw</span><span class=o>=</span><span class=n>pin</span><span class=o>[</span><span class=n>5</span><span class=o>]</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=mi>100</span><span class=w> </span><span class=n>ms</span><span class=w> </span><span class=n>timer</span><span class=w>  </span>
 <span class=n>timer</span><span class=o>+=</span><span class=mi>1</span><span class=w></span>
@@ -747,9 +747,9 @@
 <span class=ow>and</span><span class=w> </span><span class=n>timer</span><span class=o>&lt;</span><span class=mi>30</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=n>short</span><span class=w> </span><span class=n>press</span><span class=w>  </span>
-<span class=p>;</span><span class=o>=</span><span class=k>print</span><span class=w> </span><span class=n>short</span><span class=w> </span><span class=n>press</span><span class=w>  </span>
+<span class=p>;</span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>short</span><span class=w> </span><span class=n>press</span><span class=w>  </span>
 <span class=n>toggle</span><span class=o>^=</span><span class=mi>1</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span><span class=w> </span><span class=n>power1</span><span class=w> </span><span class=o>%</span><span class=n>toggle</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span><span class=w> </span><span class=n>power1</span><span class=w> </span><span class=o>%</span><span class=n>toggle</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>sw0</span><span class=w>  </span>
@@ -759,19 +759,19 @@
 <span class=k>then</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=k>hold</span><span class=w>  </span>
 <span class=k>hold</span><span class=o>=</span><span class=mi>1</span><span class=w>  </span>
-<span class=p>;</span><span class=o>=</span><span class=k>print</span><span class=w> </span><span class=k>hold</span><span class=o>=%</span><span class=n>timer</span><span class=o>%</span><span class=w>  </span>
+<span class=p>;</span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>hold</span><span class=o>=%</span><span class=n>timer</span><span class=o>%</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>toggle0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span><span class=w> </span><span class=n>dimmer</span><span class=w> </span><span class=o>+</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span><span class=w> </span><span class=n>dimmer</span><span class=w> </span><span class=o>+</span><span class=w>  </span>
 <span class=k>else</span><span class=w>  </span>
-<span class=o>=%</span><span class=n>ws</span><span class=o>%</span><span class=w> </span><span class=n>dimmer</span><span class=w> </span><span class=o>-</span><span class=w>  </span>
+<span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span><span class=w> </span><span class=n>dimmer</span><span class=w> </span><span class=o>-</span><span class=w>  </span>
 <span class=n>endif</span><span class=w>  </span>
 <span class=n>endif</span><span class=w>  </span>
 <span class=k>else</span><span class=w>  </span>
 <span class=n>timer</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>hold</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
-</code></pre></div> <h3 id=web-ui>Web UI<a class=headerlink href=#web-ui title="Permanent link">~</a></h3> <p>An example to show how to implement a web UI. This example controls a light via <code>WebSend</code> </p> <div class=codehilite><pre><span></span><code><span class=n>D</span><span class=w>  </span>
+</code></pre></div> <h3 id=web-ui>Web UI<a class=headerlink href=#web-ui title="Permanent link">~</a></h3> <p>An example to show how to implement a web UI. This example controls a light via <code>WebSend</code> </p> <div class=codehilite><pre><span></span><code><span class=o>&gt;</span><span class=n>D</span><span class=w>  </span>
 <span class=n>dimmer</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>sw</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>color</span><span class=o>=</span><span class=ss>&quot;&quot;</span><span class=w>  </span>
@@ -781,25 +781,25 @@
 <span class=n>blue</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>ww</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
 
-<span class=n>F</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>F</span><span class=w>  </span>
 <span class=n>color</span><span class=o>=</span><span class=n>hn</span><span class=p>(</span><span class=n>red</span><span class=p>)</span><span class=o>+</span><span class=n>hn</span><span class=p>(</span><span class=n>green</span><span class=p>)</span><span class=o>+</span><span class=n>hn</span><span class=p>(</span><span class=n>blue</span><span class=p>)</span><span class=o>+</span><span class=n>hn</span><span class=p>(</span><span class=n>ww</span><span class=p>)</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>color</span><span class=o>!=</span><span class=n>col1</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
 <span class=n>col1</span><span class=o>=</span><span class=n>color</span><span class=w>  </span>
-<span class=o>=</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.75</span><span class=o>]</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=o>%</span><span class=n>color</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.75</span><span class=o>]</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=o>%</span><span class=n>color</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>chg</span><span class=o>[</span><span class=n>dimmer</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
-<span class=o>=</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.75</span><span class=o>]</span><span class=w> </span><span class=n>dimmer</span><span class=w> </span><span class=o>%</span><span class=n>dimmer</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.75</span><span class=o>]</span><span class=w> </span><span class=n>dimmer</span><span class=w> </span><span class=o>%</span><span class=n>dimmer</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>chg</span><span class=o>[</span><span class=n>sw</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
-<span class=o>=</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.75</span><span class=o>]</span><span class=w> </span><span class=n>power1</span><span class=w> </span><span class=o>%</span><span class=n>sw</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.75</span><span class=o>]</span><span class=w> </span><span class=n>power1</span><span class=w> </span><span class=o>%</span><span class=n>sw</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
-<span class=n>W</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>W</span><span class=w>  </span>
 <span class=n>bu</span><span class=p>(</span><span class=n>sw</span><span class=w> </span><span class=ss>&quot;Light on&quot;</span><span class=w> </span><span class=ss>&quot;Light off&quot;</span><span class=p>)</span><span class=w>  </span>
 <span class=n>ck</span><span class=p>(</span><span class=n>sw</span><span class=w> </span><span class=ss>&quot;Light on/off   &quot;</span><span class=p>)</span><span class=w>  </span>
 <span class=n>sl</span><span class=p>(</span><span class=mi>0</span><span class=w> </span><span class=mi>100</span><span class=w> </span><span class=n>dimmer</span><span class=w> </span><span class=ss>&quot;0&quot;</span><span class=w> </span><span class=ss>&quot;Dimmer&quot;</span><span class=w> </span><span class=ss>&quot;100&quot;</span><span class=p>)</span><span class=w>  </span>
@@ -808,118 +808,118 @@
 <span class=n>sl</span><span class=p>(</span><span class=mi>0</span><span class=w> </span><span class=mi>255</span><span class=w> </span><span class=n>blue</span><span class=w> </span><span class=ss>&quot;0&quot;</span><span class=w> </span><span class=ss>&quot;blue&quot;</span><span class=w> </span><span class=ss>&quot;255&quot;</span><span class=p>)</span><span class=w>  </span>
 <span class=n>sl</span><span class=p>(</span><span class=mi>0</span><span class=w> </span><span class=mi>255</span><span class=w> </span><span class=n>ww</span><span class=w> </span><span class=ss>&quot;0&quot;</span><span class=w> </span><span class=ss>&quot;warm white&quot;</span><span class=w> </span><span class=ss>&quot;255&quot;</span><span class=p>)</span><span class=w>  </span>
 <span class=n>tx</span><span class=p>(</span><span class=n>color</span><span class=w> </span><span class=ss>&quot;color:   &quot;</span><span class=p>)</span><span class=w></span>
-</code></pre></div> <h3 id=hue-emulation>Hue Emulation<a class=headerlink href=#hue-emulation title="Permanent link">~</a></h3> <p>An example to show how to respond to Alexa requests via Hue Emulation</p> <p>When Alexa sends on/off, dimmer, and color (via hsb), send commands to a MagicHome device</p> <div class=codehilite><pre><span></span><code><span class=n>D</span><span class=w>  </span>
+</code></pre></div> <h3 id=hue-emulation>Hue Emulation<a class=headerlink href=#hue-emulation title="Permanent link">~</a></h3> <p>An example to show how to respond to Alexa requests via Hue Emulation</p> <p>When Alexa sends on/off, dimmer, and color (via hsb), send commands to a MagicHome device</p> <div class=codehilite><pre><span></span><code><span class=o>&gt;</span><span class=n>D</span><span class=w>  </span>
 <span class=n>pwr1</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>hue1</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>sat1</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>bri1</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>tmp</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
 
-<span class=n>E</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>E</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>hue1</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=ow>or</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>sat1</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=ow>or</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>bri1</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
 <span class=n>tmp</span><span class=o>=</span><span class=n>hue1</span><span class=o>/</span><span class=mi>182</span><span class=w>  </span>
-<span class=o>-</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.84</span><span class=o>]</span><span class=w> </span><span class=n>hsbcolor</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=p>,</span><span class=o>%</span><span class=n>sat1</span><span class=o>%</span><span class=p>,</span><span class=o>%</span><span class=n>bri1</span><span class=o>%</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.84</span><span class=o>]</span><span class=w> </span><span class=n>hsbcolor</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=p>,</span><span class=o>%</span><span class=n>sat1</span><span class=o>%</span><span class=p>,</span><span class=o>%</span><span class=n>bri1</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>pwr1</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
-<span class=o>-</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.84</span><span class=o>]</span><span class=w> </span><span class=n>power1</span><span class=w> </span><span class=o>%</span><span class=n>pwr1</span><span class=o>%</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>websend</span><span class=w> </span><span class=o>[</span><span class=n>192.168.178.84</span><span class=o>]</span><span class=w> </span><span class=n>power1</span><span class=w> </span><span class=o>%</span><span class=n>pwr1</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
-<span class=n>H</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>H</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=k>on</span><span class=p>,</span><span class=n>hue</span><span class=p>,</span><span class=n>sat</span><span class=p>,</span><span class=n>bri</span><span class=p>,</span><span class=n>ct</span><span class=w>  </span>
 <span class=n>livingroom</span><span class=p>,</span><span class=n>E</span><span class=p>,</span><span class=k>on</span><span class=o>=</span><span class=n>pwr1</span><span class=p>,</span><span class=n>hue</span><span class=o>=</span><span class=n>hue1</span><span class=p>,</span><span class=n>sat</span><span class=o>=</span><span class=n>sat1</span><span class=p>,</span><span class=n>bri</span><span class=o>=</span><span class=n>bri1</span><span class=w></span>
 </code></pre></div> <h3 id=alexa-controlled-mcp230xx-i2c-gpio-expander>Alexa Controlled MCP230xx I<sup>2</sup>C GPIO Expander<a class=headerlink href=#alexa-controlled-mcp230xx-i2c-gpio-expander title="Permanent link">~</a></h3> <p>Uses Tasmota's Hue Emulation capabilities for Alexa interface</p> <div class=codehilite><pre><span></span><code><span class=p>;</span><span class=w> </span><span class=n>define</span><span class=w> </span><span class=n>vars</span><span class=w>  </span>
-<span class=n>D</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>D</span><span class=w>  </span>
 <span class=nl>p</span><span class=p>:</span><span class=n>p1</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=nl>p</span><span class=p>:</span><span class=n>p2</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=nl>p</span><span class=p>:</span><span class=n>p3</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=nl>p</span><span class=p>:</span><span class=n>p4</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>init</span><span class=w> </span><span class=n>ports</span><span class=w>  </span>
-<span class=n>B</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>0</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>0</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>2</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>0</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>3</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>0</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p1</span><span class=o>%</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p2</span><span class=o>%</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>2</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p3</span><span class=o>%</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>3</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p4</span><span class=o>%</span><span class=w></span>
+<span class=o>&gt;</span><span class=n>B</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>0</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>0</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>2</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>0</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>3</span><span class=p>,</span><span class=mi>5</span><span class=p>,</span><span class=mi>0</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p1</span><span class=o>%</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p2</span><span class=o>%</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>2</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p3</span><span class=o>%</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>3</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p4</span><span class=o>%</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>define</span><span class=w> </span><span class=n>Alexa</span><span class=w> </span><span class=n>virtual</span><span class=w> </span><span class=n>devices</span><span class=w>  </span>
-<span class=n>H</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>H</span><span class=w>  </span>
 <span class=n>port1</span><span class=p>,</span><span class=n>S</span><span class=p>,</span><span class=k>on</span><span class=o>=</span><span class=n>p1</span><span class=w>  </span>
 <span class=n>port2</span><span class=p>,</span><span class=n>S</span><span class=p>,</span><span class=k>on</span><span class=o>=</span><span class=n>p2</span><span class=w>  </span>
 <span class=n>port3</span><span class=p>,</span><span class=n>S</span><span class=p>,</span><span class=k>on</span><span class=o>=</span><span class=n>p3</span><span class=w>  </span>
 <span class=n>port4</span><span class=p>,</span><span class=n>S</span><span class=p>,</span><span class=k>on</span><span class=o>=</span><span class=n>p4</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>handle</span><span class=w> </span><span class=n>events</span><span class=w>  </span>
-<span class=n>E</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>E</span><span class=w>  </span>
 <span class=k>print</span><span class=w> </span><span class=n>EVENT</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>p1</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p1</span><span class=o>%</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>0</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p1</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>p2</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p2</span><span class=o>%</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>1</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p2</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>p3</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>2</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p3</span><span class=o>%</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>2</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p3</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>p4</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
-<span class=o>-</span><span class=n>sensor29</span><span class=w> </span><span class=mi>3</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p4</span><span class=o>%</span><span class=w>  </span>
+<span class=o>-&gt;</span><span class=n>sensor29</span><span class=w> </span><span class=mi>3</span><span class=p>,</span><span class=o>%</span><span class=mi>0</span><span class=n>p4</span><span class=o>%</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=o>=</span><span class=n>#pub</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>publish</span><span class=w> </span><span class=k>routine</span><span class=w>  </span>
 <span class=n>#pub</span><span class=w>  </span>
-<span class=o>=</span><span class=n>publish</span><span class=w> </span><span class=n>stat</span><span class=o>/%</span><span class=n>topic</span><span class=o>%/</span><span class=k>RESULT</span><span class=w> </span><span class=err>{</span><span class=ss>&quot;MCP23XX&quot;</span><span class=err>:{</span><span class=ss>&quot;p1&quot;</span><span class=err>:</span><span class=o>%</span><span class=mi>0</span><span class=n>p1</span><span class=o>%</span><span class=p>,</span><span class=ss>&quot;p2&quot;</span><span class=err>:</span><span class=o>%</span><span class=mi>0</span><span class=n>p2</span><span class=o>%</span><span class=p>,</span><span class=ss>&quot;p3&quot;</span><span class=err>:</span><span class=o>%</span><span class=mi>0</span><span class=n>p3</span><span class=o>%</span><span class=p>,</span><span class=ss>&quot;p4&quot;</span><span class=err>:</span><span class=o>%</span><span class=mi>0</span><span class=n>p4</span><span class=o>%</span><span class=err>}}</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>publish</span><span class=w> </span><span class=n>stat</span><span class=o>/%</span><span class=n>topic</span><span class=o>%/</span><span class=k>RESULT</span><span class=w> </span><span class=err>{</span><span class=ss>&quot;MCP23XX&quot;</span><span class=err>:{</span><span class=ss>&quot;p1&quot;</span><span class=err>:</span><span class=o>%</span><span class=mi>0</span><span class=n>p1</span><span class=o>%</span><span class=p>,</span><span class=ss>&quot;p2&quot;</span><span class=err>:</span><span class=o>%</span><span class=mi>0</span><span class=n>p2</span><span class=o>%</span><span class=p>,</span><span class=ss>&quot;p3&quot;</span><span class=err>:</span><span class=o>%</span><span class=mi>0</span><span class=n>p3</span><span class=o>%</span><span class=p>,</span><span class=ss>&quot;p4&quot;</span><span class=err>:</span><span class=o>%</span><span class=mi>0</span><span class=n>p4</span><span class=o>%</span><span class=err>}}</span><span class=w>  </span>
 <span class=n>svars</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>web</span><span class=w> </span><span class=n>interface</span><span class=w>  </span>
-<span class=n>W</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>W</span><span class=w>  </span>
 <span class=n>bu</span><span class=p>(</span><span class=n>p1</span><span class=w> </span><span class=ss>&quot;p1 on&quot;</span><span class=w> </span><span class=ss>&quot;p1 off&quot;</span><span class=p>)</span><span class=n>bu</span><span class=p>(</span><span class=n>p2</span><span class=w> </span><span class=ss>&quot;p2 on&quot;</span><span class=w> </span><span class=ss>&quot;p2 off&quot;</span><span class=p>)</span><span class=n>bu</span><span class=p>(</span><span class=n>p3</span><span class=w> </span><span class=ss>&quot;p3 on&quot;</span><span class=w> </span><span class=ss>&quot;p3 off&quot;</span><span class=p>)</span><span class=n>bu</span><span class=p>(</span><span class=n>p4</span><span class=w> </span><span class=ss>&quot;p4 on&quot;</span><span class=w> </span><span class=ss>&quot;p4 off&quot;</span><span class=p>)</span><span class=w></span>
-</code></pre></div> <h3 id=retrieve-network-gateway-ip-address>Retrieve network gateway IP Address<a class=headerlink href=#retrieve-network-gateway-ip-address title="Permanent link">~</a></h3> <div class=codehilite><pre><span></span><code><span class=n>D</span>  
+</code></pre></div> <h3 id=retrieve-network-gateway-ip-address>Retrieve network gateway IP Address<a class=headerlink href=#retrieve-network-gateway-ip-address title="Permanent link">~</a></h3> <div class=codehilite><pre><span></span><code><span class=o>&gt;</span><span class=n>D</span>  
 <span class=n>gw</span><span class=o>=</span><span class=s2>&quot;&quot;</span>
 
 <span class=p>;</span> <span class=n>Request</span> <span class=n>Status</span> <span class=n>information</span><span class=p>.</span> <span class=n>The</span> <span class=n>response</span> <span class=n>will</span> <span class=k>trigger</span> <span class=n>the</span> <span class=ss>`U`</span> <span class=n>section</span>  
-<span class=n>B</span>  
-<span class=o>+</span><span class=n>status</span> <span class=mi>5</span>
+<span class=o>&gt;</span><span class=n>B</span>  
+<span class=o>+&gt;</span><span class=n>status</span> <span class=mi>5</span>
 
 <span class=p>;</span> <span class=k>Read</span> <span class=n>the</span> <span class=n>status</span> <span class=n>JSON</span> <span class=n>payload</span>  
-<span class=n>U</span>  
+<span class=o>&gt;</span><span class=n>U</span>  
 <span class=n>gw</span><span class=o>=</span><span class=n>StatusNET</span><span class=c1>#Gateway  </span>
 <span class=n>print</span> <span class=o>%</span><span class=n>gw</span><span class=o>%</span>
-</code></pre></div> <h3 id=send-e-mail>Send e-mail<a class=headerlink href=#send-e-mail title="Permanent link">~</a></h3> <div class=codehilite><pre><span></span><code><span class=o>**</span><span class=n>D</span><span class=w> </span><span class=mi>25</span><span class=o>**</span><span class=w>  </span>
+</code></pre></div> <h3 id=send-e-mail>Send e-mail<a class=headerlink href=#send-e-mail title="Permanent link">~</a></h3> <div class=codehilite><pre><span></span><code><span class=o>**&gt;</span><span class=n>D</span><span class=w> </span><span class=mi>25</span><span class=o>**</span><span class=w>  </span>
 <span class=n>day1</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>et</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>to</span><span class=o>=</span><span class=ss>&quot;mrx@gmail.com&quot;</span><span class=w></span>
 
-<span class=n>T</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>T</span><span class=w>  </span>
 <span class=n>et</span><span class=o>=</span><span class=n>ENERGY#Total</span><span class=w></span>
 
-<span class=n>S</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>S</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=n>send</span><span class=w> </span><span class=k>at</span><span class=w> </span><span class=n>midnight</span><span class=w>  </span>
 <span class=n>day1</span><span class=o>=</span><span class=nf>day</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>chg</span><span class=o>[</span><span class=n>day1</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=k>then</span><span class=w>  </span>
-<span class=o>=</span><span class=n>sendmail</span><span class=w> </span><span class=o>[</span><span class=n>\*:\*:\*:\*:\*:\%to\%:energy report</span><span class=o>]</span><span class=err>\</span><span class=o>*</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>sendmail</span><span class=w> </span><span class=o>[</span><span class=n>\*:\*:\*:\*:\*:\%to\%:energy report</span><span class=o>]</span><span class=err>\</span><span class=o>*</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
-<span class=n>m</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>m</span><span class=w>  </span>
 <span class=n>email</span><span class=w> </span><span class=n>report</span><span class=w> </span><span class=k>at</span><span class=w> </span><span class=o>%</span><span class=n>tstamp</span><span class=o>%</span><span class=w>  </span>
 <span class=n>your</span><span class=w> </span><span class=nf>power</span><span class=w> </span><span class=n>consumption</span><span class=w> </span><span class=n>today</span><span class=w> </span><span class=n>was</span><span class=w> </span><span class=o>%</span><span class=n>et</span><span class=o>%</span><span class=w> </span><span class=n>KWh</span><span class=w>  </span>
 <span class=err>\#</span><span class=w></span>
-</code></pre></div> <h3 id=switching-and-dimming-by-recognizing-mains-power-frequency>Switching and Dimming By Recognizing Mains Power Frequency<a class=headerlink href=#switching-and-dimming-by-recognizing-mains-power-frequency title="Permanent link">~</a></h3> <p>Switching in Tasmota is usually done by High/Low (+3.3V/GND) changes on a GPIO. However, for devices like the <a href=https://templates.blakadder.com/qs-wifi_D01_dimmer.html>Moes QS-WiFi-D01 Dimmer</a>, this is achieved by a pulse frequency when connected to the GPIO, and these pulses are captured by <code>Counter1</code> in Tasmota.</p> <p><img alt=pushbutton-input src=https://user-images.githubusercontent.com/36734573/61955930-5d90e480-afbc-11e9-8d7e-00ac526874d3.png></p> <ul> <li>When the <strong>light is OFF</strong> and there is a <strong>short period</strong> of pulses - then turn the light <strong>ON</strong> at the previous dimmer level.</li> <li>When the <strong>light is ON</strong> and there is a <strong>short period</strong> of pulses - then turn the light <strong>OFF</strong>.</li> <li>When there is a longer period of pulses (i.e., <strong>HOLD</strong>) - toggle dimming direction and then adjust the brightness level as long as the button is pressed or until the limits are reached.</li> </ul> <p><a href=https://github.com/arendst/Tasmota/issues/6085#issuecomment-512353010>Issue 6085</a></p> <p>In the Data Section D at the beginning of the Script the following initialization variables may be changed:</p> <p>dim multiplier = <code>0..2.55</code> set the dimming increment value <br> dim lower limit = range for the dimmer value for push-button operation (set according to your bulb); min 0 <br> dim upper limit = range for the dimmer value for push-button operation (set according to your bulb); max 100 <br> start dim level = initial dimmer level after power-up or restart; max 100 </p> <div class=codehilite><pre><span></span><code><span class=n>D</span><span class=w>  </span>
+</code></pre></div> <h3 id=switching-and-dimming-by-recognizing-mains-power-frequency>Switching and Dimming By Recognizing Mains Power Frequency<a class=headerlink href=#switching-and-dimming-by-recognizing-mains-power-frequency title="Permanent link">~</a></h3> <p>Switching in Tasmota is usually done by High/Low (+3.3V/GND) changes on a GPIO. However, for devices like the <a href=https://templates.blakadder.com/qs-wifi_D01_dimmer.html>Moes QS-WiFi-D01 Dimmer</a>, this is achieved by a pulse frequency when connected to the GPIO, and these pulses are captured by <code>Counter1</code> in Tasmota.</p> <p><img alt=pushbutton-input src=https://user-images.githubusercontent.com/36734573/61955930-5d90e480-afbc-11e9-8d7e-00ac526874d3.png></p> <ul> <li>When the <strong>light is OFF</strong> and there is a <strong>short period</strong> of pulses - then turn the light <strong>ON</strong> at the previous dimmer level.</li> <li>When the <strong>light is ON</strong> and there is a <strong>short period</strong> of pulses - then turn the light <strong>OFF</strong>.</li> <li>When there is a longer period of pulses (i.e., <strong>HOLD</strong>) - toggle dimming direction and then adjust the brightness level as long as the button is pressed or until the limits are reached.</li> </ul> <p><a href=https://github.com/arendst/Tasmota/issues/6085#issuecomment-512353010>Issue 6085</a></p> <p>In the Data Section D at the beginning of the Script the following initialization variables may be changed:</p> <p>dim multiplier = <code>0..2.55</code> set the dimming increment value <br> dim lower limit = range for the dimmer value for push-button operation (set according to your bulb); min 0 <br> dim upper limit = range for the dimmer value for push-button operation (set according to your bulb); max 100 <br> start dim level = initial dimmer level after power-up or restart; max 100 </p> <div class=codehilite><pre><span></span><code><span class=o>&gt;</span><span class=n>D</span><span class=w>  </span>
 <span class=n>sw</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>tmp</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>cnt</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
@@ -937,16 +937,16 @@
 <span class=n>dimul</span><span class=o>=</span><span class=mi>95</span><span class=w>   </span><span class=p>;</span><span class=n>dim</span><span class=w> </span><span class=nf>upper</span><span class=w> </span><span class=k>limit</span><span class=w>  </span>
 <span class=n>dimval</span><span class=o>=</span><span class=mi>70</span><span class=w>  </span><span class=p>;</span><span class=k>start</span><span class=w> </span><span class=n>dim</span><span class=w> </span><span class=k>level</span><span class=w></span>
 
-<span class=n>B</span><span class=w>  </span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=ss>&quot;WiFi-Dimmer-Script-v0.2&quot;</span><span class=w>  </span>
-<span class=o>=</span><span class=n>Counter1</span><span class=w> </span><span class=mi>0</span><span class=w>  </span>
-<span class=o>=</span><span class=n>Baudrate</span><span class=w> </span><span class=mi>9600</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>B</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=ss>&quot;WiFi-Dimmer-Script-v0.2&quot;</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>Counter1</span><span class=w> </span><span class=mi>0</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>Baudrate</span><span class=w> </span><span class=mi>9600</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=n>boot</span><span class=w> </span><span class=k>sequence</span><span class=w>  </span>
 <span class=o>=</span><span class=n>#senddim</span><span class=p>(</span><span class=n>dimval</span><span class=p>)</span><span class=w>  </span>
 <span class=n>delay</span><span class=p>(</span><span class=mi>1000</span><span class=p>)</span><span class=w>  </span>
 <span class=o>=</span><span class=n>#senddim</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 
-<span class=n>F</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>F</span><span class=w>  </span>
 <span class=n>cnt</span><span class=o>=</span><span class=n>pc</span><span class=o>[</span><span class=n>1</span><span class=o>]</span><span class=w>  </span>
 <span class=k>if</span><span class=w> </span><span class=n>chg</span><span class=o>[</span><span class=n>cnt</span><span class=o>]</span><span class=mi>0</span><span class=w>  </span>
 <span class=p>;</span><span class=w> </span><span class=n>sw</span><span class=w> </span><span class=n>pressed</span><span class=w>  </span>
@@ -1023,7 +1023,7 @@
 <span class=k>hold</span><span class=o>=</span><span class=mi>0</span><span class=w>  </span>
 <span class=n>endif</span><span class=w></span>
 
-<span class=n>E</span><span class=w>  </span>
+<span class=o>&gt;</span><span class=n>E</span><span class=w>  </span>
 <span class=n>slider</span><span class=o>=</span><span class=n>Dimmer</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>slider</span><span class=w> </span><span class=n>change</span><span class=w>  </span>
@@ -1054,8 +1054,8 @@
 <span class=p>;</span><span class=w> </span><span class=n>subroutine</span><span class=w> </span><span class=n>dim</span><span class=w>  </span>
 <span class=n>#senddim</span><span class=p>(</span><span class=n>tmp</span><span class=p>)</span><span class=w>  </span>
 <span class=n>dim</span><span class=o>=</span><span class=ss>&quot;FF55&quot;</span><span class=o>+</span><span class=n>hn</span><span class=p>(</span><span class=n>tmp</span><span class=o>*</span><span class=n>dimmlp</span><span class=p>)</span><span class=o>+</span><span class=ss>&quot;05DC0A&quot;</span><span class=w>  </span>
-<span class=o>=</span><span class=n>SerialSend5</span><span class=w> </span><span class=o>%</span><span class=n>dim</span><span class=o>%</span><span class=w>  </span>
-<span class=o>=</span><span class=n>Dimmer</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>SerialSend5</span><span class=w> </span><span class=o>%</span><span class=n>dim</span><span class=o>%</span><span class=w>  </span>
+<span class=o>=&gt;</span><span class=n>Dimmer</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w>  </span>
 <span class=err>\#</span><span class=w></span>
 </code></pre></div> </article> </div> </div> </main> <footer class=md-footer> <div class=md-footer-nav> <nav class="md-footer-nav__inner md-grid" aria-label=Footer> <a href=../I2CDevices/ title="I2C Devices" class="md-footer-nav__link md-footer-nav__link--prev" rel=prev> <div class="md-footer-nav__button md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d=M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z /></svg> </div> <div class=md-footer-nav__title> <div class=md-ellipsis> <span class=md-footer-nav__direction> Previous </span> I2C Devices </div> </div> </a> <a href=../Smart-Meter-Interface/ title="Smart Meter Interface" class="md-footer-nav__link md-footer-nav__link--next" rel=next> <div class=md-footer-nav__title> <div class=md-ellipsis> <span class=md-footer-nav__direction> Next </span> Smart Meter Interface </div> </div> <div class="md-footer-nav__button md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d=M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z /></svg> </div> </a> </nav> </div> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-footer-copyright> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> <div class=md-footer-social> <a href=https://discord.gg/Ks2Kzd4 target=_blank rel=noopener title=discord.gg class=md-footer-social__link> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 448 512"><path d="M297.216 243.2c0 15.616-11.52 28.416-26.112 28.416-14.336 0-26.112-12.8-26.112-28.416s11.52-28.416 26.112-28.416c14.592 0 26.112 12.8 26.112 28.416zm-119.552-28.416c-14.592 0-26.112 12.8-26.112 28.416s11.776 28.416 26.112 28.416c14.592 0 26.112-12.8 26.112-28.416.256-15.616-11.52-28.416-26.112-28.416zM448 52.736V512c-64.494-56.994-43.868-38.128-118.784-107.776l13.568 47.36H52.48C23.552 451.584 0 428.032 0 398.848V52.736C0 23.552 23.552 0 52.48 0h343.04C424.448 0 448 23.552 448 52.736zm-72.96 242.688c0-82.432-36.864-149.248-36.864-149.248-36.864-27.648-71.936-26.88-71.936-26.88l-3.584 4.096c43.52 13.312 63.744 32.512 63.744 32.512-60.811-33.329-132.244-33.335-191.232-7.424-9.472 4.352-15.104 7.424-15.104 7.424s21.248-20.224 67.328-33.536l-2.56-3.072s-35.072-.768-71.936 26.88c0 0-36.864 66.816-36.864 149.248 0 0 21.504 37.12 78.08 38.912 0 0 9.472-11.52 17.152-21.248-32.512-9.728-44.8-30.208-44.8-30.208 3.766 2.636 9.976 6.053 10.496 6.4 43.21 24.198 104.588 32.126 159.744 8.96 8.96-3.328 18.944-8.192 29.44-15.104 0 0-12.8 20.992-46.336 30.464 7.68 9.728 16.896 20.736 16.896 20.736 56.576-1.792 78.336-38.912 78.336-38.912z"/></svg> </a> <a href=https://t.me/tasmota target=_blank rel=noopener title=t.me class=md-footer-social__link> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 496 512"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.8 169.9l-40.7 191.8c-3 13.6-11.1 16.9-22.4 10.5l-62-45.7-29.9 28.8c-3.3 3.3-6.1 6.1-12.5 6.1l4.4-63.1 114.9-103.8c5-4.4-1.1-6.9-7.7-2.5l-142 89.4-61.2-19.1c-13.3-4.2-13.6-13.3 2.8-19.7l239.1-92.2c11.1-4 20.8 2.7 17.2 19.5z"/></svg> </a> <a href=https://github.com/tasmota target=_blank rel=noopener title=github.com class=md-footer-social__link> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg> </a> </div> </div> </div> </footer> </div> <script src=../assets/javascripts/vendor.f45d2d8d.min.js></script> <script src=../assets/javascripts/bundle.74d0b805.min.js></script><script id=__lang type=application/json>{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script> <script>
         app = initialize({
