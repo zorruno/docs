@@ -432,7 +432,104 @@
 <span class=o>&gt;</span><span class=n>E</span><span class=w></span>
 
 <span class=o>&gt;</span><span class=n>R</span><span class=w></span>
-</code></pre></div> <h3 id=e-paper-42-display-with-sht31-and-bme280>e-Paper 42 Display with SHT31 and BME280<a class=headerlink href=#e-paper-42-display-with-sht31-and-bme280 title="Permanent link">~</a></h3> <p>This script shows 2 graphs on an 4.2 inch e-Paper display: 1. some local sensors, and 2. power statistics </p> <ul> <li>The first graph is the battery level of a solar battery (Tesla PowerWall 2) </li> <li>The second graph shows the solar yield of the roof panels in Watts </li> <li>Another special feature is that this script displays daily and weekly averages (via moving average) of all power IO of the house. </li> <li>Since the display is a full update panel it is updated only once a minute </li> <li> <p>Some values (like power meters) are set remotely from ioBroker </p> <blockquote> <p>D<br> hum=0<br> temp=0<br> press=0<br> zwz=0<br> wr1=0<br> wr2=0<br> wr3=0<br> otmp=0<br> pwl=0<br> ez1=0<br> sez1=0<br> M:mez1=0 7<br> ezh=0<br> sezh=0<br> M:mezh=0 7<br> vzh=0<br> svzh=0<br> M:mvzh=0 7 </p> </blockquote> <p>hr=0<br> t1=0<br> ; DisplayText substituted to save script space DT="DisplayText" </p> <blockquote> <p>B<br> =&gt;%DT% [IzD0]<br> =&gt;%DT% [zG10352:5:40:-350:80:10080:0:100f3x360y40]100 %%[x360y115]0 %%<br> =&gt;%DT% [f1x100y25]Powerwall - 7 Tage[f1x360y75] 0 %%<br> =&gt;%DT% [G10353:5:140:-350:80:10080:0:5000f3x360y140]+5000 W[x360y215]0 W<br> =&gt;%DT% [f1x70y125]Volleinspeisung - 7 Tage[f1x360y180] 0 W<br> =&gt;%DT% [p13x10y230]WR 1,2,3:<br> =&gt;%DT% [p13x10y245]H-Einsp.:<br> =&gt;%DT% [p13x10y260]H-Verbr.:<br> =&gt;%DT% [p13x10y275]D-Einsp.:<br> =&gt;%DT% [d] </p> <p>T<br> press=BMP280#Pressure<br> temp=SHT3X_0x44#Temperature<br> hum=SHT3X_0x44#Humidity </p> <p>S<br> if upsecs%60==0<br> then<br> dp2<br> =&gt;%DT% [f1p7x0y5]%temp% C<br> =&gt;%DT% [x0y20h400x250y5T][x350t][f1p10x70y5]%hum% %%<br> =&gt;%DT% [p10x140y5]%press% hPa<br> dp0<br> =&gt;%DT% [p5x360y75]%pwl% %%<br> =&gt;%DT% [p6x360y180]%wr1%W<br> =&gt;%DT% [g0:%pwl%g1:%wr1%] </p> </blockquote> <p>=&gt;%DT% [p24x75y230] %wr1% W : %-wr2% W : %-wr3% W<br> =&gt;%DT% [p-10x75y245]%ezh% kWh<br> =&gt;%DT% [p-10x75y260]%vzh% kWh<br> =&gt;%DT% [p-10x75y275]%ez1% kWh </p> <p>t1=mezh<em>7<br> =&gt;%DT% [p-10x150y245]: %t1% kWh<br> t1=mvzh</em>7<br> =&gt;%DT% [p-10x150y260]: %t1% kWh<br> t1=mez1*7<br> =&gt;%DT% [p-10x150y275]: %t1% kWh </p> <p>dp1 t1=ezh-sezh<br> =&gt;%DT% [p12x250y245]: %t1% kWh<br> t1=vzh-svzh<br> =&gt;%DT% [p12x250y260]: %t1% kWh<br> t1=ez1-sez1<br> =&gt;%DT% [p12x250y275]: %t1% kWh </p> <p>dp0<br> =&gt;%DT% [f2p5x320y250] %otmp%C </p> <p>=&gt;%DT% [d]<br> endif </p> <p>hr=hours<br> if chg[hr]0<br> and hr==0<br> then<br> mez1=ez1-sez1<br> sez1=ez1<br> mezh=ezh-sezh<br> sezh=ezh<br> mvzh=vzh-svzh<br> svzh=vzh<br> endif </p> <p>if sezh==0<br> then<br> sez1=ez1<br> sezh=ezh<br> svzh=vzh<br> endif </p> </li> </ul> <h3 id=ili-9488-color-lcd-display-with-bmp280-and-vl5310x>ILI 9488 Color LCD Display with BMP280 and VL5310X<a class=headerlink href=#ili-9488-color-lcd-display-with-bmp280-and-vl5310x title="Permanent link">~</a></h3> <p>Shows various BMP280 energy graphs<br> Turn display on and off using VL5310X proximity sensor to prevent burn-in</p> <p>Some variables are set from ioBroker</p> <div class=codehilite><pre><span></span><code><span class=o>&gt;</span><span class=nv>D</span>  
+</code></pre></div> <h3 id=e-paper-42-display-with-sht31-and-bme280>e-Paper 42 Display with SHT31 and BME280<a class=headerlink href=#e-paper-42-display-with-sht31-and-bme280 title="Permanent link">~</a></h3> <p>This script shows 2 graphs on an 4.2 inch e-Paper display: 1. some local sensors, and 2. power statistics </p> <ul> <li>The first graph is the battery level of a solar battery (Tesla PowerWall 2) </li> <li>The second graph shows the solar yield of the roof panels in Watts </li> <li>Another special feature is that this script displays daily and weekly averages (via moving average) of all power IO of the house. </li> <li>Since the display is a full update panel it is updated only once a minute </li> <li>Some values (like power meters) are set remotely from ioBroker </li> </ul> <blockquote> <div class=codehilite><pre><span></span><code><span class=err>&gt;D  </span>
+<span class=err>hum=0  </span>
+<span class=err>temp=0  </span>
+<span class=err>press=0  </span>
+<span class=err>zwz=0  </span>
+<span class=err>wr1=0  </span>
+<span class=err>wr2=0  </span>
+<span class=err>wr3=0  </span>
+<span class=err>otmp=0  </span>
+<span class=err>pwl=0  </span>
+<span class=err>ez1=0  </span>
+<span class=err>sez1=0  </span>
+<span class=c>M:mez1=0 7  </span>
+<span class=err>ezh=0  </span>
+<span class=err>sezh=0  </span>
+<span class=c>M:mezh=0 7  </span>
+<span class=err>vzh=0  </span>
+<span class=err>svzh=0  </span>
+<span class=c>M:mvzh=0 7</span>
+</code></pre></div> </blockquote> <div class=codehilite><pre><span></span><code><span class="s s-Atom">hr</span><span class=o>=</span><span class=mi>0</span>  
+<span class="s s-Atom">t1</span><span class=o>=</span><span class=mi>0</span>  
+<span class=p>;</span> <span class=nv>DisplayText</span> <span class="s s-Atom">substituted</span> <span class="s s-Atom">to</span> <span class="s s-Atom">save</span> <span class="s s-Atom">script</span> <span class="s s-Atom">space</span>
+<span class=nv>DT</span><span class="s s-Atom">=</span><span class=s2>&quot;DisplayText&quot;</span>
+
+<span class=o>&gt;</span><span class=nv>B</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [IzD0]  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [zG10352:5:40:-350:80:10080:0:100f3x360y40]100 %%[x360y115]0 %%  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [f1x100y25]Powerwall - 7 Tage[f1x360y75] 0 %%  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [G10353:5:140:-350:80:10080:0:5000f3x360y140]+5000 W[x360y215]0 W  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [f1x70y125]Volleinspeisung - 7 Tage[f1x360y180] 0 W  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p13x10y230]WR 1,2,3:  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p13x10y245]H-Einsp.:  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p13x10y260]H-Verbr.:  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p13x10y275]D-Einsp.:  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [d]</span>
+
+<span class=o>&gt;</span><span class=nv>T</span>  
+<span class="s s-Atom">press</span><span class=o>=</span><span class=nv>BMP280</span><span class="s s-Atom">#</span><span class=nv>Pressure</span>  
+<span class="s s-Atom">temp</span><span class=o>=</span><span class=nv>SHT3X_0x44</span><span class="s s-Atom">#</span><span class=nv>Temperature</span>  
+<span class="s s-Atom">hum</span><span class=o>=</span><span class=nv>SHT3X_0x44</span><span class="s s-Atom">#</span><span class=nv>Humidity</span>
+
+<span class=o>&gt;</span><span class=nv>S</span>  
+<span class="s s-Atom">if</span> <span class="s s-Atom">upsecs</span><span class=c1>%60==0  </span>
+<span class="s s-Atom">then</span>  
+<span class="s s-Atom">dp2</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [f1p7x0y5]%temp% C  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [x0y20h400x250y5T][x350t][f1p10x70y5]%hum% %%  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p10x140y5]%press% hPa  </span>
+<span class="s s-Atom">dp0</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p5x360y75]%pwl% %%  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p6x360y180]%wr1%W  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [g0:%pwl%g1:%wr1%]</span>
+
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p24x75y230] %wr1% W : %-wr2% W : %-wr3% W  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-10x75y245]%ezh% kWh  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-10x75y260]%vzh% kWh  </span>
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-10x75y275]%ez1% kWh</span>
+
+<span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">mezh</span><span class=o>*</span><span class=mi>7</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-10x150y245]: %t1% kWh  </span>
+<span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">mvzh</span><span class=o>*</span><span class=mi>7</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-10x150y260]: %t1% kWh  </span>
+<span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">mez1</span><span class=o>*</span><span class=mi>7</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p-10x150y275]: %t1% kWh</span>
+
+<span class="s s-Atom">dp1</span> 
+<span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">ezh</span><span class=o>-</span><span class="s s-Atom">sezh</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p12x250y245]: %t1% kWh  </span>
+<span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">vzh</span><span class=o>-</span><span class="s s-Atom">svzh</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p12x250y260]: %t1% kWh  </span>
+<span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">ez1</span><span class=o>-</span><span class="s s-Atom">sez1</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [p12x250y275]: %t1% kWh</span>
+
+<span class="s s-Atom">dp0</span>  
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [f2p5x320y250] %otmp%C</span>
+
+<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [d]  </span>
+<span class="s s-Atom">endif</span>
+
+<span class="s s-Atom">hr</span><span class=o>=</span><span class="s s-Atom">hours</span>  
+<span class="s s-Atom">if</span> <span class="s s-Atom">chg</span><span class=p>[</span><span class="s s-Atom">hr</span><span class=p>]</span><span class=mi>0</span>  
+<span class="s s-Atom">and</span> <span class="s s-Atom">hr</span><span class=o>==</span><span class=mi>0</span>  
+<span class="s s-Atom">then</span>  
+<span class="s s-Atom">mez1</span><span class=o>=</span><span class="s s-Atom">ez1</span><span class=o>-</span><span class="s s-Atom">sez1</span>  
+<span class="s s-Atom">sez1</span><span class=o>=</span><span class="s s-Atom">ez1</span>  
+<span class="s s-Atom">mezh</span><span class=o>=</span><span class="s s-Atom">ezh</span><span class=o>-</span><span class="s s-Atom">sezh</span>  
+<span class="s s-Atom">sezh</span><span class=o>=</span><span class="s s-Atom">ezh</span>  
+<span class="s s-Atom">mvzh</span><span class=o>=</span><span class="s s-Atom">vzh</span><span class=o>-</span><span class="s s-Atom">svzh</span>  
+<span class="s s-Atom">svzh</span><span class=o>=</span><span class="s s-Atom">vzh</span>  
+<span class="s s-Atom">endif</span>
+
+<span class="s s-Atom">if</span> <span class="s s-Atom">sezh</span><span class=o>==</span><span class=mi>0</span>  
+<span class="s s-Atom">then</span>  
+<span class="s s-Atom">sez1</span><span class=o>=</span><span class="s s-Atom">ez1</span>  
+<span class="s s-Atom">sezh</span><span class=o>=</span><span class="s s-Atom">ezh</span>  
+<span class="s s-Atom">svzh</span><span class=o>=</span><span class="s s-Atom">vzh</span>  
+<span class="s s-Atom">endif</span>
+</code></pre></div> <h3 id=ili-9488-color-lcd-display-with-bmp280-and-vl5310x>ILI 9488 Color LCD Display with BMP280 and VL5310X<a class=headerlink href=#ili-9488-color-lcd-display-with-bmp280-and-vl5310x title="Permanent link">~</a></h3> <p>Shows various BMP280 energy graphs<br> Turn display on and off using VL5310X proximity sensor to prevent burn-in</p> <p>Some variables are set from ioBroker</p> <div class=codehilite><pre><span></span><code><span class=o>&gt;</span><span class=nv>D</span>  
 <span class="s s-Atom">temp</span><span class=o>=</span><span class=mi>0</span>  
 <span class="s s-Atom">press</span><span class=o>=</span><span class=mi>0</span>  
 <span class="s s-Atom">zwz</span><span class=o>=</span><span class=mi>0</span>  
