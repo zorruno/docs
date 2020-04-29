@@ -368,7 +368,7 @@
 <span class=go>  ON ENERGY#Power&gt;=35 DO Backlog PowerDelta 10; Status 8 BREAK </span>
 <span class=go>  ON ENERGY#Power&gt;=15 DO Backlog PowerDelta 25; Status 8 BREAK </span>
 <span class=go>  ON ENERGY#Power&gt;5 DO Backlog PowerDelta 35; Status 8 BREAK </span>
-<span class=go>  ON ENERGY#Power&lt;=5 DO Backlog PowerDelta 100 ENDON</span>
+<span class=go>  ON ENERGY#Power&lt;=5 DO PowerDelta 100 ENDON</span>
 
 <span class=go>Rule1 1</span>
 </code></pre></div> <p>Which translates to:</p> <div class=codehilite><pre><span></span><code><span class=err>Rule Pseudo Code</span>
