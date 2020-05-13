@@ -32,7 +32,7 @@
 
 <span class=o>#</span><span class=n>subroutine</span>
 <span class=o>=&gt;</span><span class=n>print</span> <span class=n>subroutine</span> <span class=n>was</span> <span class=n>executed</span>
-</code></pre></div> <p><strong>For loop</strong> (loop count must not be less than 1)</p> <div class=codehilite><pre><span></span><code><span class=err>for var &lt;from &lt;to &lt;inc  </span>
+</code></pre></div> <p><strong>For loop</strong> (loop count must not be less than 1, no direct nesting supported)</p> <div class=codehilite><pre><span></span><code><span class=err>for var &lt;from&gt; &lt;to&gt; &lt;inc&gt;  </span>
 <span class=err>next  </span>
 </code></pre></div> <p><strong>Switch selector</strong> (numeric or string)</p> <div class=codehilite><pre><span></span><code><span class=err>switch x  </span>
 <span class=err>case a  </span>
@@ -188,6 +188,21 @@
 <span class=ow>and</span><span class=w> </span><span class=n>hum</span><span class=o>&gt;</span><span class=mi>70</span><span class=w></span>
 <span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>damn</span><span class=w> </span><span class=n>hot</span><span class=err>!</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
+
+<span class=o>=</span><span class=n>#siren</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w></span>
+
+<span class=p>;</span><span class=w> </span><span class=n>loop</span><span class=w> </span><span class=n>nesting</span><span class=w> </span><span class=n>workaround</span><span class=w></span>
+<span class=p>;</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=k>using</span><span class=w> </span><span class=n>subroutine</span><span class=w></span>
+<span class=n>#siren</span><span class=p>(</span><span class=n>num</span><span class=p>)</span><span class=w></span>
+<span class=k>for</span><span class=w> </span><span class=n>cnt</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=n>num</span><span class=w> </span><span class=mi>1</span><span class=w></span>
+<span class=o>=</span><span class=n>#stone</span><span class=w></span>
+<span class=k>next</span><span class=w></span>
+
+<span class=n>#stone</span><span class=w></span>
+<span class=k>for</span><span class=w> </span><span class=n>tone</span><span class=w> </span><span class=mi>2000</span><span class=w> </span><span class=mi>1000</span><span class=w> </span><span class=o>-</span><span class=mi>20</span><span class=w></span>
+<span class=n>beep</span><span class=p>(</span><span class=n>tone</span><span class=w> </span><span class=mi>10</span><span class=p>);</span><span class=w></span>
+<span class=n>delay</span><span class=p>(</span><span class=mi>12</span><span class=p>)</span><span class=w></span>
+<span class=k>next</span><span class=w></span>
 
 <span class=o>&gt;</span><span class=n>S</span><span class=w></span>
 <span class=p>;</span><span class=w> </span><span class=k>every</span><span class=w> </span><span class=k>second</span><span class=w> </span><span class=n>but</span><span class=w> </span><span class=ow>not</span><span class=w> </span><span class=n>completely</span><span class=w> </span><span class=n>reliable</span><span class=w> </span><span class=nc>time</span><span class=w> </span><span class=n>here</span><span class=w></span>
