@@ -120,10 +120,6 @@
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/OpenTherm/</loc>
-     <lastmod>2020-05-14</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
      <loc>https://tasmota.github.io/docs/TasmotaSlave/</loc>
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
@@ -329,6 +325,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://tasmota.github.io/docs/NRF24L01/</loc>
+     <lastmod>2020-05-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/OpenTherm/</loc>
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
