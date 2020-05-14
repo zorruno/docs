@@ -120,15 +120,15 @@
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://tasmota.github.io/docs/OpenTherm/</loc>
+     <lastmod>2020-05-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://tasmota.github.io/docs/TasmotaSlave/</loc>
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://tasmota.github.io/docs/Subscribe-%26-Unsubscribe/</loc>
-     <lastmod>2020-05-14</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/OpenTherm/</loc>
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -193,10 +193,6 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://tasmota.github.io/docs/openHAB/</loc>
-     <lastmod>2020-05-14</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/OpenTherm/</loc>
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
