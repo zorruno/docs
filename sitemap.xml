@@ -196,6 +196,10 @@
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://tasmota.github.io/docs/OpenTherm/</loc>
+     <lastmod>2020-05-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://tasmota.github.io/docs/otto/</loc>
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
@@ -213,6 +217,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://tasmota.github.io/docs/Displays/</loc>
+     <lastmod>2020-05-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/ESP32/</loc>
      <lastmod>2020-05-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
