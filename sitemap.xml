@@ -48,10 +48,6 @@
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/Blinds-and-Shutters/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
      <loc>https://tasmota.github.io/docs/Bluetooth/</loc>
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
@@ -105,6 +101,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://tasmota.github.io/docs/Scripting-Language/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/Blinds-and-Shutters/</loc>
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
