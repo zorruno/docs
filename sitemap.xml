@@ -48,7 +48,19 @@
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://tasmota.github.io/docs/Blinds-and-Shutters/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/Bluetooth/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://tasmota.github.io/docs/Buttons-and-Switches/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/DeepSleep/</loc>
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -56,7 +68,23 @@
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://tasmota.github.io/docs/Dynamic-Sleep/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/I2CDevices/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/Tasmota-IR/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://tasmota.github.io/docs/Lights/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/OpenTherm/</loc>
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -76,42 +104,6 @@
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/Blinds-and-Shutters/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/Timers/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/TuyaMCU/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/Bluetooth/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/Zigbee/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/Tasmota-IR/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/DeepSleep/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/Dynamic-Sleep/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://tasmota.github.io/docs/I2CDevices/</loc>
-     <lastmod>2020-05-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
      <loc>https://tasmota.github.io/docs/Scripting-Language/</loc>
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
@@ -120,11 +112,19 @@
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://tasmota.github.io/docs/Subscribe-%26-Unsubscribe/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://tasmota.github.io/docs/TasmotaSlave/</loc>
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/Subscribe-%26-Unsubscribe/</loc>
+     <loc>https://tasmota.github.io/docs/Thermostat/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/Timers/</loc>
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -132,7 +132,11 @@
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/Thermostat/</loc>
+     <loc>https://tasmota.github.io/docs/TuyaMCU/</loc>
+     <lastmod>2020-05-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/Zigbee/</loc>
      <lastmod>2020-05-19</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
