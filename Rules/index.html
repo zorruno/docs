@@ -331,12 +331,12 @@ Note: This method doubles the number of flash writes. [Link to the device](https
 <span class=go>  ON Event#tora DO Backlog Publish cmnd/&lt;topic&gt;/IRSend {&quot;Protocol&quot;:&quot;NEC&quot;,&quot;Bits&quot;:32,&quot;Data&quot;:&quot;0x00FF30CF&quot;}; Delay 10 ENDON</span>
 <span class=go>  ON &lt;trigger&gt; DO Backlog Event tora; Event tora; Event tora ENDON</span>
 </code></pre></div> <ul> <li>Enable the Rule set<br> <code>Rule1 1</code></li> </ul> <hr> <h3 id=two-way-light-switches-without-mqtt>Two-way light switches without MQTT<a class=headerlink href=#two-way-light-switches-without-mqtt title="Permanent link">~</a></h3> <p>Two Sonoff T1 3-gang light switches can be used at either end of a room by setting up one the master and the other as the slave. The master performs the switching of the power to the lights, while the slave just asks the master to toggle the power state. The master also turns the slave's relays on and off so that the LED indicators follow the master's state.</p> <p>Using the <code>WebSend</code> command, the two switches can talk to each other without an MQTT broker. It remains to be seen how reliable this is.</p> <p>Starting with the slave, the rule to toggle the master is pretty simple:</p> <div class=codehilite><pre><span></span><code><span class=go>Rule1</span>
-<span class=go>  ON Event sendPower DO WebSend [192.168.0.74] POWER%value% TOGGLE ENDON</span>
+<span class=go>  ON Event#sendPower DO WebSend [192.168.0.74] POWER%value% TOGGLE ENDON</span>
 <span class=go>  ON Button1#State DO Event sendPower=1 ENDON</span>
 <span class=go>  ON Button2#State DO Event sendPower=2 ENDON</span>
 <span class=go>  ON Button3#State DO Event sendPower=3 ENDON</span>
 </code></pre></div> <p><code>Rule1 1</code></p> <p>Note that having a rule for the Button#State disables the power toggling of the slave's relay(s). This is desirable because we want the master to control the slave's relay state(s) according to its own as follows:</p> <div class=codehilite><pre><span></span><code><span class=go>Rule1</span>
-<span class=go>  ON Event sendPower DO WebSend [192.168.0.144] POWER%Var1% %value% ENDON</span>
+<span class=go>  ON Event#sendPower DO WebSend [192.168.0.144] POWER%Var1% %value% ENDON</span>
 <span class=go>  ON Power1#state DO Backlog Var1 1;Event sendPower=%value% ENDON</span>
 <span class=go>  ON Power2#state DO Backlog Var1 2;Event sendPower=%value% ENDON</span>
 <span class=go>  ON Power3#state DO Backlog Var1 3;Event sendPower=%value% ENDON</span>
