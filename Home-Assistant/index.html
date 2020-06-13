@@ -363,9 +363,9 @@ The HA configuration for Power Factor would then be:
   <span class="p p-Indicator">-</span> <span class=nt>platform</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">mqtt</span>
     <span class=nt>name</span><span class=p>:</span> <span class=s>&quot;Tuya</span><span class=nv> </span><span class=s>Curtain&quot;</span>
     <span class=nt>command_topic</span><span class=p>:</span> <span class=s>&quot;cmnd/tasmota/TuyaSend4&quot;</span>
+    <span class=nt>payload_open</span><span class=p>:</span> <span class=s>&quot;1,2&quot;</span>
     <span class=nt>payload_close</span><span class=p>:</span> <span class=s>&quot;1,0&quot;</span>
     <span class=nt>payload_stop</span><span class=p>:</span> <span class=s>&quot;1,1&quot;</span>
-    <span class=nt>payload_open</span><span class=p>:</span> <span class=s>&quot;1,2&quot;</span>
     <span class=nt>position_open</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
     <span class=nt>position_closed</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
     <span class=nt>position_topic</span><span class=p>:</span> <span class=s>&quot;tele/tasmota/RESULT&quot;</span>
@@ -380,8 +380,6 @@ The HA configuration for Power Factor would then be:
     <span class=nt>availability_topic</span><span class=p>:</span> <span class=s>&quot;tele/tasmota/LWT&quot;</span>
     <span class=nt>payload_available</span><span class=p>:</span> <span class=s>&quot;Online&quot;</span>
     <span class=nt>payload_not_available</span><span class=p>:</span> <span class=s>&quot;Offline&quot;</span>
-    <span class=nt>qos</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
-    <span class=nt>retain</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div> <p>If you change <code>name:</code> make sure to reflect that change in the value_template cover name!</p> <!-- tabs:end --> <h3 id=device-specific>Device Specific<a class=headerlink href=#device-specific title="Permanent link">~</a></h3> <!-- tabs:start --> <div class="admonition example"> <p class=admonition-title>iFan02</p> </div> <p>Combination of configs found in issue <a href=https://github.com/arendst/Tasmota/issues/2839>#2839</a> and Home Assistant forum thread <a href=https://community.home-assistant.io/t/sonoff-ifan02-tasmota-mqtt-fan/64083>Sonoff IFan02 (Tasmota) MQTT Fan</a>.</p> <div class=codehilite><pre><span></span><code><span class=nt>fan</span><span class=p>:</span>
   <span class="p p-Indicator">-</span> <span class=nt>platform</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">mqtt</span>  
     <span class=nt>name</span><span class=p>:</span> <span class=s>&quot;Pat</span><span class=nv> </span><span class=s>Ceiling</span><span class=nv> </span><span class=s>Fan&quot;</span>  
