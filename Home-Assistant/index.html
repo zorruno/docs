@@ -313,10 +313,7 @@
     <span class=nt>payload_off</span><span class=p>:</span> <span class=s>&quot;0&quot;</span>
     <span class=nt>device_class</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">opening</span>
     <span class=nt>state_topic</span><span class=p>:</span> <span class=s>&quot;tele/tasmota/RESULT&quot;</span>
-    <span class=nt>value_template</span><span class=p>:</span> <span class="p p-Indicator">&gt;-</span>
-        <span class=no>{% if value_json.RfReceived.RfKey %}</span>
-            <span class=no>{{&#39;ON&#39;}}</span>
-        <span class=no>{% endif %}</span>
+    <span class=nt>value_template</span><span class=p>:</span> <span class=s>&#39;{{</span><span class=nv> </span><span class=s>value_json.RfReceived.RfKey</span><span class=nv> </span><span class=s>}}&#39;</span>
 </code></pre></div> <!-- tabs:end --> <h3 id=fans>Fans<a class=headerlink href=#fans title="Permanent link">~</a></h3> <p>Add in Home Assistant using the <a href=https://www.home-assistant.io/components/fan.mqtt/ >MQTT Fan</a> integration.</p> <!-- tabs:start --> <div class="admonition example"> <p class=admonition-title>Fan</p> </div> <p>Derived from <a href=https://github.com/arendst/Tasmota/issues/2839>#2839</a> by @kbickar and @finity69x2</p> <div class=codehilite><pre><span></span><code><span class=c1># Example configuration.yaml entry</span>
 <span class=nt>fan</span><span class=p>:</span>
 <span class="p p-Indicator">-</span> <span class=nt>platform</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">mqtt</span>  
