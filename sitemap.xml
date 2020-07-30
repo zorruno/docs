@@ -120,7 +120,7 @@
      <lastmod>2020-07-30</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://tasmota.github.io/docs/TasmotaSlave/</loc>
+     <loc>https://tasmota.github.io/docs/TasmotaClient/</loc>
      <lastmod>2020-07-30</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -393,6 +393,14 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://tasmota.github.io/docs/VEML6070/</loc>
+     <lastmod>2020-07-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/VEML6075/</loc>
+     <lastmod>2020-07-30</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://tasmota.github.io/docs/VEML7700/</loc>
      <lastmod>2020-07-30</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
