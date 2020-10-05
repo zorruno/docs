@@ -274,7 +274,7 @@
 
 <span class=p>;</span><span class=w> </span><span class=n>show</span><span class=w> </span><span class=k>on</span><span class=w> </span><span class=n>display</span><span class=w></span>
 <span class=n>dp0</span><span class=w></span>
-<span class=o>=&gt;</span><span class=n>displaytext</span><span class=w> </span><span class=o>[</span><span class=n>c1l1f1s2p20</span><span class=o>]</span><span class=w> </span><span class=n>dimmer</span><span class=o>=%</span><span class=n>dimmer</span><span class=o>%</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>c1l1f1s2p20</span><span class=o>]</span><span class=w> </span><span class=n>dimmer</span><span class=o>=%</span><span class=n>dimmer</span><span class=o>%</span><span class=w></span>
 
 <span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>upsecs</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>uptime</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=nc>time</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunrise</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunset</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>tstamp</span><span class=o>%</span><span class=w></span>
 
@@ -294,7 +294,7 @@
 
 <span class=p>;</span><span class=w> </span><span class=n>clr</span><span class=w> </span><span class=n>display</span><span class=w> </span><span class=k>on</span><span class=w> </span><span class=n>boot</span><span class=w></span>
 <span class=k>if</span><span class=w> </span><span class=n>boot</span><span class=o>&gt;</span><span class=mi>0</span><span class=w></span>
-<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=n>displaytext</span><span class=w> </span><span class=o>[</span><span class=n>z</span><span class=o>]</span><span class=w></span>
+<span class=k>then</span><span class=w> </span><span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>z</span><span class=o>]</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>frost</span><span class=w> </span><span class=n>warning</span><span class=w></span>
@@ -482,17 +482,15 @@
 <span class=n>otmp</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
 <span class=n>pwl</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
 <span class=n>tmp</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
-<span class=p>;</span><span class=w> </span><span class=n>DisplayText</span><span class=w> </span><span class=n>substituted</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=k>save</span><span class=w> </span><span class=n>script</span><span class=w> </span><span class=nf>space</span><span class=w></span>
-<span class=n>DT</span><span class=o>=</span><span class=ss>&quot;DisplayText&quot;</span><span class=w></span>
 <span class=p>;</span><span class=w> </span><span class=n>preset</span><span class=w> </span><span class=n>units</span><span class=w> </span><span class=ow>in</span><span class=w> </span><span class=k>case</span><span class=w> </span><span class=n>they</span><span class=w> </span><span class=k>are</span><span class=w> </span><span class=ow>not</span><span class=w> </span><span class=n>available</span><span class=w></span>
 <span class=n>punit</span><span class=o>=</span><span class=ss>&quot;hPa&quot;</span><span class=w></span>
 <span class=n>tunit</span><span class=o>=</span><span class=ss>&quot;C&quot;</span><span class=w></span>
 
 <span class=o>&gt;</span><span class=n>B</span><span class=w></span>
 <span class=p>;</span><span class=n>reset</span><span class=w> </span><span class=n>auto</span><span class=w> </span><span class=n>draw</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>zD0</span><span class=o>]</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>zD0</span><span class=o>]</span><span class=w></span>
 <span class=p>;</span><span class=n>clr</span><span class=w> </span><span class=n>display</span><span class=w> </span><span class=ow>and</span><span class=w> </span><span class=n>draw</span><span class=w> </span><span class=n>a</span><span class=w> </span><span class=n>frame</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>x0y20h296x0y40h296</span><span class=o>]</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>x0y20h296x0y40h296</span><span class=o>]</span><span class=w></span>
 
 <span class=o>&gt;</span><span class=n>T</span><span class=w></span>
 <span class=p>;</span><span class=w> </span><span class=k>get</span><span class=w> </span><span class=n>telemetry</span><span class=w> </span><span class=n>sensor</span><span class=w> </span><span class=k>values</span><span class=w></span>
@@ -510,21 +508,21 @@
 <span class=k>if</span><span class=w> </span><span class=n>upsecs</span><span class=o>%</span><span class=n>tper</span><span class=o>==</span><span class=mi>0</span><span class=w></span>
 <span class=k>then</span><span class=w></span>
 <span class=n>dp2</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>f1p7x0y5</span><span class=o>]%</span><span class=n>temp</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>tunit</span><span class=o>%</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p5x70y5</span><span class=o>]%</span><span class=n>hum</span><span class=o>%</span><span class=w> </span><span class=o>%%[</span><span class=n>x250y5t</span><span class=o>]</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p11x140y5</span><span class=o>]%</span><span class=n>press</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>punit</span><span class=o>%</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p10x30y25</span><span class=o>]</span><span class=nl>TVOC</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>tvoc</span><span class=o>%</span><span class=w> </span><span class=n>ppb</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p10x160y25</span><span class=o>]</span><span class=nl>eCO2</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>eco2</span><span class=o>%</span><span class=w> </span><span class=n>ppm</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p10c26l5</span><span class=o>]</span><span class=nl>ahum</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>ahum</span><span class=o>%</span><span class=w> </span><span class=n>g</span><span class=o>^</span><span class=n>m3</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>f1p7x0y5</span><span class=o>]%</span><span class=n>temp</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>tunit</span><span class=o>%</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>p5x70y5</span><span class=o>]%</span><span class=n>hum</span><span class=o>%</span><span class=w> </span><span class=o>%%[</span><span class=n>x250y5t</span><span class=o>]</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>p11x140y5</span><span class=o>]%</span><span class=n>press</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>punit</span><span class=o>%</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>p10x30y25</span><span class=o>]</span><span class=nl>TVOC</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>tvoc</span><span class=o>%</span><span class=w> </span><span class=n>ppb</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>p10x160y25</span><span class=o>]</span><span class=nl>eCO2</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>eco2</span><span class=o>%</span><span class=w> </span><span class=n>ppm</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>p10c26l5</span><span class=o>]</span><span class=nl>ahum</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>ahum</span><span class=o>%</span><span class=w> </span><span class=n>g</span><span class=o>^</span><span class=n>m3</span><span class=w></span>
 
 <span class=n>dp0</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l5</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=p>(</span><span class=n>Dach</span><span class=p>)</span><span class=w>  </span><span class=err>:</span><span class=w> </span><span class=o>%</span><span class=n>wr1</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l6</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>2</span><span class=w> </span><span class=p>(</span><span class=n>Garage</span><span class=p>)</span><span class=err>:</span><span class=w> </span><span class=o>%-</span><span class=n>wr3</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l7</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>3</span><span class=w> </span><span class=p>(</span><span class=n>Garten</span><span class=p>)</span><span class=err>:</span><span class=w> </span><span class=o>%-</span><span class=n>wr2</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l8</span><span class=o>]</span><span class=nl>Aussentemperatur</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>otmp</span><span class=o>%</span><span class=w> </span><span class=n>C</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>x170y95r120:30f2p6x185y100</span><span class=o>]</span><span class=w> </span><span class=o>%</span><span class=n>pwl</span><span class=o>%</span><span class=w> </span><span class=o>%%</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l5</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=p>(</span><span class=n>Dach</span><span class=p>)</span><span class=w>  </span><span class=err>:</span><span class=w> </span><span class=o>%</span><span class=n>wr1</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l6</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>2</span><span class=w> </span><span class=p>(</span><span class=n>Garage</span><span class=p>)</span><span class=err>:</span><span class=w> </span><span class=o>%-</span><span class=n>wr3</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l7</span><span class=o>]</span><span class=n>WR</span><span class=w> </span><span class=mi>3</span><span class=w> </span><span class=p>(</span><span class=n>Garten</span><span class=p>)</span><span class=err>:</span><span class=w> </span><span class=o>%-</span><span class=n>wr2</span><span class=o>%</span><span class=w> </span><span class=n>W</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>p25c1l8</span><span class=o>]</span><span class=nl>Aussentemperatur</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>otmp</span><span class=o>%</span><span class=w> </span><span class=n>C</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>x170y95r120:30f2p6x185y100</span><span class=o>]</span><span class=w> </span><span class=o>%</span><span class=n>pwl</span><span class=o>%</span><span class=w> </span><span class=o>%%</span><span class=w></span>
 <span class=p>;</span><span class=w> </span><span class=n>now</span><span class=w> </span><span class=k>update</span><span class=w> </span><span class=n>screen</span><span class=w></span>
-<span class=o>=&gt;%</span><span class=n>DT</span><span class=o>%</span><span class=w> </span><span class=o>[</span><span class=n>d</span><span class=o>]</span><span class=w></span>
+<span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>d</span><span class=o>]</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=o>&gt;</span><span class=n>E</span><span class=w></span>
@@ -553,26 +551,25 @@
 <span class="s s-Atom">res</span><span class=o>=</span><span class=mi>0</span>    
 <span class="s s-Atom">hr</span><span class=o>=</span><span class=mi>0</span>
 <span class="s s-Atom">t1</span><span class=o>=</span><span class=mi>0</span>
-<span class=nv>DT</span><span class="s s-Atom">=</span><span class=s2>&quot;DisplayText&quot;</span>
 <span class="s s-Atom">res</span><span class=o>=</span><span class=mi>0</span>
 
 <span class=o>&gt;</span><span class=nv>B</span>
 <span class="s s-Atom">-&gt;setoption64</span> <span class=mi>1</span>
 <span class="s s-Atom">tper</span><span class=o>=</span><span class=mi>30</span>
 
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [IzD0]</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [zG10352:5:40:-350:80:10080:0:100f3x360y40]100 %%[x360y115]0 %%</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [f1x100y25]Powerwall - 7 Tage[f1x360y75] 0 %%</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [G10353:5:140:-350:80:10080:0:5000f3x360y140]+5000 W[x360y215]0 W</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [f1x70y125]Volleinspeisung - 7 Tage[f1x360y180] 0 W</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p13x10y230]WR 1,2,3:</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p13x10y245]H-Einsp.:</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p13x10y260]H-Verbr.:</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p13x10y275]D-Einsp.:</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [d]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>IzD0</span><span class=p>]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">zG10352:</span><span class=mi>5</span><span class="s s-Atom">:</span><span class=mi>40</span><span class=p>:-</span><span class=mi>350</span><span class="s s-Atom">:</span><span class=mi>80</span><span class="s s-Atom">:</span><span class=mi>10080</span><span class="s s-Atom">:</span><span class=mi>0</span><span class="s s-Atom">:</span><span class=mi>100</span><span class="s s-Atom">f3x360y40</span><span class=p>]</span><span class=mi>100</span> <span class=c1>%%[x360y115]0 %%</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">f1x100y25</span><span class=p>]</span><span class=nv>Powerwall</span> <span class=o>-</span> <span class=mi>7</span> <span class=nv>Tage</span><span class=p>[</span><span class="s s-Atom">f1x360y75</span><span class=p>]</span> <span class=mi>0</span> <span class=c1>%%</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>G10353</span><span class="s s-Atom">:</span><span class=mi>5</span><span class="s s-Atom">:</span><span class=mi>140</span><span class=p>:-</span><span class=mi>350</span><span class="s s-Atom">:</span><span class=mi>80</span><span class="s s-Atom">:</span><span class=mi>10080</span><span class="s s-Atom">:</span><span class=mi>0</span><span class="s s-Atom">:</span><span class=mi>5000</span><span class="s s-Atom">f3x360y140</span><span class=p>]</span><span class=o>+</span><span class=mi>5000</span> <span class=nv>W</span><span class=p>[</span><span class="s s-Atom">x360y215</span><span class=p>]</span><span class=mi>0</span> <span class=nv>W</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">f1x70y125</span><span class=p>]</span><span class=nv>Volleinspeisung</span> <span class=o>-</span> <span class=mi>7</span> <span class=nv>Tage</span><span class=p>[</span><span class="s s-Atom">f1x360y180</span><span class=p>]</span> <span class=mi>0</span> <span class=nv>W</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p13x10y230</span><span class=p>]</span><span class=nv>WR</span> <span class=mi>1</span><span class=p>,</span><span class=mi>2</span><span class=p>,</span><span class=mi>3</span><span class="s s-Atom">:</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p13x10y245</span><span class=p>]</span><span class=nv>H</span><span class=o>-</span><span class=nv>Einsp</span><span class=p>.</span><span class="s s-Atom">:</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p13x10y260</span><span class=p>]</span><span class=nv>H</span><span class=o>-</span><span class=nv>Verbr</span><span class=p>.</span><span class="s s-Atom">:</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p13x10y275</span><span class=p>]</span><span class=nv>D</span><span class=o>-</span><span class=nv>Einsp</span><span class=p>.</span><span class="s s-Atom">:</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">d</span><span class=p>]</span>
 
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [Gr0:/g0_sav.txt:]</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [Gr1:/g1_sav.txt:]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Gr0</span><span class="s s-Atom">:/g0_sav</span><span class=p>.</span><span class=nn>txt</span><span class=p>:]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Gr1</span><span class="s s-Atom">:/g1_sav</span><span class=p>.</span><span class=nn>txt</span><span class=p>:]</span>
 
 <span class=nf>beep</span><span class=p>(</span><span class=o>-</span><span class=mi>25</span> <span class=mi>0</span><span class=p>)</span>
 <span class=nf>beep</span><span class=p>(</span><span class=mi>1000</span> <span class=mi>100</span><span class=p>)</span>
@@ -587,38 +584,38 @@
 <span class="s s-Atom">if</span> <span class="s s-Atom">upsecs</span><span class=c1>%60==0</span>
 <span class="s s-Atom">then</span>
 <span class="s s-Atom">dp2</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [f1p7x0y5]%temp% C</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [x0y20h400x250y5T][x350t][f1p10x70y5]%hum% %%</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p10x140y5]%press% hPa</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">f1p7x0y5</span><span class=p>]</span><span class=c1>%temp% C</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">x0y20h400x250y5T</span><span class=p>][</span><span class="s s-Atom">x350t</span><span class=p>][</span><span class="s s-Atom">f1p10x70y5</span><span class=p>]</span><span class=c1>%hum% %%</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p10x140y5</span><span class=p>]</span><span class=c1>%press% hPa</span>
 <span class="s s-Atom">dp0</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p5x360y75]%pwl% %%</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p6x360y180]%wr1%W</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [g0:%pwl%g1:%wr1%]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p5x360y75</span><span class=p>]</span><span class=c1>%pwl% %%</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p6x360y180</span><span class=p>]</span><span class=c1>%wr1%W</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">g0:</span><span class=c1>%pwl%g1:%wr1%]</span>
 
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p24x75y230] %wr1% W : %-wr2% W : %-wr3% W</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-10x75y245]%ezh% kWh</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-10x75y260]%vzh% kWh</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-10x75y275]%ez1% kWh</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p24x75y230</span><span class=p>]</span> <span class=c1>%wr1% W : %-wr2% W : %-wr3% W</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>10</span><span class="s s-Atom">x75y245</span><span class=p>]</span><span class=c1>%ezh% kWh</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>10</span><span class="s s-Atom">x75y260</span><span class=p>]</span><span class=c1>%vzh% kWh</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>10</span><span class="s s-Atom">x75y275</span><span class=p>]</span><span class=c1>%ez1% kWh</span>
 
 <span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">mezh</span><span class=o>*</span><span class=mi>7</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-10x150y245]: %t1% kWh</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>10</span><span class="s s-Atom">x150y245</span><span class=p>]</span><span class="s s-Atom">:</span> <span class=c1>%t1% kWh</span>
 <span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">mvzh</span><span class=o>*</span><span class=mi>7</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-10x150y260]: %t1% kWh</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>10</span><span class="s s-Atom">x150y260</span><span class=p>]</span><span class="s s-Atom">:</span> <span class=c1>%t1% kWh</span>
 <span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">mez1</span><span class=o>*</span><span class=mi>7</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-10x150y275]: %t1% kWh</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>10</span><span class="s s-Atom">x150y275</span><span class=p>]</span><span class="s s-Atom">:</span> <span class=c1>%t1% kWh</span>
 
 <span class="s s-Atom">dp1</span>
 <span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">ezh</span><span class=o>-</span><span class="s s-Atom">sezh</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p12x250y245]: %t1% kWh</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p12x250y245</span><span class=p>]</span><span class="s s-Atom">:</span> <span class=c1>%t1% kWh</span>
 <span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">vzh</span><span class=o>-</span><span class="s s-Atom">svzh</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p12x250y260]: %t1% kWh</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p12x250y260</span><span class=p>]</span><span class="s s-Atom">:</span> <span class=c1>%t1% kWh</span>
 <span class="s s-Atom">t1</span><span class=o>=</span><span class="s s-Atom">ez1</span><span class=o>-</span><span class="s s-Atom">sez1</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p12x250y275]: %t1% kWh</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p12x250y275</span><span class=p>]</span><span class="s s-Atom">:</span> <span class=c1>%t1% kWh</span>
 
 <span class="s s-Atom">dp0</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [f2p5x320y250] %otmp%C</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">f2p5x320y250</span><span class=p>]</span> <span class=c1>%otmp%C</span>
 
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [d]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">d</span><span class=p>]</span>
 <span class="s s-Atom">print</span> <span class="s s-Atom">updating</span> <span class="s s-Atom">display</span>
 <span class="s s-Atom">endif</span>
 
@@ -657,8 +654,8 @@
 <span class="s s-Atom">endif</span>
 
 <span class="s s-Atom">#savgraf</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [Gs0:/g0_sav.txt:]</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [Gs1:/g1_sav.txt:]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Gs0</span><span class="s s-Atom">:/g0_sav</span><span class=p>.</span><span class=nn>txt</span><span class=p>:]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Gs1</span><span class="s s-Atom">:/g1_sav</span><span class=p>.</span><span class=nn>txt</span><span class=p>:]</span>
 
 <span class=o>&gt;</span><span class="s s-Atom">m</span>
 <span class=nv>Wochenbericht</span> <span class=nv>Einspeisung</span> <span class="s s-Atom">und</span> <span class=nv>Verbrauch</span><span class=o>&lt;</span><span class="s s-Atom">br&gt;&lt;br</span><span class=o>&gt;</span>
@@ -690,20 +687,18 @@
 <span class="s s-Atom">pwl</span><span class=o>=</span><span class=mi>0</span>
 <span class="s s-Atom">tmp</span><span class=o>=</span><span class=mi>0</span>
 <span class="s s-Atom">dist</span><span class=o>=</span><span class=mi>0</span>
-<span class=p>;</span> <span class=nv>DisplayText</span> <span class="s s-Atom">substituted</span> <span class="s s-Atom">to</span> <span class="s s-Atom">save</span> <span class="s s-Atom">script</span> <span class="s s-Atom">space</span>
-<span class=nv>DT</span><span class="s s-Atom">=</span><span class=s2>&quot;DisplayText&quot;</span>
 <span class="s s-Atom">punit=</span><span class=s2>&quot;hPa&quot;</span>
 <span class="s s-Atom">tunit=</span><span class=s2>&quot;C&quot;</span>
 <span class="s s-Atom">hour</span><span class=o>=</span><span class=mi>0</span>
 
 <span class=o>&gt;</span><span class=nv>B</span>
-<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [z]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">z</span><span class=p>]</span>
 
 <span class=o>//</span> <span class="s s-Atom">define</span> <span class=mi>2</span> <span class="s s-Atom">graphs</span><span class=p>,</span> <span class=mf>2.</span> <span class="s s-Atom">has</span> <span class=mi>3</span> <span class="s s-Atom">tracks</span>
-<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [zCi1G2656:5:20:400:80:1440:-5000:5000:3Ci7f3x410y20]+5000 W[x410y95]-5000 W [Ci7f1x70y3] Zweirichtungsz~80hler - 24 Stunden</span>
-<span class="s s-Atom">=&gt;</span><span class=c1>%DT%  [Ci1G2657:5:120:400:80:1440:0:5000:3Ci7f3x410y120]+5000 W[x410y195]0 W [Ci7f1x70y103] Wechselrichter 1-3 - 24 Stunden</span>
-<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [Ci1G2658:5:120:400:80:1440:0:5000:16][Ci1G2659:5:120:400:80:1440:0:5000:5]</span>
-<span class="s s-Atom">=&gt;</span><span class=c1>%DT% [f1s1b0:260:260:100&amp;#8203;:50:2:11:4:2:Rel 1:b1:370:260:100&amp;#8203;:50:2:11:4:2:Dsp off:]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">zCi1G2656:</span><span class=mi>5</span><span class="s s-Atom">:</span><span class=mi>20</span><span class="s s-Atom">:</span><span class=mi>400</span><span class="s s-Atom">:</span><span class=mi>80</span><span class="s s-Atom">:</span><span class=mi>1440</span><span class=p>:-</span><span class=mi>5000</span><span class="s s-Atom">:</span><span class=mi>5000</span><span class="s s-Atom">:</span><span class=mi>3</span><span class=nv>Ci7f3x410y20</span><span class=p>]</span><span class=o>+</span><span class=mi>5000</span> <span class=nv>W</span><span class=p>[</span><span class="s s-Atom">x410y95</span><span class=p>]</span><span class=o>-</span><span class=mi>5000</span> <span class=nv>W</span> <span class=p>[</span><span class=nv>Ci7f1x70y3</span><span class=p>]</span> <span class=nv>Zweirichtungsz</span><span class="s s-Atom">~</span><span class=mi>80</span><span class="s s-Atom">hler</span> <span class=o>-</span> <span class=mi>24</span> <span class=nv>Stunden</span>
+<span class="s s-Atom">dt</span>  <span class=p>[</span><span class=nv>Ci1G2657</span><span class="s s-Atom">:</span><span class=mi>5</span><span class="s s-Atom">:</span><span class=mi>120</span><span class="s s-Atom">:</span><span class=mi>400</span><span class="s s-Atom">:</span><span class=mi>80</span><span class="s s-Atom">:</span><span class=mi>1440</span><span class="s s-Atom">:</span><span class=mi>0</span><span class="s s-Atom">:</span><span class=mi>5000</span><span class="s s-Atom">:</span><span class=mi>3</span><span class=nv>Ci7f3x410y120</span><span class=p>]</span><span class=o>+</span><span class=mi>5000</span> <span class=nv>W</span><span class=p>[</span><span class="s s-Atom">x410y195</span><span class=p>]</span><span class=mi>0</span> <span class=nv>W</span> <span class=p>[</span><span class=nv>Ci7f1x70y103</span><span class=p>]</span> <span class=nv>Wechselrichter</span> <span class=mi>1</span><span class=o>-</span><span class=mi>3</span> <span class=o>-</span> <span class=mi>24</span> <span class=nv>Stunden</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Ci1G2658</span><span class="s s-Atom">:</span><span class=mi>5</span><span class="s s-Atom">:</span><span class=mi>120</span><span class="s s-Atom">:</span><span class=mi>400</span><span class="s s-Atom">:</span><span class=mi>80</span><span class="s s-Atom">:</span><span class=mi>1440</span><span class="s s-Atom">:</span><span class=mi>0</span><span class="s s-Atom">:</span><span class=mi>5000</span><span class="s s-Atom">:</span><span class=mi>16</span><span class=p>][</span><span class=nv>Ci1G2659</span><span class="s s-Atom">:</span><span class=mi>5</span><span class="s s-Atom">:</span><span class=mi>120</span><span class="s s-Atom">:</span><span class=mi>400</span><span class="s s-Atom">:</span><span class=mi>80</span><span class="s s-Atom">:</span><span class=mi>1440</span><span class="s s-Atom">:</span><span class=mi>0</span><span class="s s-Atom">:</span><span class=mi>5000</span><span class="s s-Atom">:</span><span class=mi>5</span><span class=p>]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">f1s1b0:</span><span class=mi>260</span><span class="s s-Atom">:</span><span class=mi>260</span><span class="s s-Atom">:</span><span class=mi>100</span><span class="s s-Atom">&amp;#</span><span class=mi>8203</span><span class=p>;</span><span class="s s-Atom">:</span><span class=mi>50</span><span class="s s-Atom">:</span><span class=mi>2</span><span class="s s-Atom">:</span><span class=mi>11</span><span class="s s-Atom">:</span><span class=mi>4</span><span class="s s-Atom">:</span><span class=mi>2</span><span class="s s-Atom">:</span><span class=nv>Rel</span> <span class=mi>1</span><span class="s s-Atom">:b1:</span><span class=mi>370</span><span class="s s-Atom">:</span><span class=mi>260</span><span class="s s-Atom">:</span><span class=mi>100</span><span class="s s-Atom">&amp;#</span><span class=mi>8203</span><span class=p>;</span><span class="s s-Atom">:</span><span class=mi>50</span><span class="s s-Atom">:</span><span class=mi>2</span><span class="s s-Atom">:</span><span class=mi>11</span><span class="s s-Atom">:</span><span class=mi>4</span><span class="s s-Atom">:</span><span class=mi>2</span><span class="s s-Atom">:</span><span class=nv>Dsp</span> <span class=nn>off</span><span class=p>:]</span>
 <span class="s s-Atom">=&gt;mp3volume</span> <span class=mi>100</span>
 <span class="s s-Atom">=&gt;mp3track</span> <span class=mi>4</span>
 
@@ -734,23 +729,23 @@
 <span class="s s-Atom">if</span> <span class="s s-Atom">upsecs</span><span class=c1>%tper==0</span>
 <span class="s s-Atom">then</span>
 <span class="s s-Atom">dp2</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [f1Ci3x40y260w30Ci1]</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [Ci7x120y220t]</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [Ci7x180y220T]</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [Ci7p8x120y240]%temp% %tunit%</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [Ci7x120y260]%press% %punit%</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [Ci7x120y280]%dist% mm</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">f1Ci3x40y260w30Ci1</span><span class=p>]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Ci7x120y220t</span><span class=p>]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Ci7x180y220T</span><span class=p>]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Ci7p8x120y240</span><span class=p>]</span><span class=c1>%temp% %tunit%</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Ci7x120y260</span><span class=p>]</span><span class=c1>%press% %punit%</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class=nv>Ci7x120y280</span><span class=p>]</span><span class=c1>%dist% mm</span>
 <span class="s s-Atom">dp0</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [g0:%zwz%g1:%wr1%g2:%-wr2%g3:%-wr3%]</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">g0:</span><span class=c1>%zwz%g1:%wr1%g2:%-wr2%g3:%-wr3%]</span>
 <span class="s s-Atom">if</span> <span class="s s-Atom">zwz0</span>
 <span class="s s-Atom">then</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-8x410y55Ci2Bi0]%zwz% W</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>8</span><span class="s s-Atom">x410y55Ci2Bi0</span><span class=p>]</span><span class=c1>%zwz% W</span>
 <span class="s s-Atom">else</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-8x410y55Ci3Bi0]%zwz% W</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>8</span><span class="s s-Atom">x410y55Ci3Bi0</span><span class=p>]</span><span class=c1>%zwz% W</span>
 <span class="s s-Atom">endif</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-8x410y140Ci3Bi0]%wr1% W</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-8x410y155Ci16Bi0]%-wr2% W</span>
-<span class="s s-Atom">-&gt;</span><span class=c1>%DT% [p-8x410y170Ci5Bi0]%-wr3% W</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>8</span><span class="s s-Atom">x410y140Ci3Bi0</span><span class=p>]</span><span class=c1>%wr1% W</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>8</span><span class="s s-Atom">x410y155Ci16Bi0</span><span class=p>]</span><span class=c1>%-wr2% W</span>
+<span class="s s-Atom">dt</span> <span class=p>[</span><span class="s s-Atom">p</span><span class=o>-</span><span class=mi>8</span><span class="s s-Atom">x410y170Ci5Bi0</span><span class=p>]</span><span class=c1>%-wr3% W</span>
 <span class="s s-Atom">endif</span>
 
 <span class=p>;</span> <span class="s s-Atom">chime</span> <span class="s s-Atom">every</span> <span class="s s-Atom">full</span> <span class="s s-Atom">hour</span>
