@@ -482,7 +482,85 @@
     <span class=nt>qos</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
     <span class=nt>payload_available</span><span class=p>:</span> <span class=s>&quot;Online&quot;</span>
     <span class=nt>payload_not_available</span><span class=p>:</span> <span class=s>&quot;Offline&quot;</span>
-</code></pre></div> <!-- tabs:end --> <h3 id=zigbee-devices>Zigbee Devices<a class=headerlink href=#zigbee-devices title="Permanent link">~</a></h3> <!-- tabs:start --> <div class="admonition example"> <p class=admonition-title>Dimmable Light</p> </div> <p>This configuration is for a dimmable light reporting on <code>0xE1F9</code> using endpoint 1, cluster 8 for brightness. <code>ZbRead</code> part in the template is needed to always update the brightness values.</p> <div class=codehilite><pre><span></span><code><span class=c1># Example configuration.yaml entry</span>
+</code></pre></div> <!-- tabs:end --> <!-- tabs:start --> <div class="admonition example"> <p class=admonition-title>Covers</p> </div> <p>For shutter position to persist in Home Assistant through device reboots, execute <code>PowerRetain 1</code>.</p> <p>These sample configurations should allow the shutter work in Home Assistant. This is only an example and may need further modification to work in your environment.</p> <p>This example uses a new configuration for roller shutters with options for positioning. It assumes that <code>%prefix%/%topic%/</code> is configured in the Tasmota Full Topic MQTT parameter. </p> <div class=codehilite><pre><span></span><code><span class=nt>cover</span><span class=p>:</span>
+  <span class="p p-Indicator">-</span> <span class=nt>platform</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">mqtt</span>
+    <span class=nt>name</span><span class=p>:</span> <span class=s>&quot;Balcony</span><span class=nv> </span><span class=s>Blinds&quot;</span>
+    <span class=nt>availability_topic</span><span class=p>:</span> <span class=s>&quot;tele/%topic%/LWT&quot;</span>
+    <span class=nt>payload_available</span><span class=p>:</span> <span class=s>&quot;Online&quot;</span>
+    <span class=nt>payload_not_available</span><span class=p>:</span> <span class=s>&quot;Offline&quot;</span>
+    <span class=nt>position_topic</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">stat/%topic%/Shutter1</span>
+    <span class=nt>position_open</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
+    <span class=nt>position_closed</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+    <span class=nt>set_position_topic</span><span class=p>:</span> <span class=s>&quot;cmnd/%topic%/ShutterPosition1&quot;</span>
+    <span class=nt>command_topic</span><span class=p>:</span> <span class=s>&quot;cmnd/%topic%/Backlog&quot;</span>
+    <span class=nt>payload_open</span><span class=p>:</span> <span class=s>&quot;ShutterOpen1&quot;</span>
+    <span class=nt>payload_close</span><span class=p>:</span> <span class=s>&quot;ShutterClose1&quot;</span>
+    <span class=nt>payload_stop</span><span class=p>:</span> <span class=s>&quot;ShutterStop1&quot;</span>
+    <span class=nt>retain</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class=nt>optimistic</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class=nt>qos</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+</code></pre></div> <p>Check <a href=https://github.com/stefanbode/Sonoff-Tasmota/issues/130>Issue 130</a> for more information about this configuration.</p> <p>Another integration example: </p> <div class=codehilite><pre><span></span><code><span class=nt>cover</span><span class=p>:</span>
+  <span class="p p-Indicator">-</span> <span class=nt>platform</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">mqtt</span>
+    <span class=nt>name</span><span class=p>:</span> <span class=s>&quot;Test&quot;</span>
+    <span class=nt>availability_topic</span><span class=p>:</span> <span class=s>&quot;tele/%topic%/LWT&quot;</span>
+    <span class=nt>state_topic</span><span class=p>:</span> <span class=s>&quot;stat/%topic%/RESULT&quot;</span>
+    <span class=nt>command_topic</span><span class=p>:</span> <span class=s>&quot;cmnd/%topic%/Backlog&quot;</span>
+    <span class=nt>value_template</span><span class=p>:</span> <span class=s>&#39;{{</span><span class=nv> </span><span class=s>value</span><span class=nv> </span><span class=s>|</span><span class=nv> </span><span class=s>int</span><span class=nv> </span><span class=s>}}&#39;</span>
+    <span class=nt>qos</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class=nt>retain</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class=nt>payload_open</span><span class=p>:</span> <span class=s>&quot;ShutterOpen1&quot;</span>
+    <span class=nt>payload_close</span><span class=p>:</span> <span class=s>&quot;ShutterClose1&quot;</span>
+    <span class=nt>payload_stop</span><span class=p>:</span> <span class=s>&quot;ShutterStop1&quot;</span>
+    <span class=nt>state_open</span><span class=p>:</span> <span class=s>&quot;ON&quot;</span>
+    <span class=nt>state_closed</span><span class=p>:</span> <span class=s>&quot;OFF&quot;</span>
+    <span class=nt>payload_available</span><span class=p>:</span> <span class=s>&quot;Online&quot;</span>
+    <span class=nt>payload_not_available</span><span class=p>:</span> <span class=s>&quot;Offline&quot;</span>
+    <span class=nt>optimistic</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class=nt>tilt_command_topic</span><span class=p>:</span> <span class=s>&#39;cmnd/%topic%/ShutterPosition1&#39;</span>
+    <span class=nt>tilt_status_topic</span><span class=p>:</span> <span class=s>&#39;cmnd/%topic%/ShutterPosition1&#39;</span>
+    <span class=nt>set_position_topic</span><span class=p>:</span> <span class=s>&#39;cmnd/%topic%/ShutterPosition1&#39;</span>
+    <span class=nt>position_topic</span><span class=p>:</span> <span class=s>&quot;stat/%topic%/SHUTTER1&quot;</span>
+    <span class=nt>tilt_min</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+    <span class=nt>tilt_max</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
+    <span class=nt>tilt_closed_value</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+    <span class=nt>tilt_opened_value</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
+</code></pre></div> <p>Integration example with position updated during movement (Tasmota versions &gt;= v8.1.0.5): </p> <div class=codehilite><pre><span></span><code><span class=nt>cover</span><span class=p>:</span>
+  <span class="p p-Indicator">-</span> <span class=nt>platform</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">mqtt</span>
+    <span class=nt>name</span><span class=p>:</span> <span class=s>&quot;Balcony</span><span class=nv> </span><span class=s>Blinds&quot;</span>
+    <span class=nt>availability_topic</span><span class=p>:</span> <span class=s>&quot;tele/%topic%/LWT&quot;</span>
+    <span class=nt>payload_available</span><span class=p>:</span> <span class=s>&quot;Online&quot;</span>
+    <span class=nt>payload_not_available</span><span class=p>:</span> <span class=s>&quot;Offline&quot;</span>
+    <span class=nt>position_topic</span><span class=p>:</span> <span class=s>&quot;stat/%topic%/RESULT&quot;</span>
+    <span class=nt>value_template</span><span class=p>:</span> <span class="p p-Indicator">&gt;</span>
+      <span class=no>{% if (&#39;Shutter1&#39; in value_json) and (&#39;Position&#39; in value_json.Shutter1) %}</span>
+        <span class=no>{{ value_json.Shutter1.Position }}</span>
+      <span class=no>{% else %}</span>
+        <span class=no>{% if is_state(&#39;cover.balcony_blinds&#39;, &#39;unknown&#39;) %}</span>
+          <span class=no>50</span>
+        <span class=no>{% else %}</span>
+          <span class=no>{{ state_attr(&#39;cover.balcony_blinds&#39;,&#39;current_position&#39;) }}</span>
+        <span class=no>{% endif %}</span>
+      <span class=no>{% endif %}    </span>
+    <span class=nt>position_open</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
+    <span class=nt>position_closed</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+    <span class=nt>set_position_topic</span><span class=p>:</span> <span class=s>&quot;cmnd/%topic%/ShutterPosition1&quot;</span>
+    <span class=nt>command_topic</span><span class=p>:</span> <span class=s>&quot;cmnd/%topic%/Backlog&quot;</span>
+    <span class=nt>payload_open</span><span class=p>:</span> <span class=s>&quot;ShutterOpen1&quot;</span>
+    <span class=nt>payload_close</span><span class=p>:</span> <span class=s>&quot;ShutterClose1&quot;</span>
+    <span class=nt>payload_stop</span><span class=p>:</span> <span class=s>&quot;ShutterStop1&quot;</span>
+    <span class=nt>retain</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class=nt>optimistic</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class=nt>qos</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+</code></pre></div> <p>In addition, add to your home assistant start up automation a query for the current shutter position:</p> <div class=codehilite><pre><span></span><code><span class="p p-Indicator">-</span> <span class=nt>alias</span><span class=p>:</span> <span class=s>&quot;Power</span><span class=nv> </span><span class=s>state</span><span class=nv> </span><span class=s>on</span><span class=nv> </span><span class=s>HA</span><span class=nv> </span><span class=s>start-up&quot;</span>
+  <span class=nt>trigger</span><span class=p>:</span>
+    <span class=nt>platform</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">homeassistant</span>
+    <span class=nt>event</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">start</span>
+  <span class=nt>action</span><span class=p>:</span>
+    <span class="p p-Indicator">-</span> <span class=nt>service</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">mqtt.publish</span>
+      <span class=nt>data</span><span class=p>:</span>
+        <span class=nt>topic</span><span class=p>:</span> <span class=s>&quot;cmnd/%shutters</span><span class=nv> </span><span class=s>grouptopic%/shutterposition&quot;</span>
+        <span class=nt>payload</span><span class=p>:</span> <span class=s>&quot;&quot;</span>       
+</code></pre></div> <h3 id=zigbee-devices>Zigbee Devices<a class=headerlink href=#zigbee-devices title="Permanent link">~</a></h3> <!-- tabs:start --> <div class="admonition example"> <p class=admonition-title>Dimmable Light</p> </div> <p>This configuration is for a dimmable light reporting on <code>0xE1F9</code> using endpoint 1, cluster 8 for brightness. <code>ZbRead</code> part in the template is needed to always update the brightness values.</p> <div class=codehilite><pre><span></span><code><span class=c1># Example configuration.yaml entry</span>
 <span class=nt>light</span><span class=p>:</span>
   <span class="p p-Indicator">-</span> <span class=nt>platform</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">mqtt</span>
     <span class=nt>schema</span><span class=p>:</span> <span class="l l-Scalar l-Scalar-Plain">template</span>
