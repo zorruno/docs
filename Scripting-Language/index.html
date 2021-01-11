@@ -36,7 +36,7 @@
 <span class=o>=</span><span class=p>(</span><span class=n>svar</span><span class=p>)</span>
 
 <span class=c1>#subroutine</span>
-<span class=o>=&gt;</span><span class=nb>print</span> <span class=n>subroutine</span> <span class=n>was</span> <span class=n>executed</span>
+<span class=nb>print</span> <span class=n>subroutine</span> <span class=n>was</span> <span class=n>executed</span>
 </code></pre></div> <p><strong>For loop</strong> (loop count must not be less than 1, no direct nesting supported)</p> <div class=codehilite><pre><span></span><code><span class=k>for</span> <span class=k>var</span> <span class=o>&lt;</span><span class=n>from</span><span class=o>&gt;</span> <span class=o>&lt;</span><span class=n>to</span><span class=o>&gt;</span> <span class=o>&lt;</span><span class=n>inc</span><span class=o>&gt;</span>  
 <span class=n>next</span>  
 </code></pre></div> <p><strong>Switch selector</strong> (numeric or string)</p> <div class=codehilite><pre><span></span><code><span class=err>switch x  </span>
@@ -167,19 +167,19 @@
 
 <span class=o>&gt;</span><span class=n>B</span><span class=w></span>
 <span class=n>string</span><span class=o>=</span><span class=n>hello</span><span class=o>+</span><span class=ss>&quot;how are you?&quot;</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>BOOT</span><span class=w> </span><span class=n>executed</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>hello</span><span class=o>%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=n>BOOT</span><span class=w> </span><span class=n>executed</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>hello</span><span class=o>%</span><span class=w></span>
 <span class=o>=&gt;</span><span class=n>mp3track</span><span class=w> </span><span class=mi>1</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>list</span><span class=w> </span><span class=n>gpio</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=n>definitions</span><span class=w></span>
 <span class=k>for</span><span class=w> </span><span class=n>cnt</span><span class=w> </span><span class=mi>0</span><span class=w> </span><span class=mi>16</span><span class=w> </span><span class=mi>1</span><span class=w></span>
 <span class=n>tmp</span><span class=o>=</span><span class=n>pd</span><span class=o>[</span><span class=n>cnt</span><span class=o>]</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>cnt</span><span class=o>%</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>cnt</span><span class=o>%</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w></span>
 <span class=k>next</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=k>get</span><span class=w> </span><span class=n>gpio</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=k>for</span><span class=w> </span><span class=n>relais</span><span class=w> </span><span class=mi>1</span><span class=w></span>
 <span class=n>tmp</span><span class=o>=</span><span class=n>pn</span><span class=o>[</span><span class=n>21</span><span class=o>]</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>relais</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>on</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=n>relais</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>on</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=o>%</span><span class=n>tmp</span><span class=o>%</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>pulse</span><span class=w> </span><span class=n>relais</span><span class=w> </span><span class=k>over</span><span class=w> </span><span class=n>raw</span><span class=w> </span><span class=n>gpio</span><span class=w></span>
 <span class=n>spin</span><span class=p>(</span><span class=n>tmp</span><span class=w> </span><span class=mi>1</span><span class=p>)</span><span class=w></span>
@@ -187,7 +187,7 @@
 <span class=n>spin</span><span class=p>(</span><span class=n>tmp</span><span class=w> </span><span class=mi>0</span><span class=p>)</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>raw</span><span class=w> </span><span class=n>pin</span><span class=w> </span><span class=k>level</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>level</span><span class=w> </span><span class=k>of</span><span class=w> </span><span class=n>gpio1</span><span class=w> </span><span class=o>%</span><span class=n>pin</span><span class=o>[</span><span class=n>1</span><span class=o>]%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=k>level</span><span class=w> </span><span class=k>of</span><span class=w> </span><span class=n>gpio1</span><span class=w> </span><span class=o>%</span><span class=n>pin</span><span class=o>[</span><span class=n>1</span><span class=o>]%</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>pulse</span><span class=w> </span><span class=k>over</span><span class=w> </span><span class=n>tasmota</span><span class=w> </span><span class=n>cmd</span><span class=w></span>
 <span class=o>=&gt;</span><span class=nf>power</span><span class=w> </span><span class=mi>1</span><span class=w></span>
@@ -206,15 +206,15 @@
 <span class=n>movav</span><span class=o>=</span><span class=n>hum</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>show</span><span class=w> </span><span class=n>filtered</span><span class=w> </span><span class=n>results</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>median</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>movav</span><span class=o>%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>median</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>movav</span><span class=o>%</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>chg</span><span class=o>[</span><span class=n>rssi</span><span class=o>]&gt;</span><span class=mi>0</span><span class=w></span>
-<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>rssi</span><span class=w> </span><span class=n>changed</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=o>%</span><span class=n>rssi</span><span class=o>%</span><span class=w></span>
+<span class=k>then</span><span class=w> </span><span class=k>print</span><span class=w> </span><span class=n>rssi</span><span class=w> </span><span class=n>changed</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=o>%</span><span class=n>rssi</span><span class=o>%</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>temp</span><span class=o>&gt;</span><span class=mi>30</span><span class=w></span>
 <span class=ow>and</span><span class=w> </span><span class=n>hum</span><span class=o>&gt;</span><span class=mi>70</span><span class=w></span>
-<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>damn</span><span class=w> </span><span class=n>hot</span><span class=err>!</span><span class=w></span>
+<span class=k>then</span><span class=w> </span><span class=k>print</span><span class=w> </span><span class=n>damn</span><span class=w> </span><span class=n>hot</span><span class=err>!</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=o>=</span><span class=n>#siren</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w></span>
@@ -248,23 +248,23 @@
 <span class=p>;</span><span class=w> </span><span class=n>stop</span><span class=w> </span><span class=n>timer</span><span class=w> </span><span class=k>after</span><span class=w> </span><span class=n>expired</span><span class=w></span>
 <span class=k>if</span><span class=w> </span><span class=n>timer1</span><span class=o>==</span><span class=mi>0</span><span class=w></span>
 <span class=k>then</span><span class=w> </span><span class=n>timer1</span><span class=o>=-</span><span class=mi>1</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>timer1</span><span class=w> </span><span class=n>expired</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=n>timer1</span><span class=w> </span><span class=n>expired</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>auto</span><span class=w> </span><span class=n>counter</span><span class=w> </span><span class=k>with</span><span class=w> </span><span class=n>restart</span><span class=w></span>
 <span class=k>if</span><span class=w> </span><span class=nf>count</span><span class=o>=</span><span class=mi>10</span><span class=w></span>
-<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=mi>10</span><span class=w> </span><span class=n>seconds</span><span class=w> </span><span class=k>over</span><span class=w></span>
+<span class=k>then</span><span class=w> </span><span class=k>print</span><span class=w> </span><span class=mi>10</span><span class=w> </span><span class=n>seconds</span><span class=w> </span><span class=k>over</span><span class=w></span>
 <span class=nf>count</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>upsecs</span><span class=o>%</span><span class=mi>5</span><span class=o>==</span><span class=mi>0</span><span class=w></span>
-<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>upsecs</span><span class=o>%</span><span class=w>  </span><span class=p>(</span><span class=k>every</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>seconds</span><span class=p>)</span><span class=w></span>
+<span class=k>then</span><span class=w> </span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>upsecs</span><span class=o>%</span><span class=w>  </span><span class=p>(</span><span class=k>every</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>seconds</span><span class=p>)</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=ow>not</span><span class=w> </span><span class=n>recommended</span><span class=w> </span><span class=k>for</span><span class=w> </span><span class=n>reliable</span><span class=w> </span><span class=n>timers</span><span class=w></span>
 <span class=n>timer</span><span class=o>+=</span><span class=mi>1</span><span class=w></span>
 <span class=k>if</span><span class=w> </span><span class=n>timer</span><span class=o>&gt;=</span><span class=mi>5</span><span class=w></span>
-<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>seconds</span><span class=w> </span><span class=k>over</span><span class=w> </span><span class=p>(</span><span class=n>may</span><span class=w> </span><span class=n>be</span><span class=p>)</span><span class=w></span>
+<span class=k>then</span><span class=w> </span><span class=k>print</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>seconds</span><span class=w> </span><span class=k>over</span><span class=w> </span><span class=p>(</span><span class=n>may</span><span class=w> </span><span class=n>be</span><span class=p>)</span><span class=w></span>
 <span class=n>timer</span><span class=o>=</span><span class=mi>0</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
@@ -280,7 +280,7 @@
 <span class=n>dp0</span><span class=w></span>
 <span class=n>dt</span><span class=w> </span><span class=o>[</span><span class=n>c1l1f1s2p20</span><span class=o>]</span><span class=w> </span><span class=n>dimmer</span><span class=o>=%</span><span class=n>dimmer</span><span class=o>%</span><span class=w></span>
 
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>upsecs</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>uptime</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=nc>time</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunrise</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunset</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>tstamp</span><span class=o>%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>upsecs</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>uptime</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=nc>time</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunrise</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>sunset</span><span class=o>%</span><span class=w> </span><span class=o>%</span><span class=n>tstamp</span><span class=o>%</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=nc>time</span><span class=o>&gt;</span><span class=n>sunset</span><span class=w></span>
 <span class=ow>and</span><span class=w> </span><span class=nc>time</span><span class=o>&lt;</span><span class=n>sunrise</span><span class=w></span>
@@ -311,7 +311,7 @@
 
 <span class=p>;</span><span class=w> </span><span class=nf>var</span><span class=w> </span><span class=n>has</span><span class=w> </span><span class=n>been</span><span class=w> </span><span class=n>updated</span><span class=w></span>
 <span class=k>if</span><span class=w> </span><span class=n>upd</span><span class=o>[</span><span class=n>hello</span><span class=o>]&gt;</span><span class=mi>0</span><span class=w></span>
-<span class=k>then</span><span class=w> </span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>hello</span><span class=o>%</span><span class=w></span>
+<span class=k>then</span><span class=w> </span><span class=k>print</span><span class=w> </span><span class=o>%</span><span class=n>hello</span><span class=o>%</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>send</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=n>Thingspeak</span><span class=w> </span><span class=k>every</span><span class=w> </span><span class=mi>60</span><span class=w> </span><span class=n>seconds</span><span class=w></span>
@@ -334,13 +334,13 @@
 <span class=k>if</span><span class=w> </span><span class=n>chg</span><span class=o>[</span><span class=n>hour</span><span class=o>]&gt;</span><span class=mi>0</span><span class=w></span>
 <span class=k>then</span><span class=w></span>
 <span class=p>;</span><span class=w> </span><span class=n>exactly</span><span class=w> </span><span class=k>every</span><span class=w> </span><span class=k>hour</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>full</span><span class=w> </span><span class=k>hour</span><span class=w> </span><span class=n>reached</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=k>full</span><span class=w> </span><span class=k>hour</span><span class=w> </span><span class=n>reached</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=k>if</span><span class=w> </span><span class=n>time5</span><span class=w> </span><span class=err>{</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>more</span><span class=w> </span><span class=k>then</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>minutes</span><span class=w> </span><span class=k>after</span><span class=w> </span><span class=n>midnight</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=n>more</span><span class=w> </span><span class=k>then</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>minutes</span><span class=w> </span><span class=k>after</span><span class=w> </span><span class=n>midnight</span><span class=w></span>
 <span class=err>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=err>{</span><span class=w></span>
-<span class=o>=</span><span class=k>print</span><span class=w> </span><span class=k>less</span><span class=w> </span><span class=k>then</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>minutes</span><span class=w> </span><span class=k>after</span><span class=w> </span><span class=n>midnight</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=k>less</span><span class=w> </span><span class=k>then</span><span class=w> </span><span class=mi>5</span><span class=w> </span><span class=n>minutes</span><span class=w> </span><span class=k>after</span><span class=w> </span><span class=n>midnight</span><span class=w></span>
 <span class=err>}</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>publish</span><span class=w> </span><span class=nf>abs</span><span class=w> </span><span class=n>hum</span><span class=w> </span><span class=k>every</span><span class=w> </span><span class=n>teleperiod</span><span class=w> </span><span class=nc>time</span><span class=w></span>
@@ -357,27 +357,27 @@
 <span class=p>;</span><span class=n>switch</span><span class=w> </span><span class=k>case</span><span class=w> </span><span class=k>state</span><span class=w> </span><span class=n>machine</span><span class=w></span>
 <span class=n>switch</span><span class=w> </span><span class=k>state</span><span class=w></span>
 <span class=k>case</span><span class=w> </span><span class=mi>1</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w> </span><span class=p>,</span><span class=w> </span><span class=k>start</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w> </span><span class=p>,</span><span class=w> </span><span class=k>start</span><span class=w></span>
 <span class=k>state</span><span class=o>+=</span><span class=mi>1</span><span class=w></span>
 <span class=k>case</span><span class=w> </span><span class=mi>2</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w></span>
 <span class=k>state</span><span class=o>+=</span><span class=mi>1</span><span class=w></span>
 <span class=k>case</span><span class=w> </span><span class=mi>3</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w>  </span><span class=p>,</span><span class=w> </span><span class=n>reset</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=k>state</span><span class=o>=%</span><span class=k>state</span><span class=o>%</span><span class=w>  </span><span class=p>,</span><span class=w> </span><span class=n>reset</span><span class=w></span>
 <span class=k>state</span><span class=o>=</span><span class=mi>1</span><span class=w></span>
 <span class=n>ends</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>subroutines</span><span class=w></span>
 <span class=n>#sub1</span><span class=p>(</span><span class=n>string</span><span class=p>)</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=nl>sub1</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>string</span><span class=o>%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=nl>sub1</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>string</span><span class=o>%</span><span class=w></span>
 <span class=n>#sub2</span><span class=p>(</span><span class=n>param</span><span class=p>)</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=nl>sub2</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>param</span><span class=o>%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=nl>sub2</span><span class=p>:</span><span class=w> </span><span class=o>%</span><span class=n>param</span><span class=o>%</span><span class=w></span>
 
 <span class=n>#sendmail</span><span class=p>(</span><span class=n>string</span><span class=p>)</span><span class=w></span>
 <span class=o>=&gt;</span><span class=n>sendmail</span><span class=w> </span><span class=o>[</span><span class=n>smtp.gmail.com:465:user:passwd:&lt;sender@gmail.de:&lt;rec@gmail.de:alarm</span><span class=o>]</span><span class=w> </span><span class=o>%</span><span class=n>string</span><span class=o>%</span><span class=w></span>
 
 <span class=o>&gt;</span><span class=n>E</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>event</span><span class=w> </span><span class=n>executed</span><span class=err>!</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=n>event</span><span class=w> </span><span class=n>executed</span><span class=err>!</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=n>Assign</span><span class=w> </span><span class=n>temperature</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=n>a</span><span class=w> </span><span class=n>Zigbee</span><span class=w> </span><span class=n>sensor</span><span class=w></span>
 <span class=n>zigbeetemp</span><span class=o>=</span><span class=n>ZbReceived#0x2342#Temperature</span><span class=w></span>
@@ -397,7 +397,7 @@
 <span class=p>;</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=n>change</span><span class=w> </span><span class=n>needs</span><span class=w> </span><span class=mi>2</span><span class=w> </span><span class=n>string</span><span class=w> </span><span class=n>vars</span><span class=w></span>
 <span class=k>if</span><span class=w> </span><span class=n>col</span><span class=o>!=</span><span class=n>ocol</span><span class=w></span>
 <span class=k>then</span><span class=w> </span><span class=n>ocol</span><span class=o>=</span><span class=n>col</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=n>changed</span><span class=w>  </span><span class=o>%</span><span class=n>col</span><span class=o>%</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=n>changed</span><span class=w>  </span><span class=o>%</span><span class=n>col</span><span class=o>%</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
 
 <span class=p>;</span><span class=w> </span><span class=ow>or</span><span class=w> </span><span class=k>check</span><span class=w> </span><span class=n>change</span><span class=w> </span><span class=k>of</span><span class=w> </span><span class=n>color</span><span class=w> </span><span class=n>channels</span><span class=w></span>
@@ -416,7 +416,7 @@
 <span class=o>=</span><span class=n>color</span><span class=w> </span><span class=o>%</span><span class=n>col</span><span class=o>%</span><span class=w></span>
 
 <span class=o>&gt;</span><span class=n>R</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>restarting</span><span class=w> </span><span class=n>now</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=n>restarting</span><span class=w> </span><span class=n>now</span><span class=w></span>
 </code></pre></div> <h3 id=sensor-logging>Sensor Logging<a class=headerlink href=#sensor-logging title="Permanent link">~</a></h3> <div class=codehilite><pre><span></span><code><span class=p>;</span> <span class=n>define</span> <span class=n>all</span> <span class=n>vars</span> <span class=n>here</span>
 <span class=p>;</span> <span class=n>reserve</span> <span class=n>large</span> <span class=n>strings</span>
 <span class=o>&gt;</span><span class=n>D</span> <span class=mi>48</span>
@@ -441,7 +441,7 @@
 <span class=n>res</span><span class=o>=</span><span class=n>fr</span><span class=p>(</span><span class=nb>str</span> <span class=n>fr</span><span class=p>)</span>
 <span class=k>if</span> <span class=n>res</span><span class=o>&gt;</span><span class=mi>0</span>
 <span class=n>then</span>
-<span class=o>=&gt;</span><span class=nb>print</span> <span class=o>%</span><span class=n>cnt</span><span class=o>%</span> <span class=p>:</span> <span class=o>%</span><span class=nb>str</span><span class=o>%</span>
+<span class=nb>print</span> <span class=o>%</span><span class=n>cnt</span><span class=o>%</span> <span class=p>:</span> <span class=o>%</span><span class=nb>str</span><span class=o>%</span>
 <span class=k>else</span>
 <span class=k>break</span>
 <span class=n>endif</span>
@@ -647,7 +647,7 @@
 <span class="s s-Atom">and</span> <span class="s s-Atom">wd</span><span class=o>==</span><span class=mi>1</span>
 <span class="s s-Atom">then</span>
 <span class="s s-Atom">=&gt;sendmail</span> <span class=p>[</span><span class="s s-Atom">*:*:*:*:*:user</span><span class=p>.</span><span class="s s-Atom">tasmota@gmail</span><span class=p>.</span><span class=nn>com</span><span class=p>:</span> <span class=nv>Wochenbericht</span><span class=p>]</span><span class=o>*</span>
-<span class="s s-Atom">print</span> <span class="s s-Atom">sening</span> <span class="s s-Atom">email</span>
+<span class="s s-Atom">print</span> <span class="s s-Atom">sending</span> <span class="s s-Atom">email</span>
 <span class="s s-Atom">endif</span>
 
 
@@ -1000,7 +1000,7 @@
 <span class=ow>and</span><span class=w> </span><span class=n>timer</span><span class=o>&lt;</span><span class=mi>30</span><span class=w></span>
 <span class=k>then</span><span class=w></span>
 <span class=p>;</span><span class=w> </span><span class=n>short</span><span class=w> </span><span class=n>press</span><span class=w></span>
-<span class=p>;</span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=n>short</span><span class=w> </span><span class=n>press</span><span class=w></span>
+<span class=p>;</span><span class=k>print</span><span class=w> </span><span class=n>short</span><span class=w> </span><span class=n>press</span><span class=w></span>
 <span class=n>toggle</span><span class=o>^=</span><span class=mi>1</span><span class=w></span>
 <span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span><span class=w> </span><span class=n>power1</span><span class=w> </span><span class=o>%</span><span class=n>toggle</span><span class=o>%</span><span class=w></span>
 <span class=n>endif</span><span class=w></span>
@@ -1012,7 +1012,7 @@
 <span class=k>then</span><span class=w></span>
 <span class=p>;</span><span class=w> </span><span class=k>hold</span><span class=w></span>
 <span class=k>hold</span><span class=o>=</span><span class=mi>1</span><span class=w></span>
-<span class=p>;</span><span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=k>hold</span><span class=o>=%</span><span class=n>timer</span><span class=o>%</span><span class=w></span>
+<span class=p>;</span><span class=k>print</span><span class=w> </span><span class=k>hold</span><span class=o>=%</span><span class=n>timer</span><span class=o>%</span><span class=w></span>
 <span class=k>if</span><span class=w> </span><span class=n>toggle</span><span class=o>&gt;</span><span class=mi>0</span><span class=w></span>
 <span class=k>then</span><span class=w></span>
 <span class=o>=&gt;%</span><span class=n>ws</span><span class=o>%</span><span class=w> </span><span class=n>dimmer</span><span class=w> </span><span class=o>+</span><span class=w></span>
@@ -1191,7 +1191,7 @@
 <span class=n>dimval</span><span class=o>=</span><span class=mi>70</span><span class=w>  </span><span class=p>;</span><span class=k>start</span><span class=w> </span><span class=n>dim</span><span class=w> </span><span class=k>level</span><span class=w></span>
 
 <span class=o>&gt;</span><span class=n>B</span><span class=w></span>
-<span class=o>=&gt;</span><span class=k>print</span><span class=w> </span><span class=ss>&quot;WiFi-Dimmer-Script-v0.2&quot;</span><span class=w></span>
+<span class=k>print</span><span class=w> </span><span class=ss>&quot;WiFi-Dimmer-Script-v0.2&quot;</span><span class=w></span>
 <span class=o>=&gt;</span><span class=n>Counter1</span><span class=w> </span><span class=mi>0</span><span class=w></span>
 <span class=o>=&gt;</span><span class=n>Baudrate</span><span class=w> </span><span class=mi>9600</span><span class=w></span>
 <span class=p>;</span><span class=w> </span><span class=n>boot</span><span class=w> </span><span class=k>sequence</span><span class=w></span>
