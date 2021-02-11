@@ -22,7 +22,7 @@ on Power1#State=0 do SerialSend5 A00100A1 endon
  on Power4#State=1 do SerialSend5 A00401A5 endon
  on Power4#State=0 do SerialSend5 A00400A4 endon
 </code></pre></div> Enable the rule (type <code>rule1 1</code> in the Tasmota console) </p> <h2 id=lc-technology-wifi-relay-x2-with-nuvoton-n76e003at20>LC Technology WiFi Relay X2 with Nuvoton N76E003AT20<a class=headerlink href=#lc-technology-wifi-relay-x2-with-nuvoton-n76e003at20 title="Permanent link">~</a></h2> <p>Note: This version of the board has the Nuvoton N76E003AT20 as its host microcontroller instead of STC15F104W. This device requires a special configuration for it to start listening to serial commands.</p> <p>Use the following device template, configureable in <code>Configure Other</code>:</p> <div class=highlight><pre><span></span><code>{&quot;NAME&quot;:&quot;LC-ESP01-2R-5V&quot;,&quot;GPIO&quot;:[0,148,0,149,0,0,0,0,21,22,0,0,0],&quot;FLAG&quot;:0,&quot;BASE&quot;:18}
-</code></pre></div> <p>Add the following rules:</p> <div class=highlight><pre><span></span><code>on System#Boot do Backlog Baudrate 115200
+</code></pre></div> <p>Add the following rules:</p> <div class=highlight><pre><span></span><code>on System#Boot do Backlog Baudrate 115200 endon
 on SerialReceived#Data=41542B5253540D0A do SerialSend5 5749464920434f4e4e45435445440a5749464920474f542049500a41542b4349504d55583d310a41542b4349505345525645523d312c383038300a41542b43495053544f3d333630 endon
 on Power1#State=1 do SerialSend5 A00101A2 endon
 on Power1#State=0 do SerialSend5 A00100A1 endon
