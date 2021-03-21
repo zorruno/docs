@@ -297,6 +297,36 @@ Digital TV	{"Protocol":"SONY","Bits":15,"Data":"0x25EE"}
 * 0x20DF5FA0="Enter Password"
 * 0x20DF3FC0="Warning: Reset to factory"
 
+## VEON Generic TV
+
+**Example IRsend Command:**
+****
+button | code
+--- | ---
+on/off | {"Protocol":"NEC","Bits":32,"Data":"0x00FEA857"}
+Vol+ | {"Protocol":"NEC","Bits":32,"Data":"0x00FED827"}
+Vol- | {"Protocol":"NEC","Bits":32,"Data":"0x00FE58A7"}
+Mute | {"Protocol":"NEC","Bits":32,"Data":"0x00FE6897"}
+Info | {"Protocol":"NEC","Bits":32,"Data":"0x00FE28D7"}
+Pause/Play | {"Protocol":"NEC","Bits":32,"Data":"0x00FE52AD"}
+Rwd | {"Protocol":"NEC","Bits":32,"Data":"0x00FEE21D"}
+Ffd | {"Protocol":"NEC","Bits":32,"Data":"0x00FE629D"}
+Skip | {"Protocol":"NEC","Bits":32,"Data":"0x00FE22DD"}
+Back | {"Protocol":"NEC","Bits":32,"Data":"0x00FEA25D"}
+Stop | {"Protocol":"NEC","Bits":32,"Data":"0x00FED22D"}
+Sleep | {"Protocol":"NEC","Bits":32,"Data":"0x00FE38C7"}
+Chan+ | {"Protocol":"NEC","Bits":32,"Data":"0x00FE9867"}
+Chan- | {"Protocol":"NEC","Bits":32,"Data":"0x00FE18E7"}
+Menu | {"Protocol":"NEC","Bits":32,"Data":"0x00FE8877"}
+Input Source | {"Protocol":"NEC","Bits":32,"Data":"0x00FE48B7"}
+Exit | {"Protocol":"NEC","Bits":32,"Data":"0x00FEC837"}
+Up | {"Protocol":"NEC","Bits":32,"Data":"0x00FE30CF"}
+Down | {"Protocol":"NEC","Bits":32,"Data":"0x00FEB04F"}
+Left | {"Protocol":"NEC","Bits":32,"Data":"0x00FEF00F"}
+Right | {"Protocol":"NEC","Bits":32,"Data":"0x00FE708F"}
+OK | {"Protocol":"NEC","Bits":32,"Data":"0x00FE08F7"}
+
+
 
 # Set-top Boxes
 
@@ -524,7 +554,7 @@ Record	{"Protocol":"NEC","Bits":32,"Data":"0x26624BB4"}
 0	{"Protocol":"NEC","Bits":32,"Data":"0x2662D02F"}
 
 
-## Smart Reveiver VX/CX
+## Smart Receiver VX/CX
 ****
 button | code
 --- | ---
